@@ -1,0 +1,56 @@
+$darkgray: #303030
+$darkergray: #101010
+$lightpink: #ffaffb
+
+
+html
+    box-sizing: border-box
+    font-size: 62.5%
+*,
+*::after,
+*::before
+    padding: 0
+    margin: 0
+    box-sizing: inherit
+
+.clearfix 
+    overflow: auto    
+    &::after
+        content: ""
+        clear: both
+        display: table
+
+body
+    font-size: 1.5rem
+    background: $darkergray
+
+main
+    background: lightgray
+    width: 1080px
+    margin: 0 auto
+    height: 200vh
+
+.nav
+    position: fixed
+    background: $darkgray
+    width: 1080px
+
+    display: flex
+    align-items: center
+    justify-content: start
+    color: white
+    box-shadow: 0 2px 2px black
+
+    &_item
+        margin: 0 0.5rem
+        padding: 1rem
+        transition: color 0.2s
+
+        &:hover
+            cursor: pointer
+            color: $lightpink
+
+
+    
+
+

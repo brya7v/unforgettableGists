@@ -1,6 +1,7 @@
-$darkgray: #303030
-$darkergray: #101010
-$lightpink: #ffaffb
+$gray30: #303030
+$gray20: #202020
+$gray10: #101010
+$hover: #7bff00
 
 
 html
@@ -22,35 +23,66 @@ html
 
 body
     font-size: 1.5rem
-    background: $darkergray
+    background: $gray10
+    font-family: 'Merriweather', serif
 
 main
     background: lightgray
     width: 1080px
     margin: 0 auto
-    height: 200vh
+    min-height: 200vh
+    // padding-top: 5rem
 
+.main--fixed
+    padding-top: 3.5rem
+    padding-bottom: 3.5rem
+
+
+header
+    padding-bottom: 5rem
+    height: 5rem
+    line-height: 5rem
+    text-align: center
+    //padding-left: 1rem
+    font-size: 1.8rem
+    font-weight: bold
+    background: $gray20
+    color: cyan
+    font-style: italic
 .nav
-    position: fixed
-    background: $darkgray
+    background: #303030
     width: 1080px
-
+    z-index: 999
     display: flex
     align-items: center
     justify-content: start
     color: white
     box-shadow: 0 2px 2px black
+    transition: color 0.3s, background 0.3s, box-shadow 0.3s
+
+    &--fixed
+        position: fixed
+        top: 0
+        box-shadow: 0 2px 6px black
+        // color: black
 
     &_item
         margin: 0 0.5rem
         padding: 1rem
         transition: color 0.2s
 
+        &--selected
+            color: cyan
+
         &:hover
+            color: cyan
             cursor: pointer
-            color: $lightpink
 
+.section
+    margin: 1rem
+    display: none
 
-    
+    &-git
+        display: block
 
 

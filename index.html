@@ -1,28 +1,41 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="css/style.css">
-    <title>Document</title>
-</head>
-<body>
-    <main>
-        <nav class="nav">
-            <div class="nav_item">item1</div>
-            <div class="nav_item">item1</div>
-            <div class="nav_item">item1</div>
-            <div class="nav_item">item1</div>
-            <div class="nav_item">item1</div>
-        </nav>
-        <section>
-            section1
-        </section>
-
-        <section>
-            section2
-        </section>
-    </main>
-</body>
+    <head>
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" href="css/style.css">
+        <title>Document</title>
+    </head>
+    <body>
+        <main>
+            <header>Unforgettable Gists</header>
+            <nav class="nav">
+                <div class="nav_item nav_item--selected nav_item-git" section="git">Git</div>
+                <div class="nav_item nav_item-html" section="html">HTML</div>
+                <div class="nav_item nav_item-item3" section="item3">item3</div>
+                <div class="nav_item nav_item-item4" section="item4">item4</div>
+                <div class="nav_item nav_item-item5" section="item5">item5</div>
+            </nav>
+            <section class="section section-git">
+                <div w3-include-html="views/git.html"></div>
+            </section>
+            <section class="section section-html">
+                <div w3-include-html="views/html.html"></div>
+            </section>
+            <section class="section section-item3">
+                <div>ITEM 3</div>
+            </section>
+            <section class="section section-item4">
+                <div>ITEM 4</div>
+            </section>
+            <section class="section section-item5">
+                <div>ITEM 5</div>
+            </section>
+        </main>
+    </body>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script> 
+    <script src="js/utils.js"></script>
+    <script src="js/main.js"></script>
+    <script>includeHTML()</script>    
 </html>

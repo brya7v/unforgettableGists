@@ -32,14 +32,14 @@ navItems.forEach(e => {
             //set position when first time section selection
             if(secitonsPosition[currentSection] == null) secitonsPosition[currentSection] = 0
 
-            //scrol to previously store scroll section
-            $(window).scrollTop(secitonsPosition[currentSection])
-
             //hide unselected sections
             sections.forEach(s => { if(!s.classList.contains(`section-${currentSection}`)) $(s).hide() })
 
             //show selected section
             $(`.section-${currentSection}`).fadeIn(100)
+
+            //scrol to previously store scroll section after showing current section
+            $(window).scrollTop(secitonsPosition[currentSection])
         }
     })
 })

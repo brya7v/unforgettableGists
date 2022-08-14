@@ -1,76 +1,149 @@
-<H1>GIT VIEW</H1>
-<H1>GIT VIEW</H1>
-<H1>GIT VIEW</H1>
-<H1>GIT VIEW</H1>
-<H1>GIT VIEW</H1>
-<H1>GIT VIEW</H1>
-<H1>GIT VIEW</H1>
-<H1>GIT VIEW</H1>
-<H1>GIT VIEW</H1>
-<H1>GIT VIEW</H1>
-<H1>GIT VIEW</H1>
-<H1>GIT VIEW</H1>
-<H1>GIT VIEW</H1>
-<H1>GIT VIEW</H1>
+<h2 class="main-title">Git</h2>
 
+<div class="block">
+    <def1>Git</def1>
+    <ul>
+        <li>Is a <strong>VCS (version control system)</strong> wich is a software to track and manage changes to files over time. </li>
+        <li>Its free and open source </li>
+        <li>Git is the version control software that runs locally on your machine, you don’t need to register for an account,
+            you don’t even need internet to use it. You can use git without even touching github </li>
+    </ul>
+</div>
 
-<H1>GIT VIEW</H1>
-<H1>GIT VIEW</H1>
-<H1>GIT VIEW</H1>
-<H1>GIT VIEW</H1>
-<H1>GIT VIEW</H1>
-<H1>GIT VIEW</H1>
-<H1>GIT VIEW</H1>
-<H1>GIT VIEW</H1>
-<H1>GIT VIEW</H1>
-<H1>GIT VIEW</H1>
-<H1>GIT VIEW</H1>
-<H1>GIT VIEW</H1>
-<H1>GIT VIEW</H1>
-<H1>GIT VIEW</H1>
+<div class="block">
+    <def1>Github</def1>
+    <ul>
+        <li>Is a service that hosts git repositories in the cloud and makes it easier to collaborate with people.
+            You do need to sign up for an account to use github. It’s an online place to share work that is done using git.</li>
+    </ul>
+</div>
 
-<H1>GIT VIEW</H1>
-<H1>GIT VIEW</H1>
-<H1>GIT VIEW</H1>
-<H1>GIT VIEW</H1>
-<H1>GIT VIEW</H1>
-<H1>GIT VIEW</H1>
-<H1>GIT VIEW</H1>
-<H1>GIT VIEW</H1>
-<H1>GIT VIEW</H1>
-<H1>GIT VIEW</H1>
-<H1>GIT VIEW</H1>
-<H1>GIT VIEW</H1>
-<H1>GIT VIEW</H1>
-<H1>GIT VIEW</H1>
+<div class="block">
+    <def1>Git repo</def1>
+    <ul>
+        <li>Is a workspace which tracks and manages files within a folder. Anytime we want to use Git with a project, 
+            app, etc we need to create a new git repository, we can have as many repos on our machine as needed, all with separate histories and contents.</li>
+    </ul>
+</div>
 
-<H1>GIT VIEW</H1>
-<H1>GIT VIEW</H1>
-<H1>GIT VIEW</H1>
-<H1>GIT VIEW</H1>
-<H1>GIT VIEW</H1>
-<H1>GIT VIEW</H1>
-<H1>GIT VIEW</H1>
-<H1>GIT VIEW</H1>
-<H1>GIT VIEW</H1>
-<H1>GIT VIEW</H1>
-<H1>GIT VIEW</H1>
-<H1>GIT VIEW</H1>
-<H1>GIT VIEW</H1>
-<H1>GIT VIEW</H1>
+<div class="block">
+    <def1>Working directory</def1>
+    <ul>
+        <li>Is the place we are working.</li>
+    </ul>
+</div>
 
-<H1>GIT VIEW</H1>
-<H1>GIT VIEW</H1>
-<H1>GIT VIEW</H1>
-<H1>GIT VIEW</H1>
-<H1>GIT VIEW</H1>
-<H1>GIT VIEW</H1>
-<H1>GIT VIEW</H1>
-<H1>GIT VIEW</H1>
-<H1>GIT VIEW</H1>
-<H1>GIT VIEW</H1>
-<H1>GIT VIEW</H1>
-<H1>GIT VIEW</H1>
-<H1>GIT VIEW</H1>
-<H1>GIT VIEW</H1>
+<div class="block">
+    <def1>Staging area</def1>
+    <ul>
+        <li>This is where we add changes to before we make a commit.</li>
+    </ul>
+</div>
 
+<div class="block">
+    <def1>Atomic commits</def1>
+    <ul>
+        <li>When possible, a commit should encompass a single feature, change, or fix.</li>
+        <li>Commit messages present tense imperative style: .. “make xizzy to do frogz”.</li>
+    </ul>
+</div>
+
+<div class="block">
+    <def1>.gitignore</def1>
+    <ul>
+        <li>File where we specify wich files and folder want to be ignored by git, for example unnecessary libraries, node_modules, keyFiles, etc.</li>
+        <li>.DS_Store will ignore files named .DS_Store</li>
+        <li>folderName/ entire directory</li>
+        <li>*.log all files with .log extension</li>
+    </ul>
+</div>
+
+<div class="block">
+    <def1>Branch</def1>
+    <ul>
+        <li>Are alternative timelines of a project, they enable us to create separate contexts where we can try new things, or even work on multiple ideas in parallel.</li>
+        <li>If we make changes on one branch, they do not impact the other branches until we merge them.</li>
+        <li>Master branch is usually the main branch / official working code base / when someone works on other branch, it is mereged to master.</li>
+        <li>In 2020 the default master branch in gitHub was changed to main.</li>
+    </ul>
+</div>
+
+<div class="block">
+    <def1>HEAD -> master</def1>
+    <ul>
+        <li>Head refers to master(last commit).</li>
+        <li>IBranches are like bookmarks in a book, head is a reference to the current branch last commit.</li>
+    </ul>
+</div>
+
+<div class="block">
+    <def2>Git commands</def2>
+    <ul>
+        <li><def-code>git status</def-code> gives information on the current status of a git repository and its contents.</li>
+        <li><def-code>git init</def-code>
+            <ul>
+                <li>Instantiate a new repo in whatever directory we are currently in. This has to be done just the first time to enable git in the current project.</li>
+                <li>Git init creates the .git folder.</li>
+            </ul>
+        </li>
+        <li><def-code>git add</def-code> select files we want to add to the stage to commit to separate changes that we made.</li>
+        <li><def-code>git add .</def-code> select all changes to add to the stage.</li>
+        <li><def-code>git rm --cache 'file'</def-code> || <def-code>git restore --staged 'file'</def-code> unstage file.</li>
+        <li><def-code>git commit</def-code> commits staged changes using vim to write the msg.</li>
+        <li><def-code>git commit –m 'msg'</def-code> commits staged changes using the specified msg.</li>
+        <li><def-code>Git commit –a –m 'msg'</def-code> adds all tracked changes without previously using <def-code>add .</def-code> or adding them to the stage.</li>
+        <li><def-code>git log</def-code> prints commit complete hash - author - date.</li>
+        <li><def-code>git log --all --decorate --oneline --graph</def-code> A DOG.</li>
+        <li><def-code>git branch</def-code> lists all the branches, the one we are currently on has an *.</li>
+        <li><def-code>git branch 'newbranchname'</def-code> will create a branch with that name, it shouldn't contain spaces, it makes the branch for us, it does not change us to the branch based on the head we are currently on.</li>
+        <li><def-code>git switch 'branchname'</def-code> || <def-code>git checkout 'branchname'</def-code> changes to branch.
+            <ul>
+                <li>If we try to switch form branch and we've changes that are not commited theill be lost (we need to commit or stash them)
+                    (this happens just wen updating files,) it we are adding new files,they'll be coming with you to the new branch.</li>
+            </ul>
+        </li>
+        
+        <li><def-code>git switch –c 'newbranchname'</def-code> it creates a new brnach and then moves to it.</li>
+        <li><def-code>git checkout 'commithash'</def-code> Moves to specific commit, head allways points to the newest commit of the current branch, when we do a checkout to a previous commit, we'll be in detached head state.</li>
+        <li><def-code>git merge</def-code> 
+            <ul>
+                <li>Is used to combine stuff of two branches.</li>
+                <li>Usually we merge a feature branch to a master branch.</li>
+                <li>We merge branches. Not specific commits.</li>
+                <li>We always merge to the current HEAD branch (where our head is, where we are).</li>
+                <li>To merge changes from the bugfix branch to the main branch we: <def-code>git switch main</def-code> then <def-code>git merge bugfix</def-code></li>
+                <li>If main didn't have other changes, it's called a fast fordward merge.</li>
+                <li>Whenever we merge two branches with different changes after the split, the new commit will have two parents, Then, if we fast fordward the other branch to the one merged, itll be a fast fordward merge and both branches 
+                    will be pointing to the same commit, where the head is in the same commit for both branches.</li>
+                    <li>After a merge git tries to do the merges automatically, if it fails, we need to manually resolve those conflicts, we'll have 
+                        thi fix them manually, or using the code editor UI.</li>
+                        <li>Git adds conflict markers to show where the automatic merge failed inside the file.</li>
+                        <li>Usually we want to make a third branch where we do the merge of two files, and leave the parents separated,
+                            so we switch to one of the parents, make a new branch, then merge changes from the other parent.</li>
+                        </ul>
+                    </li>
+                    <li><def-code>git diff</def-code> Lists unstaged changed.</li>
+                    <li><def-code>git diff --staged</def-code> || <def-code>git diff --cached</def-code>Lists staged changed.</li>
+                    <li><def-code>git diff HEAD</def-code>Lists all changes since HEAD (its basically <def-code>git diff</def-code> + <def-code>git diff --staged</def-code> ).</li>
+                    <li><def-code>git diff --staged HEAD styles/main.css</def-code> Lists changes of specific file.</li>
+                    <li><def-code>git diff branch1 branch2</def-code> || <def-code>git diff branch1..branch2</def-code> Lists changes between branches, order matters. Git GUIs shine here</li>
+                    <li><def-code>git diff commit1 commit2</def-code> || <def-code>git diff commit1..commit2</def-code> Lists changes between commits, order matters. Git GUIs shine here</li>
+                    <li><def-code>git stash</def-code> Will stash all uncommited changes (staged and unstaged) (excluding untracked files) reverting the changes in the current branch.</li>
+                    <li><def-code>git stash -m 'message'</def-code> Will add a msg to the stash.</li>
+                    <li><def-code>git stash --include-untracked</def-code> || <def-code>git stash -u</def-code> Will stash all uncommited changes (staged and unstaged) (including untracked files) reverting the changes in the current branch.</li>
+                    <li><def-code>git stash pop</def-code> Remove the most recently stashed changes in your stash and re-apply them to the working copy(we can stash changes and later pop them in another branch).</li>
+                    <li><def-code>git stash apply</def-code> It'll apply the stashed changes but will not remove them from the stash so we can apply them to mutlple branches.
+                        <ul>
+                            <li>If we pop or apply staged changes, there may be conflicts, which have to be resolved just like in a merge.</li>
+                            <li>If we continue stashing changes, they will be stacking, and we'll be using all of then in order, each time we apply or pop the stash.</li>
+                        </ul>
+                    </li>
+                    <li><def-code>git stash list</def-code> List of the stash stack with msg and ids.</li>
+                    <li><def-code>git stash pop/apply 'stash@{1}'</def-code> Pop/apply specific stash.</li>
+                    <li><def-code>git stash pop/apply 'stash@{1}'</def-code> Pop/apply specific stash.</li>
+                    <li><def-code>git stash drop 'stash@{1}'</def-code> Delete specific stash.</li>
+                    <li><def-code>git stash clear</def-code> Clear all the stash stack.</li>
+
+                </ul>
+                
+</div>

@@ -22,27 +22,32 @@ body {
   font-family: 'Merriweather', serif; }
 
 main {
-  background: lightgray;
+  background: #d0d0d0;
   width: 1080px;
   margin: 0 auto;
-  min-height: 200vh; }
+  min-height: 100.1vh;
+  padding: 8rem 0; }
 
-.main--fixed {
-  padding-top: 3.5rem;
-  padding-bottom: 3.5rem; }
+nav {
+  width: 1080px;
+  position: fixed;
+  top: 0;
+  z-index: 999; }
 
 header {
-  padding-bottom: 5rem;
-  height: 5rem;
-  line-height: 5rem;
+  height: 3rem;
+  line-height: 3rem;
   text-align: center;
   font-size: 1.8rem;
   font-weight: bold;
   background: #202020;
-  color: cyan;
+  color: #87eaf3;
   font-style: italic; }
 
 .nav {
+  font-size: 1.4rem;
+  position: fixed;
+  top: 3rem;
   background: #303030;
   width: 1080px;
   z-index: 999;
@@ -61,13 +66,62 @@ header {
     padding: 1rem;
     transition: color 0.2s; }
     .nav_item--selected {
-      color: cyan; }
+      color: #87eaf3; }
     .nav_item:hover {
-      color: cyan;
+      color: #87eaf3;
       cursor: pointer; }
 
 .section {
   margin: 1rem;
+  padding: 0 2rem;
   display: none; }
   .section-git {
     display: block; }
+
+.main-title {
+  text-align: center;
+  font-size: 1.8rem;
+  font-weight: bold;
+  margin: 1rem 0; }
+
+.block {
+  display: block;
+  margin: 0 0 1.5rem 0; }
+  .block def1,
+  .block def2,
+  .block def3 {
+    margin-left: -2rem; }
+  .block ul def1,
+  .block ul def2,
+  .block ul def3 {
+    margin-left: 0; }
+
+def1,
+def2,
+def3 {
+  padding: 0 0.5rem;
+  font-weight: bold;
+  border-radius: 3px; }
+
+def1 {
+  background: repeating-linear-gradient(90deg, transparent -10%, yellow 50%, transparent 110%); }
+
+def2 {
+  background: repeating-linear-gradient(90deg, transparent -10%, pink 50%, transparent 110%); }
+
+def3 {
+  background: repeating-linear-gradient(90deg, transparent -10%, cyan 50%, transparent 110%); }
+
+def-code {
+  font-family: Courier, "Lucida Console", monospace;
+  font-size: 1.6rem;
+  color: #d0d0d0;
+  background: #101010;
+  padding: 0 0.5rem;
+  border-radius: 3px; }
+
+ul {
+  list-style-type: circle; }
+  ul li ul {
+    margin-left: 2rem;
+    list-style-type: square; }

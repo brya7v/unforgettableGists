@@ -1,7 +1,9 @@
+$grayd0: #d0d0d0
 $gray30: #303030
 $gray20: #202020
 $gray10: #101010
-$hover: #7bff00
+$hover: lightcyan
+$hover: #87eaf3
 
 
 html
@@ -27,29 +29,32 @@ body
     font-family: 'Merriweather', serif
 
 main
-    background: lightgray
+    background: $grayd0
     width: 1080px
     margin: 0 auto
-    min-height: 200vh
-    // padding-top: 5rem
+    min-height: 100.1vh
+    padding: 8rem 0
 
-.main--fixed
-    padding-top: 3.5rem
-    padding-bottom: 3.5rem
-
+nav
+    width: 1080px
+    position: fixed
+    top: 0
+    z-index: 999
 
 header
-    padding-bottom: 5rem
-    height: 5rem
-    line-height: 5rem
+    height: 3rem
+    line-height: 3rem
     text-align: center
-    //padding-left: 1rem
     font-size: 1.8rem
     font-weight: bold
     background: $gray20
-    color: cyan
+    color: $hover
     font-style: italic
+
 .nav
+    font-size: 1.4rem
+    position: fixed
+    top: 3rem
     background: #303030
     width: 1080px
     z-index: 999
@@ -72,17 +77,68 @@ header
         transition: color 0.2s
 
         &--selected
-            color: cyan
+            color: $hover
 
         &:hover
-            color: cyan
+            color: $hover
             cursor: pointer
 
 .section
     margin: 1rem
+    padding: 0 2rem
     display: none
-
     &-git
         display: block
 
+.main-title
+    text-align: center
+    font-size: 1.8rem
+    font-weight: bold
+    margin: 1rem 0
 
+.block 
+    display: block
+    margin: 0 0 1.5rem 0  
+
+    & def1,
+    & def2,
+    & def3
+        margin-left: -2rem
+
+    ul
+        & def1,
+        & def2,
+        & def3
+            margin-left: 0
+
+def1,
+def2,
+def3
+    padding: 0 0.5rem
+    font-weight: bold
+    border-radius: 3px
+
+def1
+    background: repeating-linear-gradient(90deg, transparent -10%, yellow 50%, transparent 110%)
+
+def2
+    background: repeating-linear-gradient(90deg, transparent -10%, pink 50%, transparent 110%)
+
+def3
+    background: repeating-linear-gradient(90deg, transparent -10%, cyan 50%, transparent 110%)
+
+def-code
+    font-family: Courier, "Lucida Console", monospace 
+    font-size: 1.6rem
+    color: $grayd0
+    background: $gray10
+    padding: 0 0.5rem
+    border-radius: 3px
+
+ul 
+    list-style-type: circle
+    li ul
+        margin-left: 2rem
+        list-style-type: square
+// ul li li
+//     list-style-type: none

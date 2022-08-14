@@ -43,18 +43,3 @@ navItems.forEach(e => {
         }
     })
 })
-
-//navbar fixed style on scroll
-window.onscroll = () => { 
-    console.log($(window).scrollTop())
-    if($(window).scrollTop() > 51) {
-        $(".nav").addClass("nav--fixed")
-        $("main").addClass("main--fixed")
-    }
-    else{
-        $(".nav").removeClass("nav--fixed")
-        $("main").removeClass("main--fixed")
-
-    }
-}
-

@@ -69,6 +69,16 @@
 </div>
 
 <div class="block">
+    <def1>Remote</def1>
+    <ul>
+        <li>Is a remote repository url.</li>
+        <li>So when we <def-code>git remote add 'origin' 'url' </def-code> in a branch, we are specifying what the remote url is, and then we <def-code>push 'origin (name of the remote)'</def-code> 
+            to upload changes 'remote' is the destination</li>
+    </ul>
+</div>
+
+
+<div class="block">
     <def1>HEAD -> master</def1>
     <ul>
         <li>Head refers to master(last commit).</li>
@@ -77,25 +87,61 @@
 </div>
 
 <div class="block">
+    <def1>MD</def1>
+    <ul>
+        <li> The markdown is an easy to read/easy to write plain text format wich then convert it to structiraly correct xhtml and html.</li>
+    </ul>
+</div>
+
+<div class="block">
+    <def1>Github gists</def1>
+    <ul>
+        <li> Are public/private git 1file 'file' with extension, commonly .MD, to share or archive scripts 
+            to do something, it can enable conversations/comments about it, or to share scripts, etc, are a github free feature.</li>
+    </ul>
+</div>
+
+<div class="block">
+    <def1>Tags</def1>
+    <ul>
+        <li>Git tags are used to remark new versions.</li>
+        <li>It's a 'label' of a commit, are used to mark versions, releases in projects.</li>
+        <li>There are Lightwheight tags wich are just a name/label that points to a commit and Annotated tags wich store extra meta data including authorname,email, date, and a tagging message.</li>
+        <li>Its usually used with semantic versioning. <strong>MajorRelease.MinorRelease.PatshRelease</strong></li>
+        <li><strong>MajorRelease</strong> No backwards compatible, breaking changes.</li>
+        <li><strong>PatshRelease</strong> No breaking changes, new features, the proj is still backwards compatible.</li>
+        <li><strong>MinorRelease</strong> No new features – no significant changes. Just bugfixes and low impact changes.</li>
+    </ul>
+</div>
+
+<div class="block">
     <def2>Git commands</def2>
     <ul>
         <li><def-code>git status</def-code> gives information on the current status of a git repository and its contents.</li>
+        <br>
         <li><def-code>git init</def-code>
             <ul>
                 <li>Instantiate a new repo in whatever directory we are currently in. This has to be done just the first time to enable git in the current project.</li>
                 <li>Git init creates the .git folder.</li>
             </ul>
         </li>
+        <br>
         <li><def-code>git add</def-code> select files we want to add to the stage to commit to separate changes that we made.</li>
         <li><def-code>git add .</def-code> select all changes to add to the stage.</li>
+        <br>
         <li><def-code>git rm --cache 'file'</def-code> || <def-code>git restore --staged 'file'</def-code> unstage file.</li>
+        <br>
         <li><def-code>git commit</def-code> commits staged changes using vim to write the msg.</li>
         <li><def-code>git commit –m 'msg'</def-code> commits staged changes using the specified msg.</li>
         <li><def-code>Git commit –a –m 'msg'</def-code> adds all tracked changes without previously using <def-code>add .</def-code> or adding them to the stage.</li>
+        <br>
         <li><def-code>git log</def-code> prints commit complete hash - author - date.</li>
         <li><def-code>git log --all --decorate --oneline --graph</def-code> A DOG.</li>
+        <br>
         <li><def-code>git branch</def-code> lists all the branches, the one we are currently on has an *.</li>
         <li><def-code>git branch 'newbranchname'</def-code> will create a branch with that name, it shouldn't contain spaces, it makes the branch for us, it does not change us to the branch based on the head we are currently on.</li>
+        <li><def-code>git branch -r</def-code> Is the remote tracking branch 'origin'/branch.</li>
+        <br>
         <li><def-code>git switch 'branchname'</def-code> || <def-code>git checkout 'branchname'</def-code> changes to branch.
             <ul>
                 <li>If we try to switch form branch and we've changes that are not commited theill be lost (we need to commit or stash them)
@@ -103,8 +149,9 @@
             </ul>
         </li>
         
-        <li><def-code>git switch –c 'newbranchname'</def-code> it creates a new brnach and then moves to it.</li>
-        <li><def-code>git checkout 'commithash'</def-code> Moves to specific commit, head allways points to the newest commit of the current branch, when we do a checkout to a previous commit, we'll be in detached head state.</li>
+        <li><def-code>git switch –c 'newbranchname'</def-code> It creates a new brnach and then moves to it.</li>
+        <li><def-code>git switch –</def-code> Gets us back to the last branch we were in.</li>
+        <br>
         <li><def-code>git merge</def-code> 
             <ul>
                 <li>Is used to combine stuff of two branches.</li>
@@ -115,35 +162,129 @@
                 <li>If main didn't have other changes, it's called a fast fordward merge.</li>
                 <li>Whenever we merge two branches with different changes after the split, the new commit will have two parents, Then, if we fast fordward the other branch to the one merged, itll be a fast fordward merge and both branches 
                     will be pointing to the same commit, where the head is in the same commit for both branches.</li>
-                    <li>After a merge git tries to do the merges automatically, if it fails, we need to manually resolve those conflicts, we'll have 
-                        thi fix them manually, or using the code editor UI.</li>
-                        <li>Git adds conflict markers to show where the automatic merge failed inside the file.</li>
-                        <li>Usually we want to make a third branch where we do the merge of two files, and leave the parents separated,
-                            so we switch to one of the parents, make a new branch, then merge changes from the other parent.</li>
-                        </ul>
-                    </li>
-                    <li><def-code>git diff</def-code> Lists unstaged changed.</li>
-                    <li><def-code>git diff --staged</def-code> || <def-code>git diff --cached</def-code>Lists staged changed.</li>
-                    <li><def-code>git diff HEAD</def-code>Lists all changes since HEAD (its basically <def-code>git diff</def-code> + <def-code>git diff --staged</def-code> ).</li>
-                    <li><def-code>git diff --staged HEAD styles/main.css</def-code> Lists changes of specific file.</li>
-                    <li><def-code>git diff branch1 branch2</def-code> || <def-code>git diff branch1..branch2</def-code> Lists changes between branches, order matters. Git GUIs shine here</li>
-                    <li><def-code>git diff commit1 commit2</def-code> || <def-code>git diff commit1..commit2</def-code> Lists changes between commits, order matters. Git GUIs shine here</li>
-                    <li><def-code>git stash</def-code> Will stash all uncommited changes (staged and unstaged) (excluding untracked files) reverting the changes in the current branch.</li>
-                    <li><def-code>git stash -m 'message'</def-code> Will add a msg to the stash.</li>
-                    <li><def-code>git stash --include-untracked</def-code> || <def-code>git stash -u</def-code> Will stash all uncommited changes (staged and unstaged) (including untracked files) reverting the changes in the current branch.</li>
-                    <li><def-code>git stash pop</def-code> Remove the most recently stashed changes in your stash and re-apply them to the working copy(we can stash changes and later pop them in another branch).</li>
-                    <li><def-code>git stash apply</def-code> It'll apply the stashed changes but will not remove them from the stash so we can apply them to mutlple branches.
-                        <ul>
-                            <li>If we pop or apply staged changes, there may be conflicts, which have to be resolved just like in a merge.</li>
-                            <li>If we continue stashing changes, they will be stacking, and we'll be using all of then in order, each time we apply or pop the stash.</li>
-                        </ul>
-                    </li>
-                    <li><def-code>git stash list</def-code> List of the stash stack with msg and ids.</li>
-                    <li><def-code>git stash pop/apply 'stash@{1}'</def-code> Pop/apply specific stash.</li>
-                    <li><def-code>git stash pop/apply 'stash@{1}'</def-code> Pop/apply specific stash.</li>
-                    <li><def-code>git stash drop 'stash@{1}'</def-code> Delete specific stash.</li>
-                    <li><def-code>git stash clear</def-code> Clear all the stash stack.</li>
+                <li>After a merge git tries to do the merges automatically, if it fails, we need to manually resolve those conflicts, we'll have 
+                    thi fix them manually, or using the code editor UI.</li>
+                <li>Git adds conflict markers to show where the automatic merge failed inside the file.</li>
+                <li>Usually we want to make a third branch where we do the merge of two files, and leave the parents separated,
+                    so we switch to one of the parents, make a new branch, then merge changes from the other parent.</li>
+            </ul>
+        </li>
+        <br>
+        <li><def-code>Git merge –no-ff new-heading </def-code> Will do a merge creating a new commit instead of a fastforward (if it was possible).</li>
+        <li><def-code>git diff</def-code> Lists unstaged changed.</li>
+        <li><def-code>git diff --staged</def-code> || <def-code>git diff --cached</def-code>Lists staged changed.</li>
+        <li><def-code>git diff HEAD</def-code>Lists all changes since HEAD (its basically <def-code>git diff</def-code> + <def-code>git diff --staged</def-code> ).</li>
+        <li><def-code>git diff --staged HEAD styles/main.css</def-code> Lists changes of specific file.</li>
+        <li><def-code>git diff branch1 branch2</def-code> || <def-code>git diff branch1..branch2</def-code> Lists changes between branches, order matters. Git GUIs shine here</li>
+        <li><def-code>git diff commit1 commit2</def-code> || <def-code>git diff commit1..commit2</def-code> Lists changes between commits, order matters. Git GUIs shine here</li>
+        <br>
+        <li><def-code>git stash</def-code> Will stash all uncommited changes (staged and unstaged) (excluding untracked files) reverting the changes in the current branch.</li>
+        <li><def-code>git stash -m 'message'</def-code> Will add a msg to the stash.</li>
+        <li><def-code>git stash --include-untracked</def-code> || <def-code>git stash -u</def-code> Will stash all uncommited changes (staged and unstaged) (including untracked files) reverting the changes in the current branch.</li>
+        <li><def-code>git stash pop</def-code> Remove the most recently stashed changes in your stash and re-apply them to the working copy(we can stash changes and later pop them in another branch).</li>
+        <li><def-code>git stash apply</def-code> It'll apply the stashed changes but will not remove them from the stash so we can apply them to mutlple branches.
+            <ul>
+                <li>If we pop or apply staged changes, there may be conflicts, which have to be resolved just like in a merge.</li>
+                <li>If we continue stashing changes, they will be stacking, and we'll be using all of then in order, each time we apply or pop the stash.</li>
+            </ul>
+        </li>
+        <li><def-code>git stash list</def-code> List of the stash stack with msg and ids.</li>
+        <li><def-code>git stash pop/apply 'stash@{1}'</def-code> Pop/apply specific stash.</li>
+        <li><def-code>git stash pop/apply 'stash@{1}'</def-code> Pop/apply specific stash.</li>
+        <li><def-code>git stash drop 'stash@{1}'</def-code> Delete specific stash.</li>
+        <li><def-code>git stash clear</def-code> Clear all the stash stack.</li>
+        <br>
+        <li><def-code>git checkout 'commithash'</def-code> Moves to specific commit, head allways points to the newest commit of the current branch,
+            when we do a checkout to a previous commit, we'll be in detached head state and it'll be pointing to the specific commit hash, to make a new branch from
+            this specific commit, we just: <def-code>git switch –c 'chapterToRedo'</def-code>.</li>            
+        <li><def-code>git checkout HEAD~1</def-code> Checkout to head commit -1. Then if we: <def-code>git checkout HEAD~1</def-code> we'll go one commit back again.</li>
+        <li><def-code>git checkout HEAD dog.txt</def-code> || <def-code>git checkout -- dog.txt cat.txt</def-code> Will remove changes of specific files back to HEAD.</li>
+        <br>
+        <li><def-code>git restore dog.txt</def-code> Sames as <def-code>git checkout HEAD dog.txt</def-code> .</li>
+        <li><def-code>git restore --source HEAD~1 dog.txt</def-code>Restore specific file or files to specific HEAD~n previous commit.</li>
+        <li><def-code>git restore --source 'commithash' dog.txt</def-code>Restore specific file or files to specific commit hash.</li>
+        <br>
+        <li><def-code>git reset</def-code> 
+            <ul>
+                <li>Will move HEAD 1 commit backwards, delete commits, and keep current changes.</li>
+                <li>Reset removes commits and takes the head backwards as if thos commits never existed</li>
+            </ul>
+        </li>
+        <li><def-code>git reset --hard</def-code> Will move HEAD 1 commit backwards, delete commits, and DELETE current changes.</li>
+        <li><def-code>git reset 'commithash'</def-code> Will reset the repo back to the specified hash, it wil DELETE all commits after the specified commit,
+            we will be still having al the current changes locally (we lose the commits but not the local changes) so we can add this changes to another branch for ex.
+        </li>
+        <br>
+        <li><def-code>git revert</def-code>
+            <ul>
+                <li>Will undo specific commit changes while creating a new commit - generates lots of conflicts.</li>
+                <li>creates a new commit wich reverses/undos the changes from a commit, bc it results in a new commit we will be prompted to enter a commit msg.</li>
+            </ul>
+        </li>
+        <br>
+        <li><def-code>git remote -v</def-code> Lists remotes by name - url.</li>
+        <li><def-code>git remote add 'origin' 'url'</def-code> 
+            <ul>
+                <li>Adds a new remote url</li>
+                <li>Origin is juts a name that's setup for the origin, but it can be named whatever we want</li>
+            </ul>
+        </li>
+        <li><def-code>git remote rename 'oldname' 'newname'</def-code> Rename remote.</li>
+        <li><def-code>git remote remove 'remotename'</def-code> Remove remote.</li>
+        <li><def-code>git push origin master</def-code> Will push specified branch to the specified remote (in this case is named origin).</li>
+        <br>
+        <li><def-code>git fetch</def-code> Gets remote changes to local repo (not into local files) (know if branch is behind origin), lets us know new branches.</li>
+        <li><def-code>git pull</def-code>gets remote changes to local repo and workspace (branch).
+            <ul>
+                <li><def-code>git pull</def-code> = <def-code>git fetch</def-code> (update remote tracking branch with the lastest changes from the remote repository)
+                    + <def-code>git merge</def-code> (update my current branch with whatever changes are on the remote tracking branch).
+                </li>
+                <li>Pulls can result in conflicts, which have to ve resolved as the merge conflicts.</li>
+                <li>Pulls can result in conflicts, which have to ve resolved as the merge conflicts.</li>
+                <li>The git pull and git push are default configurated to the 'origin/specifiedBranch'</li>
+                <li>We can have multiple remote repositories; we'll have to be specifying where we pull and push origin branch.</li>
+                <li>The pull request does not come fron git, its from gitlab/github, where we use the gui to 'request' a pull request from an origin to our
+                    new branch, where there will be a process by the dev team, to accept, decline the PR, and then fix possible conflicts.</li>
+            </ul>
+        </li>
+        <br>
+        <li><def-code>git rebase main</def-code>is like a merge, but it will cleanup the commits history, with both branch changes mixed in a single line.
+            <ul>
+                <li>Insted of merge feature from main (<def-code>git switch main</def-code> and then <def-code>git merge feature)</def-code>) 
+                    <br>
+                    we have to merge main form feature: (<def-code>git switch feature</def-code> then <def-code>git merge main</def-code>) 
+                    <br>
+                    and then we rebase main: (<def-code>git rebase main</def-code>)</li>
+                    <li>Why rebase? to get a cleaner project history.</li>
+                    <li>Golden rule: do not rebase commits that others have, aka uploaded to remote, unless we are positive that no one else has those commits.</li>
+                    <li>Rebase rewrites history (deletes merge commits).</li>
+                    <li>Rebase does not create a new commit, it just stacks all the commits ordered by branch.</li>
+            </ul>
+        </li>
+        <li><def-code>git rebase -I HEAD~3</def-code> Interactive rebase
+            <ul>
+                <li>It will promp an editor to interactive rebase the last 3 commits.</li>
+                <li>Here we can edit the commits, change msg, fuse commits, discard commits (but keep changes), etc.</li>
+            </ul>
+        </li>
+        <br>
+        <li><def-code>git tag 'v1.4-lw'</def-code> Will create a Lightwheight tag of the current position.</li>
+        <li><def-code>git tag -a 'v1.4' -m 'my version v1.4'</def-code> Will create an Annotated tag of the current branch.</li>
+        <li><def-code>git tag –a 'tagname' 'commitHash'</def-code> To tag from a previously created commit.</li>
+        <li><def-code>git tag 'repeatedName' 'newHashRef' –f </def-code> There can't be tags with repeated names, we cam force it and remove the provious one.</li>
+        <li><def-code>git tag -d 'tagName'</def-code> Delete tag.</li>
+        <li><def-code>git push origin 'tagName'</def-code> || <def-code>git push -tags</def-code> Tags are not pushed to the origin on the default push, we've to specify it.</li>
+        <li><def-code>git tag -l</def-code> Will list tags.</li>
+        <li><def-code>git tag -l '*test*'</def-code> Will list tags named anythign test anything.</li>
+        <br>
+        <li><def-code>git config --global user.name/email</def-code> Will show current name / email of globally configured user.</li>
+        <li><def-code>git config --global user.name/email 'name/email'</def-code> Will globally set name / email user.</li>
 
-                </ul>
+        <li><def-code>git config --local user.name/email</def-code> Will show current name / email locally configured, it overrydes the global inside the current repository.</li>
+
+        <li><def-code>git tag -l '*test*'</def-code> Will list tags named anythign test anything.</li>
+
+
+    </ul>
                 
 </div>

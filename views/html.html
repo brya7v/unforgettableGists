@@ -1,169 +1,59 @@
-<h1>htmllll</h1>
-<pre>
-    background: lightgray
-    width: 1080px
-    margin: 0 auto
-    height: 200vh
-    padding-top: 5rem
-    
-    .nav
-    position: fixed
-    top: 0
-    background: $darkgray
-    width: 1080px
-    
-    display: flex
-    align-items: center
-    justify-content: start
-    color: white
-    box-shadow: 0 2px 2px black
-    
-    &_item
-        margin: 0 0.5rem
-        padding: 1rem
-        transition: color 0.2s
-    
-        &:hover
-            cursor: pointer
-            color: $hover
-    
-    .section
-    display: none
-    
-    &-git
-        display: block
+<h2 class="main-title">HTML</h2>
 
-        background: lightgray
-width: 1080px
-margin: 0 auto
-height: 200vh
-padding-top: 5rem
+<div class="block">
+    <def1>HTML</def1>
+    <ul>
+        <li>Hyper Text Markup Language.</li>
+        <li>Described by HTML tags wich describe different types of content, headers, paragraphs, links, etc.</li>
+    </ul>
+</div>
 
-.nav
-position: fixed
-top: 0
-background: $darkgray
-width: 1080px
+<div class="block">
+    <def1>HTML elements</def1>
+    <ul>
+        <li>An HTML element is defined by a start tag, some content, and an end tag.</li>
+        <li> <def-code>&lttagname&gt</def-code> Content goes here... <def-code>&lt/tagname&gt</def-code></li>
+    </ul>
+</div>
 
-display: flex
-align-items: center
-justify-content: start
-color: white
-box-shadow: 0 2px 2px black
+<div class="block">
+    <def1>Basic HTML template</def1>
+    <pre>
+    &lt!DOCTYPE html&gt
+    &lthtml lang="en"&gt
+        &lthead&gt
+            &ltmeta charset="UTF-8"&gt
+            &ltmeta http-equiv="X-UA-Compatible" content="IE=edge"&gt
+            &ltmeta name="viewport" content="width=device-width, initial-scale=1.0"&gt
+            &ltlink rel="stylesheet" href="css/style.css"&gt
+            &lttitle&gtDocument&lt/title&gt
+        &lt/head&gt
+        &ltbody&gt
+            &ltmain&gt
+                &ltnav&gt
+                    &ltheader&gtUnforgettable Gists&lt/header&gt
+                    &ltdiv class="nav"&gt
+                        &ltdiv class="nav_item nav_item-item3" section="item3"&gtitem3&lt/div&gt
+                        &ltdiv class="nav_item nav_item-item4" section="item4"&gtitem4&lt/div&gt
+                        &ltdiv class="nav_item nav_item-item5" section="item5"&gtitem5&lt/div&gt
+                    &lt/div&gt
+                &lt/nav&gt
+                &ltsection class="section section-item3"&gt
+                    &ltdiv&gtITEM 3&lt/div&gt
+                &lt/section&gt
+                &ltsection class="section section-item4"&gt
+                    &ltdiv&gtITEM 4&lt/div&gt
+                &lt/section&gt
+                &ltsection class="section section-item5"&gt
+                    &ltdiv&gtITEM 5&lt/div&gt
+                &lt/section&gt
+            &lt/main&gt
+        &lt/body&gt
+        &ltscript src="https://code.jquery.com/jquery-3.6.0.min.js"&lt/script&gt 
+        &ltscript src="js/utils.js"&gt&lt/script&gt
+        &ltscript src="js/main.js"&gt&lt/script&gt
+        &ltscript&gtincludeHTML()&lt/script&gt    
+    &lt/html&gt
+    </pre>
+</div>
 
-&_item
-    margin: 0 0.5rem
-    padding: 1rem
-    transition: color 0.2s
-
-    &:hover
-        cursor: pointer
-        color: $hover
-
-.section
-display: none
-
-&-git
-    display: block
-
-    background: lightgray
-width: 1080px
-margin: 0 auto
-height: 200vh
-padding-top: 5rem
-
-.nav
-position: fixed
-top: 0
-background: $darkgray
-width: 1080px
-
-display: flex
-align-items: center
-justify-content: start
-color: white
-box-shadow: 0 2px 2px black
-
-&_item
-    margin: 0 0.5rem
-    padding: 1rem
-    transition: color 0.2s
-
-    &:hover
-        cursor: pointer
-        color: $hover
-
-.section
-display: none
-
-&-git
-    display: block
-
-    background: lightgray
-width: 1080px
-margin: 0 auto
-height: 200vh
-padding-top: 5rem
-
-.nav
-position: fixed
-top: 0
-background: $darkgray
-width: 1080px
-
-display: flex
-align-items: center
-justify-content: start
-color: white
-box-shadow: 0 2px 2px black
-
-&_item
-    margin: 0 0.5rem
-    padding: 1rem
-    transition: color 0.2s
-
-    &:hover
-        cursor: pointer
-        color: $hover
-
-.section
-display: none
-
-&-git
-    display: block
-
-background: lightgray
-width: 1080px
-margin: 0 auto
-height: 200vh
-padding-top: 5rem
-
-.nav
-position: fixed
-top: 0
-background: $darkgray
-width: 1080px
-
-display: flex
-align-items: center
-justify-content: start
-color: white
-box-shadow: 0 2px 2px black
-
-&_item
-    margin: 0 0.5rem
-    padding: 1rem
-    transition: color 0.2s
-
-    &:hover
-        cursor: pointer
-        color: $hover
-
-.section
-display: none
-
-&-git
-    display: block
-
-
-</pre>

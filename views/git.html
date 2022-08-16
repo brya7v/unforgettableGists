@@ -115,7 +115,7 @@
 </div>
 
 <div class="block">
-    <def2>Git commands</def2>
+    <def3>Git commands</def3>
     <ul>
         <li><def-code>git status</def-code> gives information on the current status of a git repository and its contents.</li>
         <br>
@@ -232,7 +232,6 @@
         <li><def-code>git remote rename 'oldname' 'newname'</def-code> Rename remote.</li>
         <li><def-code>git remote remove 'remotename'</def-code> Remove remote.</li>
         <li><def-code>git push origin master</def-code> Will push specified branch to the specified remote (in this case is named origin).</li>
-        <br>
         <li><def-code>git fetch</def-code> Gets remote changes to local repo (not into local files) (know if branch is behind origin), lets us know new branches.</li>
         <li><def-code>git pull</def-code>gets remote changes to local repo and workspace (branch).
             <ul>
@@ -276,15 +275,12 @@
         <li><def-code>git push origin 'tagName'</def-code> || <def-code>git push -tags</def-code> Tags are not pushed to the origin on the default push, we've to specify it.</li>
         <li><def-code>git tag -l</def-code> Will list tags.</li>
         <li><def-code>git tag -l '*test*'</def-code> Will list tags named anythign test anything.</li>
+        <li><def-code>git tag -l '*test*'</def-code> Will list tags named anythign test anything.</li>
         <br>
         <li><def-code>git config --global user.name/email</def-code> Will show current name / email of globally configured user.</li>
         <li><def-code>git config --global user.name/email 'name/email'</def-code> Will globally set name / email user.</li>
 
         <li><def-code>git config --local user.name/email</def-code> Will show current name / email locally configured, it overrydes the global inside the current repository.</li>
-
-        <li><def-code>git tag -l '*test*'</def-code> Will list tags named anythign test anything.</li>
-
-
     </ul>
                 
 </div>

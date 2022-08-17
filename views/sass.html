@@ -1,0 +1,528 @@
+<h2 class="main-title">Css - Sass</h2>
+
+<div class="block">
+    <def1>Css</def1>
+    <ul>
+        <li>Cascading style sheets.</li>
+        <li>It can be coded inside an HTML tag (style attribute).</li>
+        <li>Css code can be inside an html document style element, inside the head element.</li>
+        <li>A Css external file can be imported in a <def-code>&ltlink href rel="stylesheet" type="text/css"&gt</def-code> .</li>
+    </ul>
+</div>
+
+<div class="block">
+    <def1>Css decalaration block</def1> #id { prop: value; }
+</div>
+
+<div class="block">
+    <def1>Cascade in order</def1> importance > specificity > source order
+    <ul>
+        <li><strong>Importance</strong>.
+            <ul>
+                <li>User !important declarations.</li>
+                <li>Author !important declarations.</li>
+                <li>Author decalarations.</li>
+                <li>User declarations.</li>
+                <li>Default browser declarations.</li>
+            </ul>
+        </li>
+        <br>
+        <li><strong>Specificity</strong>.
+            <ul>
+                <li>Inline styles.</li>
+                <li>Ids.</li>
+                <li>Classes, pseudoclasses, attributes.</li>
+                <li>User declarations.</li>
+                <li>Elements, pseudoelements.</li>
+            </ul>
+        </li>
+        <br>
+        <li><strong>Source</strong>.
+            <ul>
+                <li>Same specificity -> the last style declaration will remain.</li>
+            </ul>
+        </li>
+    </ul>
+</div>
+
+<div class="block">
+    <def1>*</def1> Universal selector (selects all elements). <strong>has no specificity value (0, 0, 0, 0).</strong>
+</div>
+
+<div class="block">
+    <def1>BEM</def1> Block element modifier. <strong>Block__element—modifier</strong> defines structure for element classes, 
+    it helps when working with Sass.
+</div>
+
+<div class="block">
+    <def1>Sass</def1> Syntactically Awesome Style Sheets.
+    <ul>
+        <li>Is a css preprocessor, an extension of css that adds power and elegance to the basic language.</li>
+        <li>It requires a comiler. <strong>Sass code -> Sass compiler -> compiled css code</strong>.</li>
+        <li>Sintax.
+            <pre>
+                Sass 						Scss
+
+                .class						.class {
+                    Background: red				    background: red;
+                                                                }
+            </pre>    
+        </li>
+        <li>Main Sass features.
+            <ul>
+                <li><def2>Variables</def2> For reusable values such as colors, font-sizes, spacing, etc. Are declared with: <strong>$color-red-1: #d0d0d0</strong>
+                <li><def2>Nesting</def2> To nest selector inside of one another using BEM: 
+    <pre>
+
+        .class						
+            background: black
+            &-red
+                color: red
+                
+    </pre>
+                </li>
+                <li><def2>Partials and imports</def2> To write Css in different fies and importing them all into one single file.</li>
+                <li><def2>Mixins</def2> To write reusable pieces of css.</li>
+                <li><def2>Functions</def2> Mimilar to mixins, with the difference tha they produce a value that can be used.</li>
+                <li><def2>Extends</def2> To make different selectors inherit declarations that are common to all of them.</li>
+                <li><def2>Contorl directives</def2> For writing complex code using condifionals and loops.</li>
+            </ul>    
+        </li>
+    </ul>
+    
+</div>
+
+<div class="block">
+    <def1>Css selectors</def1>
+    <ul>
+        <li>Default: content-box -> the element size does not include padding neither border, its only defined by the content.</li>
+        <li>Better: border-box -> the element size includes padding and the outside of the border, this way it's easier working with sizes.</li>
+    </ul>
+
+    <table>
+        <tbody><tr>
+            <th style="width:20%">Selector</th>
+            <th style="width:20%">Example</th>
+            <th>Example description</th>
+          </tr>
+          <tr>
+            <td>.class</td>
+            <td class="notranslate">.intro</td>
+            <td>Selects all elements with class="intro"</td>
+          </tr>
+          <tr>
+            <td><em>.class1.class2</em></td>
+            <td class="notranslate">.name1.name2</td>
+            <td>Selects all elements with both <em>name1</em> and <em>name2</em> set 
+            within its class attribute</td>
+          </tr>  
+          <tr>
+            <td><em>.class1 .class2</em></td>
+            <td class="notranslate">.name1 .name2</td>
+            <td>Selects all elements with <em>name2</em> that is a descendant of an 
+            element with <em>name1</em></td>
+          </tr>  
+          <tr>
+            <td>#id</td>
+            <td class="notranslate">#firstname</td>
+            <td>Selects the element with id="firstname"</td>
+          </tr>  <tr>
+            <td>*</td>
+            <td class="notranslate">*</td>
+            <td>Selects all elements</td>
+          </tr>
+          <tr>
+            <td>element</td>
+            <td class="notranslate">p</td>
+            <td>Selects all &lt;p&gt; elements</td>
+          </tr>
+          <tr>
+            <td>element.class</td>
+            <td class="notranslate">p.intro</td>
+            <td>Selects all &lt;p&gt; elements with class="intro"</td>
+          </tr>
+          <tr>
+            <td>element,element</td>
+            <td class="notranslate">div, p</td>
+            <td>Selects all &lt;div&gt; elements and all &lt;p&gt; elements</td>
+          </tr>
+          <tr>
+            <td>element element</td>
+            <td class="notranslate">div p</td>
+            <td>Selects all &lt;p&gt; elements inside &lt;div&gt; elements</td>
+          </tr>
+          <tr>
+            <td>element&gt;element</td>
+            <td class="notranslate">div &gt; p</td>
+            <td>Selects all &lt;p&gt; elements where the parent is a &lt;div&gt; element</td>
+          </tr>
+          <tr>
+            <td>element+element</td>
+            <td class="notranslate">div + p</td>
+            <td>Selects the first &lt;p&gt; element that is placed immediately after &lt;div&gt; elements</td>
+          </tr>
+          <tr>
+            <td>element1~element2</td>
+            <td>p ~ ul</td>
+            <td>Selects every &lt;ul&gt; element that is preceded by a &lt;p&gt; element</td>
+          </tr>
+          <tr>
+            <td>[attribute]</td>
+            <td class="notranslate">[target]</td>
+            <td>Selects all elements with a target attribute</td>
+          </tr>
+          <tr>
+            <td>[attribute=value]</td>
+            <td class="notranslate">[target=_blank]</td>
+            <td>Selects all elements with target="_blank"</td>
+          </tr>
+          <tr>
+            <td>[attribute~=value]</td>
+            <td class="notranslate">[title~=flower]</td>
+            <td>Selects all elements with a title attribute containing the word "flower"</td>
+          </tr>
+          <tr>
+            <td>[attribute|=value]</td>
+            <td class="notranslate">[lang|=en]</td>
+            <td>Selects all elements with a lang attribute value equal to "en" or 
+            starting with "en-"</td>
+          </tr>
+          <tr>
+            <td>[attribute^=value]</td>
+            <td>a[href^="https"]</td>
+            <td>Selects every &lt;a&gt; element whose href attribute value begins with "https"</td>
+          </tr>
+          <tr>
+            <td>[attribute$=value]</td>
+            <td>a[href$=".pdf"]</td>
+            <td>Selects every &lt;a&gt; element whose href attribute value ends with ".pdf"</td>
+          </tr>
+          <tr>
+            <td>[attribute*=value]</td>
+            <td>a[href*="w3schools"]</td>
+            <td>Selects every &lt;a&gt; element whose href attribute value contains the substring "w3schools"</td>
+          </tr>
+          <tr>
+            <td>:active</td>
+            <td class="notranslate">a:active</td>
+            <td>Selects the active link</td>
+          </tr>
+          <tr>
+            <td>::after</td>
+            <td class="notranslate">p::after</td>
+            <td>Insert something after the content of each &lt;p&gt; element</td>
+          </tr>
+          <tr>
+            <td>::before</td>
+            <td class="notranslate">p::before</td>
+            <td>Insert something before&nbsp;the content of each &lt;p&gt; element</td>
+          </tr>
+          <tr>
+            <td>:checked</td>
+            <td>input:checked</td>
+            <td>Selects every checked &lt;input&gt; element</td>
+          </tr>
+          <tr>
+            <td>:default</td>
+            <td>input:default</td>
+            <td>Selects the default &lt;input&gt; element</td>
+          </tr>
+          <tr>
+            <td>:disabled</td>
+            <td>input:disabled</td>
+            <td>Selects every disabled &lt;input&gt; element</td>
+          </tr>
+          <tr>
+            <td>:empty</td>
+            <td>p:empty</td>
+            <td>Selects every &lt;p&gt; element that has no children (including text nodes)</td>
+          </tr>
+          <tr>
+            <td>:enabled</td>
+            <td>input:enabled</td>
+            <td>Selects every enabled &lt;input&gt; element</td>
+          </tr>
+          <tr>
+            <td>:first-child</td>
+            <td class="notranslate">p:first-child</td>
+            <td>Selects every &lt;p&gt; element that is the first child of its parent</td>
+          </tr>
+          <tr>
+            <td>::first-letter</td>
+            <td class="notranslate">p::first-letter</td>
+            <td>Selects the first letter of every &lt;p&gt; element</td>
+          </tr>
+          <tr>
+            <td>::first-line</td>
+            <td class="notranslate">p::first-line</td>
+            <td>Selects the first line of every &lt;p&gt; element</td>
+          </tr>
+          <tr>
+            <td>:first-of-type</td>
+            <td>p:first-of-type</td>
+            <td>Selects every &lt;p&gt; element that is the first &lt;p&gt; element of its parent</td>
+          </tr>
+          <tr>
+            <td>:focus</td>
+            <td class="notranslate">input:focus</td>
+            <td>Selects the input element which has focus</td>
+          </tr>
+          <tr>
+            <td>:fullscreen</td>
+            <td class="notranslate">:fullscreen</td>
+            <td>Selects the element that is in full-screen mode</td>
+          </tr>
+          <tr>
+            <td>:hover</td>
+            <td class="notranslate">a:hover</td>
+            <td>Selects links on mouse over</td>
+          </tr>
+          <tr>
+            <td>:in-range</td>
+            <td class="notranslate">input:in-range</td>
+            <td>Selects input elements with a value within a specified range</td>
+          </tr>
+          <tr>
+            <td>:indeterminate</td>
+            <td class="notranslate">input:indeterminate</td>
+            <td>Selects input elements that are in an indeterminate state</td>
+          </tr>
+          <tr>
+            <td>:invalid</td>
+            <td class="notranslate">input:invalid</td>
+            <td>Selects all input elements with an invalid value</td>
+          </tr>
+          <tr>
+            <td>:lang(language)</td>
+            <td class="notranslate">p:lang(it)</td>
+            <td>Selects every &lt;p&gt; element with a lang attribute equal to "it" (Italian)</td>
+          </tr>
+          <tr>
+            <td>:last-child</td>
+            <td>p:last-child</td>
+            <td>Selects every &lt;p&gt; element that is the last child of its parent</td>
+          </tr>
+          <tr>
+            <td>:last-of-type</td>
+            <td>p:last-of-type</td>
+            <td>Selects every &lt;p&gt; element that is the last &lt;p&gt; element of its parent</td>
+          </tr>
+          <tr>
+            <td>:link</td>
+            <td class="notranslate">a:link</td>
+            <td>Selects all unvisited links</td>
+          </tr>
+          <tr>
+            <td>::marker</td>
+            <td>::marker</td>
+            <td>Selects the markers of list items</td>
+          </tr>
+          <tr>
+            <td>:not(selector)</td>
+            <td>:not(p)</td>
+            <td>Selects every element that is not a &lt;p&gt; element</td>
+          </tr>
+          <tr>
+            <td>:nth-child(n)</td>
+            <td>p:nth-child(2)</td>
+            <td>Selects every &lt;p&gt; element that is the second child of its parent</td>
+          </tr>
+          <tr>
+            <td>:nth-last-child(n)</td>
+            <td>p:nth-last-child(2)</td>
+            <td>Selects every &lt;p&gt; element that is the second child of its parent, counting from the last child</td>
+          </tr>
+          <tr>
+            <td>:nth-last-of-type(n)</td>
+            <td>p:nth-last-of-type(2)</td>
+            <td>Selects every &lt;p&gt; element that is the second &lt;p&gt; element of its parent, counting from the last child</td>
+          </tr>
+          <tr>
+            <td>:nth-of-type(n)</td>
+            <td>p:nth-of-type(2)</td>
+            <td>Selects every &lt;p&gt; element that is the second &lt;p&gt; element of its parent</td>
+          </tr>
+          <tr>
+            <td>:only-of-type</td>
+            <td>p:only-of-type</td>
+            <td>Selects every &lt;p&gt; element that is the only &lt;p&gt; element of its parent</td>
+          </tr>
+          <tr>
+            <td>:only-child</td>
+            <td>p:only-child</td>
+            <td>Selects every &lt;p&gt; element that is the only child of its parent</td>
+          </tr>
+          <tr>
+            <td>:optional</td>
+            <td class="notranslate">input:optional</td>
+            <td>Selects input elements with no "required" attribute</td>
+          </tr>
+          <tr>
+            <td>:out-of-range</td>
+            <td class="notranslate">input:out-of-range</td>
+            <td>Selects input elements with a value outside a specified range</td>
+          </tr>
+          <tr>
+            <td>::placeholder</td>
+            <td class="notranslate">input::placeholder</td>
+            <td>Selects input elements with the "placeholder" attribute specified</td>
+          </tr>
+          <tr>
+            <td>:read-only</td>
+            <td class="notranslate">input:read-only</td>
+            <td>Selects input elements with the "readonly" attribute specified</td>
+          </tr>
+          <tr>
+            <td>:read-write</td>
+            <td class="notranslate">input:read-write</td>
+            <td>Selects input elements with the "readonly" attribute NOT specified</td>
+          </tr>
+          <tr>
+            <td>:required</td>
+            <td class="notranslate">input:required</td>
+            <td>Selects input elements with the "required" attribute specified</td>
+          </tr>
+          <tr>
+            <td>:root</td>
+            <td>:root</td>
+            <td>Selects the document's root element</td>
+          </tr>
+          <tr>
+            <td>::selection</td>
+            <td>::selection</td>
+            <td>Selects the portion of an element that is selected by a user</td>
+          </tr>
+          <tr>
+            <td>:target</td>
+            <td>#news:target </td>
+            <td>Selects the current active #news element (clicked on a URL containing that anchor name)</td>
+          </tr>
+          <tr>
+            <td>:valid</td>
+            <td class="notranslate">input:valid</td>
+            <td>Selects all input elements with a valid value</td>
+          </tr>
+          <tr>
+            <td>:visited</td>
+            <td class="notranslate">a:visited</td>
+            <td>Selects all visited links</td>
+          </tr>
+        </tbody>
+    </tbody></table>
+    </div>
+</div>
+
+<div class="block">
+    <def1>box-sizing</def1>
+    <ul>
+        <li>Default: content-box -> the element size does not include padding neither border, its only defined by the content.</li>
+        <li>Better: border-box -> the element size includes padding and the outside of the border, this way it's easier working with sizes.</li>
+    </ul>
+</div>
+
+<div class="block">
+    <def1>Clearfix</def1>
+    <ul>
+        <li>Containers with floating elements will have height of 0: we have to clearfix it, otherwise there may be overflowing elements.</li>
+    <pre>
+        .clearfix::after {
+            Content: “”
+            clear: both 
+            display: table
+        }        
+    </pre>
+    </ul>
+</div>
+
+<div class="block">
+    <def1>Design</def1>
+    <ul>
+        <li>The designer creates the look and feel – the dev builds it.</li>
+        <li>7 things to have in mind in web design.
+            <ol>
+                <li>Define goal of the project</li>
+                <li>Have in mind the type of users</li>
+                <li>Define content</li>
+                <li>navigation</li>
+                <li>Mokups</li>
+                <li>Color </li>
+                <li>Font</li>
+            </ol>
+        </li>
+    </ul>
+</div>
+
+<div class="block">
+    <def1>Web performance</def1>
+    <ul>
+        <li>Minimize imgs size (usually are the heavy content of the pages). <strong>Squoosh</strong>.</li>
+        <li>Decrase http requests.</li>
+        <li>Optimized code.</li>
+        <li>Minify css and scripts code.</li>
+    </ul>
+</div>
+
+<div class="block">
+    <def1>SEO optimization</def1>
+    <ul>
+        <li>A good score in a web SEO helps it to have a better positioning in the search engines results.</li>
+        <li>Add meta data tags like meta name='desc', content='', add alts to imgs, run validator org.</li>
+        <li>Keywords in meta descs, headings and links.</li>
+        <li>Backlinks in other pages improve SEO.</li>
+        <li>We can use Google analytics to gather info about the website visitors.</li>
+        <li>Google adds to promote it.</li>
+    </ul>
+</div>
+
+<div class="block">
+    <def1>Responsive design</def1>
+    <ul>
+        <li>Adaptive content to different devices and resolutions.</li>
+        <li>Musts for a good responsive design.
+            <ul>
+                <li><def2>Fluid layouts:</def2>
+                    A flex container expands items to fill available free space or shrinks them to prevent overflow.</li>
+                    the content adapts to the viewport and maintans its main usability/pourpose, we can
+                    achive this mainly in 3 different aproeaches: 
+                    <ol>
+                        <li></li>
+                        <li></li>
+                        <li></li>
+                    </ol>
+                </li>
+                <br>
+                <li><def2>Responsiveness across browsers:</def2> there are browser prefixes for specific styles, for the styles, in order to work on different browsers with different versions (caniuse.com)</li>            
+                <li><def2>Use of rem units and % instead of px</def2>. We can achive this with:            
+    <pre>
+
+        html
+            font-size: 62.5%  // to set 1rem = 10px
+
+        body
+            font-size: 1.6rem // 16px
+
+    </pre>
+                    And then modifying the font-size percentage in the media queries.
+                </li>
+                <br>
+                <li><def2>Flexible images:</def2> Relative units, different images for dif resolutions with the use of:
+    <pre>
+
+        &ltpicture&gt
+            &ltsource srcset="smoll.png 0.8x" media="(min-width:1000px)"&gt ( / 0.8 smaller (20% size inc))
+            &ltsource srcset="big.png 2x" media="(max-width:1000px)"&gt ( / 2x smaller (half size))
+            &ltimg&gt
+        &lt/picture&gt
+    </pre>   
+                </li>
+                <li><def2>Media queries:</def2> Specific css style rules depending the resolution, two different aproaches(<strong>mobile first</strong> and <strong>desktop first</strong>)
+                    wich defines the media queries wr're going to use.
+                    <ol>
+                        <li><strong>Mobile first:</strong> @media only screen and (max-width: 1200px) 1023px) 767px) 480px)</li>
+                        <li><strong>Desktop first:</strong>***</li>
+                    </ol>
+                </li>
+            </ul>
+        </li>
+    </ul>
+</div>

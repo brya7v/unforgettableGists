@@ -12,8 +12,47 @@
     <def1>HTML elements</def1>
     <ul>
         <li>An HTML element is defined by a start tag, some content, and an end tag.</li>
-        <li> <def-code>&lttagname&gt</def-code> Content goes here... <def-code>&lt/tagname&gt</def-code></li>
+        <li><def-code>&lttagname&gt</def-code> Content goes here... <def-code>&lt/tagname&gt</def-code></li>
+        <li>Elements can have attributes, like classes, src, alt, etc</li>
     </ul>
+</div>
+
+<div class="block">
+    <def1>script</def1>
+    <ul>
+        <li>Scripts are appendend at the end of the body, before the closing tag (order matters), its commonly used props are: <em>src</em></li>
+        <li>It's are NOT selfclosing element <def-code>&ltscript src=""&gt</def-code> <def-code>&lt/script&gt</def-code>.</li>
+    </ul>
+</div>
+
+<div class="block">
+    <def1>link</def1>
+    <ul>
+        <li>The link element allows authors to link their document to other resources.</li>
+        <li>It's ARE a selfclosing element <def-code>&ltlink hfref="" rel:"" &gt</def-code>.</li>
+        <li>It <strong>must</strong> contain a <em>href</em> attribute wiwhich must be present and must contain a valid non-empty URL potentially surrounded by spaces.</li>
+        <li>It <strong>must</strong> contain a <em>rel</em> attribute, which, if present, must have a value that is a set of space-separated tokens. 'stylesheet'</li>
+    </ul>
+</div>
+
+<div class="block">
+    <def1>picture - srcset</def1>
+    <ul>
+        <li>Dynamic images depending on media and srcset, also size can be increased or decreased by an X modifier</li>
+        <li>It must have the <def-code>&ltsource srcset:"" media:""&gt</def-code> and <def-code>&ltimg alt=""&gt</def-code> elements to work properly. </li>
+    </ul>
+    <pre>
+        &ltpicture&gt
+            &ltsource srcset="smoll.png 0.8x" media="(min-width:1000px)"&gt ( / 0.8 smaller (20% size inc))
+            &ltsource srcset="big.png 2x" media="(max-width:1000px)"&gt ( / 2x smaller (half size))
+            &ltimg&gt
+        &lt/picture&gt
+    </pre>   
+    <!-- <picture>
+        <source srcset="smoll.png 0.8x" media="(min-width:1000px)">
+        <source srcset="big.png 2x" media="(max-width:1000px)">
+        <img>
+    </picture> -->
 </div>
 
 <div class="block">
@@ -48,12 +87,8 @@
                     &ltdiv&gtITEM 5&lt/div&gt
                 &lt/section&gt
             &lt/main&gt
+            &ltscript src="js/main.js"&gt&lt/script&gt
         &lt/body&gt
-        &ltscript src="https://code.jquery.com/jquery-3.6.0.min.js"&lt/script&gt 
-        &ltscript src="js/utils.js"&gt&lt/script&gt
-        &ltscript src="js/main.js"&gt&lt/script&gt
-        &ltscript&gtincludeHTML()&lt/script&gt    
     &lt/html&gt
     </pre>
 </div>
-

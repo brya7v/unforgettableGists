@@ -17,7 +17,7 @@
                 <div class="nav">
                     <div class="nav_item nav_item--selected nav_item-git" section="git">Git</div>
                     <div class="nav_item nav_item-html" section="html">HTML</div>
-                    <div class="nav_item nav_item-item3" section="item3">item3</div>
+                    <div class="nav_item nav_item-sass" section="sass">Css-Sass</div>
                     <div class="nav_item nav_item-item4" section="item4">item4</div>
                     <div class="nav_item nav_item-item5" section="item5">item5</div>
                 </div>
@@ -28,8 +28,8 @@
             <section class="section section-html">
                 <div w3-include-html="views/html.html"></div>
             </section>
-            <section class="section section-item3">
-                <div>ITEM 3</div>
+            <section class="section section-sass">
+                <div w3-include-html="views/sass.html"></div>
             </section>
             <section class="section section-item4">
                 <div>ITEM 4</div>
@@ -38,9 +38,9 @@
                 <div>ITEM 5</div>
             </section>
         </main>
+        <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script> 
+        <script src="js/utils.js"></script>
+        <script src="js/main.js"></script>
+        <script>includeHTML()</script>    
     </body>
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script> 
-    <script src="js/utils.js"></script>
-    <script src="js/main.js"></script>
-    <script>includeHTML()</script>    
 </html>

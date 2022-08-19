@@ -3,8 +3,21 @@
 let navItems = Array.from(document.getElementsByClassName("nav_item"))
 let sections = Array.from(document.getElementsByClassName("section"))
 
-let secitonsPosition = {git: 0}
-let currentSection = 'git'
+
+//getcookkies
+
+let secitonsPosition = getCookie('secitonsPosition') ? getCookie('secitonsPosition') : {git: 0}
+let currentSection = getCookie('currentSection') ? getCookie('currentSection') : 'git'
+
+$(`.nav_item-${currentSection}`).addClass("nav_item--selected")
+$(`.section-${currentSection}`).show(100 ,()=> {
+    $(window).scrollTop(secitonsPosition[currentSection])
+
+    window.addEventListener('scroll', e => {
+        secitonsPosition[currentSection]=window.scrollY
+        setCookie('secitonsPosition', JSON.stringify(secitonsPosition), 1)
+    })
+})
 
 navItems.forEach(e => {
     e.addEventListener("click", () => {
@@ -41,5 +54,21 @@ navItems.forEach(e => {
             //scrol to previously store scroll section after showing current section
             $(window).scrollTop(secitonsPosition[currentSection])
         }
+
+        setCookie('secitonsPosition', JSON.stringify(secitonsPosition), 1)
+        setCookie('currentSection', JSON.stringify(currentSection), 1)
     })
 })
+
+
+function setCookie(key, value, expiry) {
+    var expires = new Date();
+    expires.setTime(expires.getTime() + (expiry * 24 * 60 * 60 * 1000));
+    document.cookie = key + '=' + value + ';path=/'+ ';sameSite=none' + ';expires=' + expires.toUTCString();
+}
+
+function getCookie(key) {
+    var keyValue = document.cookie.match('(^|;) ?' + key + '=([^;]*)(;|$)');
+    return keyValue ? JSON.parse(keyValue[2]) : null;
+}
+

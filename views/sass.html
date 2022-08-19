@@ -85,11 +85,31 @@
                 <li><def2>Mixins</def2> To write reusable pieces of css.</li>
                 <li><def2>Functions</def2> Mimilar to mixins, with the difference tha they produce a value that can be used.</li>
                 <li><def2>Extends</def2> To make different selectors inherit declarations that are common to all of them.</li>
-                <li><def2>Contorl directives</def2> For writing complex code using condifionals and loops.</li>
+                <li><def2>Control directives</def2> For writing complex code using condifionals and loops.</li>
             </ul>    
         </li>
     </ul>
     
+</div>
+
+<div class="block">
+  <def1>NPM</def1> Node Package Manager. Wee need NPM to install a Sass compiler. 
+  it helps when working with Sass.
+  <ul>
+    <li>Download and install npm.</li>
+    <li><def-code>npm init</def-code> to initialize the package.json dependencies.</li>
+    <li><def-code>npm install node-sass --save-dev</def-code> to install node-sass compiler and add it onyly to the dev dependencies inside the package.json.</li>
+    <li>Inside the package.json we can add a script to run the compiler.</li>
+    <pre>
+
+      "scripts": {
+        "compile:sass": "node-sass sass/main.sass css/style.css -w"  
+      },
+
+    </pre>
+    <li>The files must be in the specified routes in order to work properly, the -w (--watch) matinans the script watching for changes on the files.</li>
+
+  </ul>
 </div>
 
 <div class="block">
@@ -481,18 +501,330 @@
         <li>Musts for a good responsive design.
             <ul>
                 <li><def2>Fluid layouts:</def2>
-                    A flex container expands items to fill available free space or shrinks them to prevent overflow.</li>
+                    A fluid layout expands items to fill available free space or shrinks them to prevent overflow.</li>
                     the content adapts to the viewport and maintans its main usability/pourpose, we can
-                    achive this mainly in 3 different aproeaches: 
+                    achive this mainly in 4 different aproaches: 
                     <ol>
-                        <li></li>
-                        <li></li>
-                        <li></li>
+
+                        <li><def3>Floating layouts</def3>
+                          <ul>
+                            <li>It consists in rows (class="row") with floating columns (class="col-1-of-3") inside.
+    <pre>
+
+        &ltdiv class="row"&gt
+          &ltdiv class="col-1-of-2 pink"&gt1/2&lt/div&gt
+          &ltdiv class="col-1-of-2 pink"&gt1/2&lt/div&gt
+        &lt/div&gt
+    </pre>
+                            </li>
+                            <li><strong>rows:</strong> It contains the columns, contains the clearfix stlye to prevent the floating columns overflow 
+    <pre>
+
+      .row:after { 
+        content: "."; 
+        visibility: hidden; 
+        display: block; 
+        height: 0; 
+        clear: both;
+      }
+    </pre>
+                            <li><strong>columns:</strong> Building blocks of the floating layouts, contains the clearfix stlye to prevent the floating columns overflow 
+    <pre>
+
+      :root {
+        --horizontal-grid-margin: 50px;
+        --vertical-grid-margin: 50px;
+      }
+
+      [class^="col-"] {
+        float: left;
+        background-color: pink;
+        height: 100px;
+      }
+
+      [class^="col-"]:not(:last-child) {
+        margin-right: var(--horizontal-grid-margin);
+      }
+
+      .col-1-of-3 {
+          width: calc((100% - 2 * var(--horizontal-grid-margin)) / 3);
+      }
+      .col-2-of-3 {
+        width: calc((2 *(100% - 2 * var(--horizontal-grid-margin)) / 3) + var(--horizontal-grid-margin));
+      }
+
+      @media screen and (max-width: 700px){
+        [class^="col-"] {
+          width: 100% !important;
+        }
+    
+        [class^="col-"]:not(:last-child) {
+          margin-right: 0;
+          margin-bottom: var(--vertical-grid-margin);
+        }
+      }
+    </pre>
+                            </li>
+                          </ul>
+                        </li>
+
+                        <li> <def3>Css Flexbox</def3>Makes it very easy to align elements to one another, just in one direction, horizontal or vertical.
+    <pre>
+
+      &ltdiv class="flex-container"&gt
+        &ltdiv class="flex-item flex-item--1"&gtflex item 1&lt/div&gt
+        &ltdiv class="flex-item flex-item--2"&gtflex item 2&lt/div&gt
+        &ltdiv class="flex-item flex-item--3"&gtflex item 3&lt/div&gt
+        &ltdiv class="flex-item flex-item--4"&gtflex item 4&lt/div&gt
+      &lt/div&gt
+
+    </pre>
+                          <ul>
+                            <li>It is good to expand and shrink elements.</li>
+                            <li>It's the best solucion for menus or containers where there can be a wide range of items, 1 to xxxx.</li>
+                            <li>It's a good replacement for float layouts, using less and more readable and logic code.</li>
+                            <li>It consists in a flex container and flexitems.</li>
+
+
+
+
+                            <li><strong>Sass style:</strong>
+    <pre>
+
+      .flex
+        &-container
+            border: 1px solid black
+            display: flex
+            flex-direction: row // column | as row: justifycontent and alignt items works vertically
+            justify-content: space-between // center space-evenly  space-arround
+            align-items: flex-end // affects items size in relation one to another
+            
+            flex-wrap: wrap // if its not set, there will be only one big row that goes outside the container
+                            // if its set to wrap, there will be multiple rows inside the container
+                            // no-wrap will let the items overflow the container
+    
+            //height: 300px
+            align-content: center //strech// vertical center the items container // space-between // strech
+                                  // it controlls how the 'row' or 'rows' if we're using wrap behave 
+    
+        &-item
+            border: 1px solid orange
+            background: lightyellow
+            text-align: center
+            margin: 1rem
+            //flex-grow: 1 // flex-grow 1 the element grow as much as the container allows it
+                        // the number affected in realation as the flex-grow value used
+                        // in other elements
+    
+    
+            &-2
+                background: red
+                height: 8rem
+                //flex-grow: 2 // double the size as the flex-grow: 1 items
+                flex-grow: 2 // to make the element ocupy all the empty space
+                flex-shrink: 1 // 1 - the element is allowed to shrink, 0 - not allowed to shrink
+                            //if 0 - it will go outside the container if theres not enough space
+                            // if we shrink the container width it will be shrunken
+                            // to control this we use flex-shrink
+                //flex-basis: 800px //30% // size relative to the container
+    
+                //flex: 1 1 800px//50px // flex -> grow shrink basis
+    
+    
+        &-item:nth-child(5n)
+            background: lightblue
+            flex-grow: 1 // to make the element ocupy all the empty space
+            flex-shrink: 1
+            //flex-basis: 350px
+            align-self: stretch // flex-start flex-end // overrides the alight-items of content
+            order: -1 // the default is 0, so if we give it a negative 
+                      //value it will be first, to be last it will need a negative value
+
+    </pre>
+                            
+                            </li>
+                          </ul>
+                        </li>
+                        <li><def3>Css Grid</def3> It's usefull when we need more complex layouts
+      <pre>
+        &ltdiv class="flex-container"&gt
+          &ltdiv class="flex-item flex-item--1"&gtflex item 1&lt/div&gt
+          &ltdiv class="flex-item flex-item--2"&gtflex item 2&lt/div&gt
+          &ltdiv class="flex-item flex-item--3"&gtflex item 3&lt/div&gt
+          &ltdiv class="flex-item flex-item--4"&gtflex item 4&lt/div&gt
+        &lt/div&gt
+      </pre>
+                  
+                          <ul>
+                            <li>Flex displays are one direction, with grid displays we can spcify grid items in all directions (vertically and horizontally).</li>
+                            <li>We can use use flex containers inside grid items for even more complex layouts.</li>
+                            <li><strong>Sass style:</strong>
+                              <pre>
+
+    .grid-container
+      background: gray
+      width: 700px
+      height: 700px
+      margin: 0 auto
+      display: grid
+  
+      //traks
+      grid-template-rows: repeat(2, 50px) //100px // heights of the 1st and second row
+  
+      // if we have a fixed height, we can repeat rows (10, 1fr) to have 10 rows that occupy all the space
+      grid-template-columns: repeat(3, 100px) 1fr//3 of 100 and a 4th of 200 
+                                                  //fr = fractional unit = empty space
+      grid-template-columns: repeat(3, 1fr) 2fr//3 of 100 and a 4th of 200 
+                                                //3 of 1 fr and a 4th of the double
+  
+      //grid-template-columns: repeat(10%, 1fr) 2fr//3 of 100 and a 4th of 200 
+  
+  
+      grid-row-gap: 2rem
+      grid-column-gap: 2rem
+  
+      grid-auto-flow: row
+      grid-auto-columns: 1fr
+      
+  .grid-item
+      padding: 2rem
+      color: white
+  
+  
+      &--1
+          background: orangered
+          // grid-row-start: 2
+          // grid-row-end: 3
+          grid-row: 2/3
+  
+          // grid-column-start: 2
+          // grid-column-end: 4
+          grid-column: 2/4
+          z-index: 10
+  
+      &--6
+          background: lightpink
+          grid-row: 1/3
+          grid-column: 4/5
+          // grid-area: 2/2/3/4
+  
+      &--3
+          color: black
+          background: lightcyan
+          grid-row: 2/3
+          grid-column: 1/3
+          // grid-area: 2/2/3/4
+  
+  
+      &--2
+          background: yellowgreen
+          // grid-column: 1 / span 3 // plus 3
+          grid-column: 2 / -1 //-1 the end
+
+
+    .grid-template-areas: “head head head .”
+                          “box-1 box-2 box-3 side”
+                          “main main main side”
+                          “foot foot foot foot”
+
+
+    To leave an empty cell we can “.”
+
+    And then when we define the item, instead of:
+      
+    .header 
+        Grid-column: 1/5
+        Grid-row: 1/1
+    
+    We:
+    .header
+        Grid-area: head
+                          
+
+        --in an explicit grid => the part we define
+
+      If we have more items than we have space, css adds more grids/rows (implicit grid)
+
+      With:
+
+      Grid-auto-rows = 80px (so implicit rows will have height of 80px) – the same with width for columns
+
+      By default the extra items are added in rows due the auto config
+
+      .Container
+        
+          Display:grid
+          Grid-auto-flow: row // column
+          
+
+      Alignment of grid items in grid areas
+
+
+      Inside the grid container we can
+
+      Align-items = like in flex / center / stretch / end / start VERTICALY
+
+      Justify-items = center HORIZONT
+
+
+
+      	Flex only have alignt-items, wich depends on the flow , bc flex is unidirectional
+      In grid align is allways vertical and justify horizontal,
+      Both have the alignt self / justify self prop in the child wich overrydes the content prop
+
+      Justify content alignts the grid inside the contener (when the grid rows / columns ) are smaller than the conainer,
+
+      We can> justify content : space-between, center, start, end, space around, space evenly
+
+
+
+      With grid auto flow: if we have bigger items, there may be empty spaces in the grid, to fix this we can
+
+      Grid auto flow : row dense .. to fill empty spaces
+
+
+
+      In the grid-template-columns: 1fr 1fr 1fr 1fr
+      We can
+
+      grid-template-columns: max-content 1fr 1fr 1fr
+
+      max-content fix the width of the column to fit the content
+
+      max-content = the smaller it can be and fitting the content without overflowing
+
+
+      it works better if we use max content and min content in boths template-rows and columns
+
+
+      to fix a range between two values, we can:
+
+      grid-template-rows : repeat(2, minmax (150px, max-content)
+
+      grid-template-rows : repeat(2, minmax (150px, 1fr)
+
+
+      we can autofill and autofit
+
+      width: 1000px
+      grid-template-columns:repeat(auto-fill, 100px) it will create 10 columns
+
+      grid-template-columns:repeat(auto-fit, 100px) it will create 10 columns but collapse the unused columns to 0 (we can then center the grid)
+
+      grid-template-columns:repeat(auto-fit, minamx(100px, 1fr) – will expand all the items to fill the container
+
+                              </pre>
+                            </li>
+                          </ul>
+                        </li>
                     </ol>
                 </li>
                 <br>
                 <li><def2>Responsiveness across browsers:</def2> there are browser prefixes for specific styles, for the styles, in order to work on different browsers with different versions (caniuse.com)</li>            
                 <li><def2>Use of rem units and % instead of px</def2>. We can achive this with:            
+
+
+      
     <pre>
 
         html

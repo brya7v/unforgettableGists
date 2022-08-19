@@ -850,9 +850,20 @@
                 <li><def2>Media queries:</def2> Specific css style rules depending the resolution, two different aproaches(<strong>mobile first</strong> and <strong>desktop first</strong>)
                     wich defines the media queries wr're going to use.
                     <ol>
-                        <li><strong>Mobile first:</strong> @media only screen and (max-width: 1200px) 1023px) 767px) 480px)</li>
-                        <li><strong>Desktop first:</strong>***</li>
+                      <li><strong>Desktop first:</strong>***We write css for the desktop: large screens -> And then media queries for max width 
+                        <ul> <li> <strong> @media only screen and (max-width: 1200px) 1023px) 767px) 480px) </strong></li> </ul>
+                      </li>
+                      <li><strong>Mobile first:</strong> we write css for small screens -> and we write media queries for min-widths 
+                        <ul> <li> <strong> @media only screen and (min-width: 480px) 767px) 1023px) 1200px) </strong></li> </ul>
+                      </li>
                     </ol>
+                </li>
+                <li><def2>Media queries breakpoints:</def2> 
+                  <ul>
+                    <li> <strong>Bad: </strong> at specific resolutions of specific devices.</li>
+                    <li> <strong>Good: </strong> multiple resolutions of multiple devices.</li>
+                    <li> <strong>Best: </strong> breaking the code changing the window size- creating a breakpoint evertytime the design breaks.</li>
+                  </ul>
                 </li>
             </ul>
         </li>

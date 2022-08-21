@@ -64,12 +64,41 @@ header {
   .nav_item {
     margin: 0 0.5rem;
     padding: 1rem;
-    transition: color 0.2s; }
+    transition: color 0.2s;
+    position: relative; }
     .nav_item--selected {
       color: #87eaf3; }
     .nav_item:hover {
       color: #87eaf3;
       cursor: pointer; }
+      .nav_item:hover .nav_item_flex-container {
+        display: flex;
+        margin-top: 1rem; }
+    .nav_item_flex-container {
+      color: white;
+      display: none;
+      position: absolute;
+      background: inherit;
+      background: #303030;
+      padding: 1rem;
+      box-shadow: none;
+      flex-direction: column; }
+      .nav_item_flex-container-item {
+        padding: 0.2rem;
+        white-space: nowrap; }
+        .nav_item_flex-container-item:hover {
+          color: yellow;
+          cursor: pointer; }
+        .nav_item_flex-container-item--sec {
+          margin-left: 2rem; }
+          .nav_item_flex-container-item--sec:hover {
+            color: pink;
+            cursor: pointer; }
+        .nav_item_flex-container-item--third {
+          margin-left: 4rem; }
+          .nav_item_flex-container-item--third:hover {
+            color: #87eaf3;
+            cursor: pointer; }
 
 .section {
   margin: 1rem;

@@ -500,7 +500,7 @@
         <li>Adaptive content to different devices and resolutions.</li>
         <li>Musts for a good responsive design.
             <ul>
-                <li><def2>Fluid layouts:</def2>
+                <li><def2>Fluid layouts</def2>:
                     A fluid layout expands items to fill available free space or shrinks them to prevent overflow.</li>
                     the content adapts to the viewport and maintans its main usability/pourpose, we can
                     achive this mainly in 4 different aproaches: 
@@ -517,7 +517,7 @@
         &lt/div&gt
     </pre>
                             </li>
-                            <li><strong>rows:</strong> It contains the columns, contains the clearfix stlye to prevent the floating columns overflow 
+                            <li><strong>rows</strong>: It contains the columns, contains the clearfix stlye to prevent the floating columns overflow 
     <pre>
 
       .row:after { 
@@ -528,7 +528,7 @@
         clear: both;
       }
     </pre>
-                            <li><strong>columns:</strong> Building blocks of the floating layouts, contains the clearfix stlye to prevent the floating columns overflow 
+                            <li><strong>columns</strong>: Building blocks of the floating layouts, contains the clearfix stlye to prevent the floating columns overflow 
     <pre>
 
       :root {
@@ -588,7 +588,7 @@
 
 
 
-                            <li><strong>Sass style:</strong>
+                            <li><strong>Sass style</strong>:
     <pre>
 
       .flex
@@ -658,7 +658,7 @@
                           <ul>
                             <li>Flex displays are one direction, with grid displays we can spcify grid items in all directions (vertically and horizontally).</li>
                             <li>We can use use flex containers inside grid items for even more complex layouts.</li>
-                            <li><strong>Sass style:</strong>
+                            <li><strong>Sass style</strong>:
                               <pre>
 
     .grid-container
@@ -820,7 +820,7 @@
                     </ol>
                 </li>
                 <br>
-                <li><def2>Responsiveness across browsers:</def2> there are browser prefixes for specific styles, for the styles, in order to work on different browsers with different versions (caniuse.com)</li>            
+                <li><def2>Responsiveness across browsers</def2> there are browser prefixes for specific styles, for the styles, in order to work on different browsers with different versions (caniuse.com)</li>            
                 <li><def2>Use of rem units and % instead of px</def2>. We can achive this with:            
 
 
@@ -837,7 +837,7 @@
                     And then modifying the font-size percentage in the media queries.
                 </li>
                 <br>
-                <li><def2>Flexible images:</def2> Relative units, different images for dif resolutions with the use of:
+                <li><def2>Flexible images</def2> Relative units, different images for dif resolutions with the use of:
     <pre>
 
         &ltpicture&gt
@@ -847,18 +847,18 @@
         &lt/picture&gt
     </pre>   
                 </li>
-                <li><def2>Media queries:</def2> Specific css style rules depending the resolution, two different aproaches(<strong>mobile first</strong> and <strong>desktop first</strong>)
+                <li><def2>Media queries</def2>: Specific css style rules depending the resolution, two different aproaches(<strong>mobile first</strong> and <strong>desktop first</strong>)
                     wich defines the media queries wr're going to use.
                     <ol>
-                      <li><strong>Desktop first:</strong>***We write css for the desktop: large screens -> And then media queries for max width 
+                      <li><strong>Desktop first</strong>:***We write css for the desktop: large screens -> And then media queries for max width 
                         <ul> <li> <strong> @media only screen and (max-width: 1200px) 1023px) 767px) 480px) </strong></li> </ul>
                       </li>
-                      <li><strong>Mobile first:</strong> we write css for small screens -> and we write media queries for min-widths 
+                      <li><strong>Mobile first</strong>: we write css for small screens -> and we write media queries for min-widths 
                         <ul> <li> <strong> @media only screen and (min-width: 480px) 767px) 1023px) 1200px) </strong></li> </ul>
                       </li>
                     </ol>
                 </li>
-                <li><def2>Media queries breakpoints:</def2> 
+                <li><def2>Media queries breakpoints</def2>: 
                   <ul>
                     <li> <strong>Bad: </strong> at specific resolutions of specific devices.</li>
                     <li> <strong>Good: </strong> multiple resolutions of multiple devices.</li>

@@ -7,11 +7,17 @@
         <link rel="preconnect" href="https://fonts.googleapis.com">
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
         <link href="https://fonts.googleapis.com/css2?family=Merriweather:ital,wght@0,300;0,700;1,300&display=swap" rel="stylesheet"> 
+        <link rel="stylesheet" href="css/dot-pulse.css">
         <link rel="stylesheet" href="css/style.css">
         <title>Document</title>
     </head>
     <body>
+        <div class="loader">
+            <div class="loader_text">Loading</div>
+            <div class="dot-pulse"></div>
+        </div>
         <main>
+
             <nav>
                 <header>Unforgettable Gists</header>
                 <div class="nav">
@@ -19,7 +25,7 @@
                     <div class="nav_item nav_item-html" section="html">HTML</div>
                     <div class="nav_item nav_item-sass" section="sass">Css-Sass</div>
                     <div class="nav_item nav_item-item4" section="item4">item4</div>
-                    <div class="nav_item nav_item-item5" section="item5">item5</div>
+                    <div class="nav_item nav_item-problems" section="problems">Problems</div>
                 </div>
             </nav>
             <section class="section section-git">
@@ -34,13 +40,14 @@
             <section class="section section-item4">
                 <div>ITEM 4</div>
             </section>
-            <section class="section section-item5">
-                <div>ITEM 5</div>
+            <section class="section section-problems">
+                <div w3-include-html="views/problems.html"></div>
             </section>
         </main>
         <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script> 
         <script src="js/utils.js"></script>
-        <script src="js/main.js"></script>
         <script>includeHTML()</script>    
+
+        <script src="js/main.js"></script>
     </body>
 </html>

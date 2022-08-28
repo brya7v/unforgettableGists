@@ -29,7 +29,8 @@ main {
   padding: 8rem 0; }
 
 nav {
-  width: 1080px;
+  width: 100%;
+  max-width: 1080px;
   position: fixed;
   top: 0;
   z-index: 999; }
@@ -158,7 +159,37 @@ ul {
 table {
   margin-top: 2rem;
   border: 1px solid black; }
-  table tr:nth-child(odd) {
+  table tr {
+    padding-left: 2rem; }
+    table tr td:first-child {
+      color: blue;
+      font-weight: bold; }
+  table tr:nth-child(2n+1) {
     background-color: #eeeeee; }
-    table tr:nth-child(odd) td {
+    table tr:nth-child(2n+1) td {
       background-color: #eeeeee; }
+
+.loader {
+  z-index: 9999;
+  display: none;
+  position: fixed;
+  width: 100%;
+  height: 100%;
+  background: #cdf6fd86; }
+  .loader_text {
+    position: fixed;
+    text-align: center;
+    top: 50vh;
+    transform: translateY(-50%);
+    width: 100%;
+    background: rgba(255, 255, 255, 0.502);
+    line-height: 5rem;
+    font-size: 1.7rem;
+    font-weight: bold;
+    padding-bottom: 1rem; }
+  .loader .dot-pulse {
+    position: fixed;
+    top: 50vh;
+    margin-left: 50%;
+    color: black;
+    transform: translate(-50%, 130%); }

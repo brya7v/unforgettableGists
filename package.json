@@ -3,9 +3,6 @@
   "version": "1.0.0",
   "description": "frontend gists",
   "main": "index.js",
-  "scripts": {
-    "compile:sass": "node-sass sass/main.sass css/style.css -w"
-  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/bdrsotelo/unforgettableGists.git"
@@ -19,8 +16,5 @@
   "bugs": {
     "url": "https://github.com/bdrsotelo/unforgettableGists/issues"
   },
-  "homepage": "https://github.com/bdrsotelo/unforgettableGists#readme",
-  "dependencies": {
-    "node-sass": "^7.0.1"
-  }
+  "homepage": "https://github.com/bdrsotelo/unforgettableGists#readme"
 }

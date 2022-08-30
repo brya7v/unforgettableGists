@@ -31,11 +31,11 @@ $(`.section-${currentSection}`).fadeIn(500, ()=> {
             setCookie('secitonsPosition', JSON.stringify(secitonsPosition), 1)
         })
 
-        console.log('x1')
-
         setTimeout(() => {
             $(`.nav .nav_item`).each((i, navItem) => {
                 let section = $(navItem).attr('section')
+
+                if(section == "about") return 
 
                 //Initialize submenu flex container
                 let navItemHtml = `<div class="nav_item_flex-container">`

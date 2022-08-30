@@ -2,19 +2,22 @@ $grayd0: #d0d0d0
 $gray30: #303030
 $gray20: #202020
 $gray10: #101010
-$hover: lightcyan
+$hover: crimson
 $hover: #87eaf3
-
 
 html
     box-sizing: border-box
     font-size: 62.5%
+    scrollbar-color: crimson black 
+
 *,
 *::after,
 *::before
     padding: 0
     margin: 0
     box-sizing: inherit
+
+
 
 .clearfix 
     overflow: auto    
@@ -49,7 +52,7 @@ header
     font-size: 1.8rem
     font-weight: bold
     background: $gray20
-    color: $hover
+    color: crimson
     font-style: italic
 
 .nav
@@ -79,10 +82,10 @@ header
         position: relative
 
         &--selected
-            color: $hover
+            color: crimson
 
         &:hover
-            color: $hover
+            color: crimson
             cursor: pointer
 
             & .nav_item_flex-container

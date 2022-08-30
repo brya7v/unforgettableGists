@@ -1,6 +1,7 @@
 html {
   box-sizing: border-box;
   font-size: 62.5%;
+  scrollbar-color: crimson black;
 }
 
 *,
@@ -49,7 +50,7 @@ header {
   font-size: 1.8rem;
   font-weight: bold;
   background: #202020;
-  color: #87eaf3;
+  color: crimson;
   font-style: italic;
 }
 
@@ -79,10 +80,10 @@ header {
   position: relative;
 }
 .nav_item--selected {
-  color: #87eaf3;
+  color: crimson;
 }
 .nav_item:hover {
-  color: #87eaf3;
+  color: crimson;
   cursor: pointer;
 }
 .nav_item:hover .nav_item_flex-container {

@@ -135,3 +135,34 @@ function getCookie(key) {
 function showLoader(){ $(".loader").show() }
 function hideLoader(time=0){ setTimeout(()=>{ $(".loader").fadeOut(500)},time)  }
 
+
+//1. TWO SUM
+var twoSum = function(nums, target) {
+    var map = new Map()
+    var index1, index2
+    nums.some( (e, index) => {
+        if(map.get(target-e) == null) map.set(e, index)                    
+        else {
+            index1 = index
+            index2 = map.get(target-e) 
+            return true
+        }
+    })        
+    return [index1, index2]
+}
+
+var twoSum = function(nums, target) {
+    var map = {}
+    var index1, index2
+    nums.some( (e, index) => {
+        if(map[target-e] == null) map[e] = index        
+        else {
+            index1 = index
+            index2 = map[target-e]
+            return true
+        }
+    })        
+    return [index1, index2]
+}
+
+twoSum([2,7,11,15],9)

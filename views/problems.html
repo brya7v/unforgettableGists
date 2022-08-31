@@ -50,23 +50,36 @@
         * @return {number[]}
         */
         var twoSum = function(nums, target) {
-            let posibleNums = []
-            nums.forEach((e, i) => { if(e < target) posibleNums.push(e)} )
-            
-            let value1
-            let value2
-            posibleNums.forEach(e => {
-                posibleNums.forEach(f => {
-                    if(e+f == target){
-                    value1 = e  
-                    value1 = f  
-                    }
-                })
-                
-            })
-            
-            return [nums.indexOf(value1), nums.indexOf(value2)]
-        };
+            var map = new Map()
+            var index1, index2
+            nums.some( (e, index) => {
+                //search the index on the hasmap of the value thats = target - e. So value + e = target. If 
+                if(map.get(target-e) == null) map.set(e, index)                    
+                else {
+                    index1 = index
+                    index2 = map.get(target-e) 
+                    return true
+                }
+            })        
+            return [index1, index2]
+        }
+
+        //same solution using obj instead of a map (under the hood objects workk like a hashmap)
+        //although is preferable the use of hashmaps     
+
+        var twoSum = function(nums, target) {
+            var obj = {}
+            var index1, index2
+            nums.some( (e, index) => {
+                if(obj[target-e] == null) obj[e] = index        
+                else {
+                    index1 = index
+                    index2 = obj[target-e]
+                    return true
+                }
+            })        
+            return [index1, index2]
+        }
         
     </pre>
 </div>

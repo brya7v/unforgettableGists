@@ -41,21 +41,21 @@ $(`.section-${currentSection}`).fadeIn(500, ()=> {
 
                     //set def1 lements ids, create submenu items
                     $(block).find(`def1`).each((i, def1) => {
-                        let def1_id = ""+section+$(def1).text().replaceAll(" ", "_").replaceAll("%", "_").replaceAll("*", "star")
+                        let def1_id = ""+section+$(def1).text().replaceAll(" ", "_").replaceAll("%", "_").replaceAll("*", "star").replace(".", "dot")
                         $(def1).prop('id', def1_id)
                         navItemHtml += `<div class="nav_item_flex-container-item" onclick="scrollToElement('${def1_id}')"> ${$(def1).text()}</div>`
                     })
 
                     //set def2 lements ids, create submenu items
                     $(block).find(`def2`).each((i, def2) => {
-                        let def2_id = ""+section+$(def2).text().replaceAll(" ", "_").replaceAll("%", "_").replaceAll("*", "star")
+                        let def2_id = ""+section+$(def2).text().replaceAll(" ", "_").replaceAll("%", "_").replaceAll("*", "star").replace(".", "dot")
                         $(def2).prop('id', def2_id)
                         navItemHtml += `<div class="nav_item_flex-container-item nav_item_flex-container-item--sec" onclick="scrollToElement('${def2_id}')"> ${$(def2).text()}</div>`
                     })
 
                     //set def3 lements ids, create submenu items
                     $(block).find(`def3`).each((i, def3) => {
-                        let def3_id = ""+section+$(def3).text().replaceAll(" ", "_").replaceAll("%", "_").replaceAll("*", "star")
+                        let def3_id = ""+section+$(def3).text().replaceAll(" ", "_").replaceAll("%", "_").replaceAll("*", "star").replace(".", "dot")
                         $(def3).prop('id', def3_id)
                         navItemHtml += `<div class="nav_item_flex-container-item nav_item_flex-container-item--third" onclick="scrollToElement('${def3_id}')"> ${$(def3).text()}</div>`
                     })
@@ -227,3 +227,35 @@ var addTwoNumbers = function(l1, l2) {
 
 //a less messy solution should add the numbers one by one with an overflow instead of using the BigInt
 //addTwoNumbers([2,4,3], [5,6,4])
+
+//3. Longest Substring Without Repeating Charact
+function lengthOfLongestSubstring(s) {
+    let subs = ""
+    let longest = 0
+    s.split("").forEach( e=> {
+        if(subs.includes(e)) subs = subs.substring(subs.indexOf(e)+1)
+        subs += e        
+        if(longest < subs.length) longest = subs.length
+    })
+    return longest
+};
+
+//console.log(lengthOfLongestSubstring("aabaab!bb"))
+
+
+//4. Median of Two Sorted Arrays 
+var findMedianSortedArrays = function(nums1, nums2) {
+    let arr = [...nums1, ...nums2]
+    arr.sort(function(a, b) {
+        if( a === Infinity ) return 1
+        else if( isNaN(a)) return -1
+        else return a - b;
+    }) 
+
+    console.log(arr)
+    let len = arr.length
+    if(len == 1) return arr[0]    
+    return len % 2 != 0 ? arr[Math.floor(len/2)] : (arr[Math.floor(len/2)-1]+arr[Math.floor(len/2)])/2    
+};
+
+console.log(findMedianSortedArrays([1,3], [2] ))

@@ -8,19 +8,17 @@ let sections = Array.from(document.getElementsByClassName("section"))
 //getcookkies
 let secitonsPosition = getCookie('secitonsPosition') ? getCookie('secitonsPosition') : {git: 0}
 let currentSection = getCookie('currentSection') ? getCookie('currentSection') : 'git'
-console.log(secitonsPosition)
+
 
 function scrollToElement(id){ setTimeout(() => {
         $("html, body").animate({ scrollTop: $(`#${id}`).offset().top -80 }, 500)
     },100)
 }
-console.log('x0')
 
 $(`.nav_item-${currentSection}`).addClass("nav_item--selected")
 
 if($(`.section-${currentSection}`).length < 1 ){ currentSection = $(navItems[0]).attr('section') }
 
-console.log(currentSection)
 $(`.section-${currentSection}`).fadeIn(500, ()=> {
     setTimeout(() => {
 
@@ -165,4 +163,67 @@ var twoSum = function(nums, target) {
     return [index1, index2]
 }
 
-twoSum([2,7,11,15],9)
+//twoSum([2,7,11,15],9)
+
+var addTwoNumbers = function(l1, l2) {
+    
+    let num1='', num2='', sum=0
+    
+    num1 = getListNodeValue(l1)
+    num2 = getListNodeValue(l2)
+    sum = num1+num2    
+    
+    sum = sum.toString()
+    
+    let nodesArray = []
+    
+    sum.split("").reverse().forEach((e, idx )=> {
+        nodesArray.push(new ListNode(e))        
+        if(idx > 0) nodesArray[idx-1].next = nodesArray[idx]            
+    })
+    
+    return nodesArray[0]
+    
+    function getListNodeValue(ln){
+        let arr =[], next = ln
+        do{
+            arr.push(next.val)
+            next = next.next          
+        }while(next != null)
+        return BigInt(arr.reverse().join(""))
+    }    
+}
+
+var addTwoNumbers = function(l1, l2) {
+    
+    let num1='', num2='', sum=0
+    
+    num1 = getListNodeValue(l1)
+    num2 = getListNodeValue(l2)
+    sum = num1+num2    
+    sum = sum.toString()
+    
+    let node
+    
+    sum.split("").forEach((e, idx )=> {
+        if(idx == 0) node = new ListNode(e)
+        else {
+            let newNode = new ListNode(e)
+            newNode.next = node
+            node = newNode
+        }       
+    })
+    return node
+    
+    function getListNodeValue(ln){
+        let arr =[], next = ln
+        do{
+            arr.push(next.val)
+            next = next.next          
+        }while(next != null)
+        return BigInt(arr.reverse().join(""))
+    }    
+}
+
+//a less messy solution should add the numbers one by one with an overflow instead of using the BigInt
+//addTwoNumbers([2,4,3], [5,6,4])

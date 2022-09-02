@@ -9,6 +9,7 @@ let sections = Array.from(document.getElementsByClassName("section"))
 let secitonsPosition = getCookie('secitonsPosition') ? getCookie('secitonsPosition') : {git: 0}
 let currentSection = getCookie('currentSection') ? getCookie('currentSection') : 'git'
 
+document.title = "Unforgettable Gists - " + currentSection
 
 function scrollToElement(id){ setTimeout(() => {
         $("html, body").animate({ scrollTop: $(`#${id}`).offset().top -80 }, 500)
@@ -51,14 +52,17 @@ $(`.section-${currentSection}`).fadeIn(500, ()=> {
                         let def2_id = ""+section+$(def2).text().replaceAll(" ", "_").replaceAll("%", "_").replaceAll("*", "star").replace(".", "dot")
                         $(def2).prop('id', def2_id)
                         navItemHtml += `<div class="nav_item_flex-container-item nav_item_flex-container-item--sec" onclick="scrollToElement('${def2_id}')"> ${$(def2).text()}</div>`
+
+                        console.log($(def2).parent().find("def3"))
+                        //set def3 lements ids, create submenu items
+                        $(def2).parent().find(`def3`).each((i, def3) => {
+                            let def3_id = ""+section+$(def3).text().replaceAll(" ", "_").replaceAll("%", "_").replaceAll("*", "star").replace(".", "dot")
+                            $(def3).prop('id', def3_id)
+                            navItemHtml += `<div class="nav_item_flex-container-item nav_item_flex-container-item--third" onclick="scrollToElement('${def3_id}')"> ${$(def3).text()}</div>`
+                        })
                     })
 
-                    //set def3 lements ids, create submenu items
-                    $(block).find(`def3`).each((i, def3) => {
-                        let def3_id = ""+section+$(def3).text().replaceAll(" ", "_").replaceAll("%", "_").replaceAll("*", "star").replace(".", "dot")
-                        $(def3).prop('id', def3_id)
-                        navItemHtml += `<div class="nav_item_flex-container-item nav_item_flex-container-item--third" onclick="scrollToElement('${def3_id}')"> ${$(def3).text()}</div>`
-                    })
+
                 })
                 //closing element of the submenu container
 
@@ -105,6 +109,7 @@ navItems.forEach(e => {
 
             //scrol to previously store scroll section after showing current section
             $(window).scrollTop(secitonsPosition[currentSection])
+            document.title = "Unforgettable Gists - " + currentSection
         }
 
         setCookie('secitonsPosition', JSON.stringify(secitonsPosition), 1)
@@ -258,4 +263,5 @@ var findMedianSortedArrays = function(nums1, nums2) {
     return len % 2 != 0 ? arr[Math.floor(len/2)] : (arr[Math.floor(len/2)-1]+arr[Math.floor(len/2)])/2    
 };
 
-console.log(findMedianSortedArrays([1,3], [2] ))
+// console.log(findMedianSortedArrays([1,3], [2] ))
+

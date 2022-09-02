@@ -115,14 +115,14 @@ header {
   margin-left: 2rem;
 }
 .nav_item_flex-container-item--sec:hover {
-  color: lime;
+  color: cyan;
   cursor: pointer;
 }
 .nav_item_flex-container-item--third {
   margin-left: 4rem;
 }
 .nav_item_flex-container-item--third:hover {
-  color: cyan;
+  color: lime;
   cursor: pointer;
 }
 .nav_item:last-child {

@@ -121,7 +121,7 @@ header
                 &--third
                     margin-left: 4rem
                     &:hover
-                        color: lime
+                        color: pink
                         cursor: pointer
 
     &_item:last-child
@@ -159,18 +159,30 @@ header
 def1,
 def2,
 def3
+    display: block
+    line-height: 0.9rem
     padding: 0 0.5rem
     font-weight: bold
-    border-radius: 3px
+    border-radius: 1px
+    margin: 0.5rem
+    width: 30%
+    max-width: 50%
+
 
 def1
+    margin-top: 3rem
+    width: 100%
+    max-width: 100%
     background: repeating-linear-gradient(90deg, transparent -120%, yellow 0%, transparent 120%)
 
+
 def2
+    margin-top: 2rem
     background: repeating-linear-gradient(90deg, transparent -120%, cyan 0%, transparent 120%)
 
 def3
-    background: repeating-linear-gradient(90deg, transparent -120%, lime 0%, transparent 120%)
+    margin-top: 1rem
+    background: repeating-linear-gradient(90deg, transparent -120%, pink 0%, transparent 120%)
 
 
 def-code
@@ -182,7 +194,7 @@ def-code
     border-radius: 3px
 
 ul 
-    list-style-type: circle
+    list-style-type: none
     li ul
         margin-left: 2rem
         list-style-type: square
@@ -256,15 +268,16 @@ table
 
 
 .poblem-solution__container
-    background: $gray30
-    border: 1px solid black
+    background: #303030
+    border: 1px solid #909090
     padding: 1rem
     border-radius: 15px
-    margin: 1rem auto 3rem auto
+    margin: 2rem auto 2rem auto
     color: white
 
 .poblem-solution__title
-    margin-bottom: 1rem
+    
+    margin-bottom: 1rem   
     background: repeating-linear-gradient(90deg, transparent -120%, cyan 0%, transparent 100%)
     padding: 0 0.5rem
     font-weight: bold
@@ -273,5 +286,5 @@ table
 
 .poblem-solution__pre
     font-family: Courier, "Lucida Console", monospace 
-    font-size: 1.3rem
+    font-size: 1.2rem
     color: white

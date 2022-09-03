@@ -53,7 +53,6 @@ $(`.section-${currentSection}`).fadeIn(500, ()=> {
                         $(def2).prop('id', def2_id)
                         navItemHtml += `<div class="nav_item_flex-container-item nav_item_flex-container-item--sec" onclick="scrollToElement('${def2_id}')"> ${$(def2).text()}</div>`
 
-                        console.log($(def2).parent().find("def3"))
                         //set def3 lements ids, create submenu items
                         $(def2).parent().find(`def3`).each((i, def3) => {
                             let def3_id = ""+section+$(def3).text().replaceAll(" ", "_").replaceAll("%", "_").replaceAll("*", "star").replace(".", "dot")
@@ -265,3 +264,9 @@ var findMedianSortedArrays = function(nums1, nums2) {
 
 // console.log(findMedianSortedArrays([1,3], [2] ))
 
+
+function logItems(n){
+    for(let i=0; i<n; i++){
+        console.log(i)
+    }
+}

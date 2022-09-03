@@ -1,1 +1,273 @@
-aaa
+<h2 class="main-title">Data structures and algorithms</h2>
+
+
+<div class="block">
+    <def1>Code efficiency</def1>
+    <p>There are two approaches when we want to measure the efficiency of a code: </p>
+    <ul>
+        <li><strong>Time efficiency (defined by the Time complexity).</strong></li>
+        <li><strong>Memory efficiency (defined by the Space complexity).</strong></li>
+    </ul>
+      </p>
+    <ul>
+        <li><def2>Time complexity</def2> We don't measure tieme complexity in time (bc it depends on the hardware), instead it's measured 
+            in the number of opeations.        
+        </li>
+        <li><def2>Space complexity</def2> It's the ammount of memory that something uses.
+    </ul>
+</div>
+
+<div class="block">
+    <def1>Big O</def1>
+    <p>Is a way to mathematically figure out wich of two codes is better (wich one runs more efficiently). <strong> With Big O we measeure both (Time and space complexity).</strong></p>
+    <ul>
+        <li>
+            <def2>Omega Ω</def2> <p> Best case scenario for a code to resolve a problem.</p>
+            <def2>Theta Θ</def2> <p> Average case scenario for a code to resolve a problem.</p>
+            <def2>Omicron Ο</def2> <p> Also called O or BigO - Its the worst case scenario for a code to resolve a problem.</p>
+        </li>
+        
+    </ul>
+</div>
+
+
+<div class="block">
+    <def1>Big O Notation</def1>
+    <p>It defines the complexity of the code.</strong></p>
+    <ul>
+        <li>
+            <def2>O(n)</def2> 
+            <ul>
+                <li> Proportional complexity.</li>
+                <li> We pass n to the function, and it runs n times.
+                    <div class="poblem-solution__container">
+                        <pre >
+    function logItems(n){
+        for(let i=0; i&ltn; i++){
+            console.log(i)
+        }
+    }     
+                        </pre>
+                    </div>
+                </li>
+                <li> It's a simple for loop that runs n times.</li>
+                <li> The number of operations its proportional to n.</li>
+                <li> if we had 2 loops (one after another) the complexity will be <strong>O(2n)</strong> but we drop constants when defining the complexity,
+                    so the complexity still is <strong>O(n)</strong>.</li>
+                </li>  
+                    
+                <li> In this example, the BigO notation will be O(a+b).
+                    <div class="poblem-solution__container">
+                        <pre >
+    function logItems(a,b){
+        for(let i=0; i&lta; i++){
+            console.log(i)
+        }
+        for(let i=0; i&ltb; i++){
+            console.log(i)
+        }
+    }     
+                        </pre>
+                    </div>
+                </li>  
+            </ul>
+        </li>
+        <li>
+            <def2>O(n²)</def2> 
+            <ul>
+                <li> Loop within a loop.</li>
+                <li> Whe pass n to the function, and it runs a for inside a for so its notation will be O(n * n) = O(n²).
+                    <div class="poblem-solution__container">
+                        <pre >
+    function logItems(n){
+        for(let i=0; i&ltn; i++){
+            for(let j=0; j&ltn; j++){
+                console.log(i,j)
+            }
+        }
+    }     
+                        </pre>
+                    </div>
+                </li>
+                <li> If we had 3 nested for loops, its BigO notation will be O(n * n * n) = O(n³).</li>
+                <li> <strong>It doesn't matter if the notation is O(n into the 2, 3, 4, 5) we are still going to wite it as O(n²).</strong></li>        
+                <li> In this example, the BigO notation will be O(a*b). 
+                    <div class="poblem-solution__container">
+                        <pre >
+    function logItems(a,b){
+        for(let i=0; i&lta; i++){
+            for(let j=0; j&ltb; j++){
+                console.log(i,j)
+            }
+        }
+    }     
+                        </pre>
+                        
+                    </div>
+                </li>  
+                <li><strong>When we can, we must use the different terms of inputs to define the BigO notation.</strong></li>
+            </ul>
+            <def3>Drop dominants</def3>
+            <p>If we have a nested for loop followed by a for loop, the BigO notation will be somehthing like: <strong>O(n²) + O(n) = O(n² + n) </strong>, we have to drop the non dominant notation. So te actual BigO notation is O(n²)</p>
+        </li>
+        <li>
+            <def2>O(1)</def2> 
+            <ul>
+                <li>Also refered as constant time complexity.</li>
+                <li> We pass n to the function, and it runs 1 time. 
+                    <div class="poblem-solution__container">
+                        <pre >
+    function logItems(n){
+        return n+n
+    }     
+                        </pre>
+                    </div>
+                </li>
+                <li>If we had the following code where there are 2 operations, the notation will be O(2), but we just simplify it and call it O(1).
+                    <div class="poblem-solution__container">
+                        <pre >
+    function logItems(n){
+        return n + n + n
+    }     
+                        </pre>
+                    </div>
+                </li>
+            </ul>
+        </li>
+        <li>
+            <def2>O(log n)</def2> 
+            <ul>
+                <li> Its when we work with and sorted array using the technique <strong>divide and conquer</strong>.<li>
+                <li> For example when searching for an specific number in a sorted array, we can split the array in half, then a condition to see in wich half the number we are searching could be, then we repeat the process: <strong>divide and conquer</strong>.<li>
+                <li> If we have an array of lenght 8 we can find any item in just 3 steps, why? <strong>divide and conquer</strong>.
+                    <div class="poblem-solution__container">
+                        <pre >
+    arr = [1, 2, 3, 4, 5, 6, 7, 8]
+    if we are looking for the num 1, we divide 1 time and determine where the num can be
+
+    *1st op: firstHalf = [1, 2, 3, 4] secondHalf = [5, 6 ,7 ,8]
+
+    it could be in the first, so then enw arr =[1 2, 3, 4] , so we split the array again
+
+    *2nd op: firstHalf = [1, 2] secondHalf = [4, 5]
+
+    arr = [1, 2] and we split again
+
+    *3rd op: firstHalf = [1] secondHalf = [2]
+
+    and we find the numer 1 in the first array in just 3 ops.
+                        </pre>
+                        
+                    </div>
+                </li>
+                <li> To calculate the number of operations required to find a number in a sorted array, we just <strong>log base2(n)</strong>.<li>
+                    <div class="poblem-solution__container">
+                        <pre >  
+    arr = [1, 2, 3, 4, 5, 6, 7, 8] 
+
+    arr.length = 8
+    operations = log base2 (8) = 3
+    bc 2³ = 8
+
+    if arr.length = 1073741824       
+    operations = log base2 (1073741824) = 30
+    bc 2^30 = 1073741824
+    
+    ∴ operations = log base 2(n)
+    bc 2^operations = n (where n = arr.lenght)
+                        </pre>
+                    </div>
+            </ul>
+        </li>
+        <li> Althoug log withot a base represents log base10, in the bigO notation we just represent lig base2 as log, so this notation is writhed: <strong>O(log n)</strong>.</li>
+
+    </ul>
+    </ul>
+</div>
+
+
+<div class="block">
+    <def1>Array methods</def1>
+    <p>The array structure has many methods that we can work with, all of them have different big O's as they perform in different ways.</strong></p>
+    <ul>
+        <li>
+            <def2>Array.push(n)</def2>
+            <p><strong>O(1)</strong> - It just inserts a new item at the end of the array without changing all the previous elements in the array. We don't have to reindex anything so the complexity keeps being constant.</p>  
+            <div class="poblem-solution__container">
+                <pre >  
+    arr = [1, 3, 55, 6]
+    arr.push(99)
+    ∴ arr = [1, 3, 55, 6, 99]
+                </pre>
+            </div>
+        </li>
+        <li>
+            <def2>Array.pop()</def2>
+            <p><strong>O(1)</strong> - It just removes the last item of the array without changing all the previous elements in the array.</p>  
+            <div class="poblem-solution__container">
+                <pre >  
+    arr = [1, 3, 55, 6]
+    arr.pop()
+    ∴ arr = [1, 3, 55]
+                </pre>
+            </div>
+        </li>
+        <li>
+            <def2>Array.shift()</def2>
+            <p><strong>O(n) (where n=arr.lenght)</strong> - Shift removes the firs item (item with the index 0),  and then hast to reindex all the following items index -1, so the new firt element starts at 0 and so on (wich obiously increases the methdo complexity).</p>  
+            <div class="poblem-solution__container">
+                <pre >  
+    arr = [1, 3, 55, 6]
+    arr.shift()
+    ∴ arr = [3, 55, 6]
+                </pre>
+            </div>
+        </li>
+        <li>
+            <def2>Array.unshift(11)</def2>
+            <p><strong>O(n) (where n=arr.lenght)</strong> - Likewise in the shift method, reindex all the elements index +1 in order to add the new element in the position 0.</p>  
+            <div class="poblem-solution__container">
+                <pre >  
+    arr = [3, 55, 6]
+    arr.shift()
+    ∴ arr = [11, 3, 55, 6]
+                </pre>
+            </div>
+        </li>
+        <li>
+            <def2>Array.splice(1, 0, 'hi')</def2>
+            <p><strong>O(n) (where n=arr.lenght)</strong> - Put something ('hi') in the index of 1 and remove 0 items. It has to reindex all the items following the index where we add the new item
+                so it has a complexity of O(n-1-0) but as we drop constants, the complexity keeps being O(n) *<strong>BigO allways measures worst case</strong>*</p>  
+            <div class="poblem-solution__container">
+                <pre >  
+    arr = [11, 3, 55, 6]
+    arr.splice(1, 0, 'hi')
+    ∴ arr = [11, 'hi', 3, 55, 6]
+                </pre>
+            </div>
+        </li>
+        <li>
+            <def2>Array.find(x)</def2>
+            <p><strong>O(n) (where n=arr.lenght)</strong> - (Where x is a value) When we search for a specific value, the find method will start searching form index 0 to .lenght until it finds the value and returns the index. So it has a O(n) complexity</p>  
+            <div class="poblem-solution__container">
+                <pre >  
+    arr = [11, 3, 55, 6]
+    arr.find(3)
+    ∴ will search all positions starting from 0 until it finds 3 at pos 1, and returns 1
+                </pre>
+            </div>
+        </li>
+    </li>
+    <li>
+        <def2>Array[x]</def2>
+        <p><strong>O(1) (where n=arr.lenght)</strong> - (Where x is an index) When accesing a specific index (searching by index instead of value) we will get the asociated item un a single operation. So it has a O(1) complexity</p>  
+        <div class="poblem-solution__container">
+            <pre >  
+    arr = [11, 3, 55, 6]
+    arr[1]
+    ∴ will return the item in the index 1, it doesn't have to search anything.
+            </pre>
+        </div>
+    </li>
+    </ul>
+</div> 

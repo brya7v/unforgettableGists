@@ -271,3 +271,87 @@
     </li>
     </ul>
 </div> 
+
+
+<div class="block">
+    <def1>Classes</def1>
+    <p><strong>Are like a cookie cutter.</strong></p>
+    <p>All of the data structures use classes</p>
+    <ul>
+        <li>
+            <def2>constructor</def2>
+            <p>All the classes have a constructor, it allow us to construct and instance of a class.</p>
+            <p><strong>this.</strong> refference to the current instance beign created.</p>
+            <div class="poblem-solution__container">
+                <pre >  
+    class Cookie {
+        constructor(color){ this.color = color }
+        getColor(){ return this.color }
+        setColor(color){ this.color = color }    }
+
+    let cookieOne = new Cookie('green')
+
+    //***
+    class LinkedList {
+        constructor() { ... }
+        push() { ... }
+        unshift() { ... }
+        insert() { ... }
+        renmove() { ... }
+        pop() { ... }
+        shift() { ... }
+    }
+                </pre>
+            </div>
+        </li>
+    </ul>
+</div> 
+
+
+<div class="block">
+    <def1>Pointers</def1>
+    <p><strong>Variables that are reference to a space in memory instead of a value..</strong></p>
+    <p>All of the data structures use pointers</p>
+    <ul>
+        <li>
+
+            <div class="poblem-solution__container">
+                <pre >  
+    **NOT USING POINTERS
+    let num1 = 43
+    let num2 = num1
+    *log* num2 = 43
+
+    num1 = 22
+    *log* num2 = 43
+
+    **USING POINTERS
+    let obj1 = {value: 32}
+    let obj2 = obj1
+    *log* obj2 = {value = 32}
+
+    obj1.value = 66
+    *log* obj2 = {value = 66}
+
+    *both objects point to the same object
+                </pre>
+            </div>
+        </li>
+        <li>
+            <def2>JS garbage collector</def2>
+            <p>If we point some variables that used to be a refference of an object to another object, the object that is not beign used 
+                by any variable is still using memory but we can't access to it, Js periodically uses the garbage collector to clean things like this.</p>
+                <div class="poblem-solution__container">
+                    <pre >  
+        obj3 = {val: 9}
+
+        if we:
+        obj1=obj3
+        obj2=obj3
+
+        **the old obj1 object ( {value = 66} ) will still be in the memory untill the Js garbage collector cleans it.
+                    </pre>
+                </div>
+        </li>
+    </ul>
+</div> 

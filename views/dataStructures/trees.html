@@ -1,0 +1,130 @@
+<div class="block">
+    <def1>Trees</def1>
+
+    <p><strong>Its like a linked list.</strong> but each node can fork (left and right).</p>
+    <p>The node constructor has left and right instead of next.</p>
+    <p>In a binary tree each node has value, left and right, but it can have as many forks as needed (it will not be a binary tree but still a tree),
+        for example the node could be {value, fork1, fork2, fork3, fork4 }.</p>
+    <p><strong>Full.</strong> - its when in a binary item every node points to either 2 or 0 nodes.</p>
+    <p><strong>Complet.</strong> - As compact as whe can make it given the items that we have.</p>
+    <p><strong>Perfect.</strong> - its when every line has items in it (a perfect tree is one that is complete and full).</p>
+    <p><strong>Parent.</strong> - Top element.</p>
+    <p><strong>Child.</strong> - Left and right of a node are childs, a node can only have one parent.</p>
+    <p><strong>Siblings.</strong> - When they have the same parent they are siblings..</p>
+    <p><strong>Leaf.</strong> - Node that doesnot have a children.</p>
+
+
+    <def1>Binary Search Trees</def1>
+    <p><strong>The structure has an specific order.</strong></p>
+    <p><strong>Child greater than parent.</strong> goes to the right and then is compared to the next node (if it exists).</p>
+    <p><strong>Child less than parent.</strong> goes to the left and then is compared to the next node (if it exists).</p>
+    <p><strong>All of the items to the right of the first node are greater than the items to the left, and so on for each parent.</strong>.</p>
+
+    <p>The node constructor has left and right instead of next.</p>
+    <p>In a binary tree each node has value, left and right, but it can have as many forks as needed (it will not be a binary tree but still a tree),
+        for example the node could be {value, fork1, fork2, fork3, fork4 }.</p>
+
+    <def2>
+        BigO
+    </def2>
+    <p>The quantity of nodes in a perfect tree is equal to 2 to the power of n "levels" -1 (bc the first node hast only one node), so in order to find a specific value,
+        push or pop a node the bigO is <strong>O(log n). IN THE BEST SCENARIO</strong> wich is very efficient by dividing and conquering (everytime we pass throug a parent we discard a child and all its descendency)</p> 
+    
+    <p><strong>WORST SCENARIO would be O(n).</strong> if we have a binary tree where all the nodes ascend just to one side it will behave like a normal linked list
+            where a search is O(n) bc we will not divide in any case the search.</p>
+    <p><strong>Root.</strong> is the first node, if we didnt have it, the whole tree would be garbage collected</p>
+
+    <p><strong>Insert O(log n).</strong></p>
+    <p><strong>Contains O(log n).</strong></p>
+    <p><strong>Remove O(log n).</strong></p>
+    <br>
+    <p><strong>The BST constructor does not need a value to set the first node, we create a bst empty, where the root is null.</strong></p>
+
+    <p><strong>If the same value is insterted more than one time, it can't be left or right of the same value node, 
+        we add a 'count' property that increases each time this value duplicates.</strong></p>
+
+
+    <div class="poblem-solution__container">
+        <pre >  
+            Class Node {
+                constructor(value){
+                    this.value = val
+                    this.left = null
+                    this.right = null
+                }
+            }
+
+            Class BST{
+                constructor(){
+                    this.root = null
+                }
+            }
+        </pre>
+    </div>
+    <ul>
+        <li>
+            <def2>Insert</def2> 
+            <ul>
+                <li> O(log n). although the worst case scenearion is O(n) when isnterting and order list of values. </li>
+                <li> 1 - create node. </li>
+                <li> 2 - Compare if &lt left else &gt right. </li>
+                <li> 3 - if null instert newNode else move to step 2. </li>
+            </ul>
+            <div class="poblem-solution__container">
+                <pre >  
+                    push(value){
+                        const newNode = new Node(value)
+                        if(!this.root){
+                            this.root = newNode
+                            return this
+                        }
+                        let temp = this.root
+                        while( true ){
+                            if(newNode.value == temp.value) return undefined ////// or count ++
+
+                            if( newNode.value &lt temp.value){
+                                if( temp.left != null) {
+                                    temp = temp.left
+                                    return this
+                                }
+                                else temp.left = newNode
+                            }
+
+                            else {
+                                if( temp.right != null) {
+                                    temp = temp.right
+                                    return this
+                                }
+                                else temp.right = newNode
+                            }
+                        }
+                    }
+                </pre>
+            </div>
+        </li>
+        <li>
+            <def2>Contains</def2> 
+            <ul>
+                <li> O(log n). Find true if the node si in the tree, otherwise return false. </li>
+            </ul>
+            <div class="poblem-solution__container">
+                <pre >  
+                    contains(){
+                        if (!this.root) return false
+
+                        let temp = this.root
+                        
+                        while (temp){
+                            if( newNode.value &lt temp.value) temp = temp.left
+                            
+                            else if( newNode.value &gt temp.value) temp = temp.right 
+
+                            else if(newNode.value == temp.value) return true 
+                        }
+                        return false
+                    }
+                </pre>
+            </div>
+        </li>
+    </ul>
+</div>

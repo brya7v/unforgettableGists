@@ -1,0 +1,79 @@
+<div class="block">
+    <def1>Stacks</def1>
+    <p>The last element that got in is the first our <strong>LIFO</strong>.</p>
+    <p>Whe could implement a stack within an array, pop as pop and push as push bc in the array those are O(1), if we use the array in reverse, the pop will be a shift and the 
+        push would be a unshift (and those array methods are O(n)).</p>
+    <p>Whe could also implement a stack within a linked list, but we have to do it using the head element for the pop and push (linked list shift and unshift bc they are (O(1)),
+        whe shouldn't use the tail node for push and pop (linked list push and pop bc they are O(n)). If we use a linked list as a stack the linked list head will be the stack top end.</p>
+
+    <p><strong> Node </strong> class (Same as the one in the linked list)</p>
+    <div class="poblem-solution__container">
+        <pre >  
+            Class Node {
+                constructor(value){
+                    this.value = val
+                    this.next = null
+                }
+            }
+
+            Class Stack {
+                constructor(value){
+                    const newNode = new Node(value)
+                    this.top = newNode
+                    this.lenght = 1
+                }
+            }
+        </pre>
+    </div>
+    <ul>
+        <li>
+            <def2>Push</def2> 
+            <ul>
+                <li> O(1). It just adds anode to the top. (we can recicle the unshift from the linked list)</li>
+            </ul>
+            <div class="poblem-solution__container">
+                <pre >  
+                    push(value){
+                        const newNode = new Node(value) 
+                        if(!this.top){
+                            this.top = newNode
+                        }
+                        else {
+                            newNode.next = this.top
+                            this.top = newNode
+                        }
+                        
+                        this.length ++
+                        return this
+                    }
+                </pre>
+            </div>
+        </li>
+        <li>
+            <def2>Pop</def2> 
+            <ul>
+                <li> O(1). It just removes the node at the top. (we can recicle the shift from the linked list)</li>
+            </ul>
+            <div class="poblem-solution__container">
+                <pre >  
+                    pop(){
+                        if(!this.top) return undefined // empty linkedList
+                        
+                        let temp = this.top
+
+                        if(this.lenght == 1){
+                            this.top = null
+                        }
+
+                        else {
+                            this.top = this.top.next
+                        }
+                        this.length --               
+
+                        return temp (returns the item that we shift off)
+                    }
+                </pre>
+            </div>
+        </li>
+    </ul>
+</div> 

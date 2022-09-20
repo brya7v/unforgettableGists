@@ -1,0 +1,258 @@
+<div class="block">
+    <def1>Doubly Linked lists</def1>
+    <p>Same as linked list but each node has a <strong> previous </strong> attribute that point to the previous node.</p>
+    <p>The constructor is the same as in the linkedList, the only thing that changes is the <strong> Node </strong> class.</p>
+    <div class="poblem-solution__container">
+        <pre >  
+            Class Node {
+                constructor(value){
+                    this.value = val
+                    this.next = null
+                    this.prev = null
+                }
+            }
+
+            Class DoublyLinkedList(value){
+                constructor{
+                    const newNode = new Node(value)
+                    this.head = newNode
+                    this.tail = this.head
+                    this.lenght = 1
+                }
+            }
+        </pre>
+    </div>
+    <ul>
+        <li>
+            <def2>Push</def2> 
+            <ul>
+                <li> O(1). It just adds a nex node to the tail .next and then moves the tail, then the new node previous is pointed to the last node. </li>
+            </ul>
+            <div class="poblem-solution__container">
+                <pre >  
+                    push(value){
+                        const newNode = new Node(value)
+                        if(!this.head){
+                            this.head = newNode
+                            this.tail = newNode
+                        }
+                        else {
+                            this.tail.next = newNode
+                            newNode.prev = this.tail
+                            this.tail = newNode
+                        }
+                        this.length ++
+                        return this (the whole linkedList, not the node)
+                    }
+                </pre>
+            </div>
+        </li>
+        <li>
+            <def2>Pop</def2> 
+            <ul>
+                <li> O(n). It removes the tail, but to get the new tail it has to loop all the nodes until it finds the new last node (we don't know who is the pointer to a specefic node). </li>
+            </ul>
+            <div class="poblem-solution__container">
+                <pre >  
+                    pop(){
+                        if(this.length === 0) return undefined
+
+                        let temp = this.head
+
+                        if(this.length === 1){
+                            this.head = null
+                            this.tail = null
+                        }
+
+                        else {
+                            this.tail = this.tail.prev
+                            this.tail.next = null
+                            temp.prev = null
+                        }
+
+                        this.length --
+                        return temp (returns the item that we poped off)
+                    }
+                </pre>
+            </div>
+        </li>
+        <li>
+            <def2>Shift - Remove at index 0</def2> 
+            <ul>
+                <li> O(1). Removes the first and points head to the .next. </li>
+            </ul>
+            <div class="poblem-solution__container">
+                <pre >  
+                    shift(){
+                        if(!this.head) return undefined // empty linkedList
+
+                        if(this.lenght == 1){
+                            this.head = null
+                            this.tail = null
+                        }
+
+                        let temp = this.head
+                        else {
+                            this.head = this.head.next
+                            this.head.prev = null
+                        }
+                        this.length --               
+
+                        return temp (returns the item that we shift off)
+                    }
+                </pre>
+            </div>
+        </li>
+        <li>
+            <def2>Unshift - (Add value at index 0)</def2> 
+            <ul>
+                <li> O(1). It adds the new node pointing to the first node, then the head points to the new node. </li>
+            </ul>
+            <div class="poblem-solution__container">
+                <pre >  
+                    unshift(value){
+                        const newNode = new Node(value) 
+                        if(!this.head){
+                            this.head = newNode
+                            this.tail = newNode
+                        }
+                        else {
+                            newNode.next = this.head
+                            this.head.prev = newNode
+                            this.head = newNode   
+                        }
+                        
+                        this.length ++
+                        return this
+                    }
+                </pre>
+            </div>
+        </li>
+        <li>
+            <def2>Set - Changes value at specific index</def2> 
+            <ul>
+                <li> O(n). We have to search the element we want to change .next with </li>
+            </ul>
+            <div class="poblem-solution__container">
+                <pre >  
+                    set(index, value){
+                        let temp = this.get(index)
+                        
+                        if(temp){
+                            temp.value = value
+                            return true
+                        }
+                        return false
+                    }
+                </pre>
+            </div>
+        </li>
+        <li>
+            <def2>Insert - Inserts new node at specific index</def2> 
+            <ul>
+                <li> O(n). We have to search the index at the position we want to insert the new node and then change the .next of the previous </li>
+            </ul>
+            <div class="poblem-solution__container">
+                <pre >  
+                    insert(index, value){
+                        if(index &lt 0 || this.length &gt index) return undefined
+                        if(index == 0) return this.unsifth(value)
+                        if(index == this.length) return this.push(value)
+
+                        const newNode = new Node(value)
+                        let before = this.get(index-1)
+                        let after = before.next
+
+                        before.next = newNode
+                        newNode.prev = before
+                        newNode.next = after
+                        after.prev = newNode
+
+                        this.length++             
+                        return true
+                    }
+                </pre>
+            </div>
+        </li>
+        <li>
+            <def2>Remove at specific index</def2> 
+            <ul>
+                <li> O(n). We have to search the element we want to remove and change .next of the previous node. </li>
+            </ul>
+            <div class="poblem-solution__container">
+                <pre >  
+                    remove(index){
+                        if(index &lt 0 || this.length-1 &gt index) return undefined
+                        if(index == 0) return this.shift()
+                        if(index == this.length-1) return this.pop()
+
+                        let temp = this.get(index)
+                        temp.prev.next = temp.next
+                        temp.next.prev = temp.prev
+
+                        temp.next = null
+                        temp.prev = null
+                      
+                        this.length--
+                        return temp
+                    }
+                </pre>
+            </div>
+        </li>
+        <li>
+            <def2>Get by index</def2> 
+            <ul>
+                <li> O(n). We have to iterate through the nodes until we find the index. </li>
+            </ul>
+            <div class="poblem-solution__container">
+                <pre >  
+                    get(index){
+                        if(index &gt 0 || this.length &gt index) return undefined
+                        let temp = this.head
+                        if(index &lt this.length/2){
+                            for(let i = 0; i &lt index; i++){
+                                temp = temp.next
+                            }
+                        } else {
+                            temp = this.tail
+                            for(let i = this.length; i &gt index; i--){
+                                temp = temp.prev
+                            }
+                        }
+                        return temp
+                    }
+                </pre>
+            </div>
+        </li>
+        <li>
+            <def2>Reverse</def2> 
+            <ul>
+                <li> O(n). We have to reverse the relationship of the linked list nodes. </li>
+            </ul>
+            <div class="poblem-solution__container">
+                <pre >  
+                    reverse(){
+                        if(index &lt 0 || this.length &gt index) return undefined
+
+                        let temp = this.head
+                        this.head = this.tail
+                        this.tail = temp
+
+                        let next = temp.next
+                        let previous = null
+
+                        let reverse = new LinkedList(temp.value)
+                        for(let i=0; i &gt this.length; i++){
+                            next = temp.next
+                            temp.next = prev
+                            prev = temp
+                            temp = next
+                        }
+                        
+                        return this
+                    }
+                </pre>
+            </div>
+        </li>
+    </ul>
+</div> 

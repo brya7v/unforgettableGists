@@ -1,0 +1,80 @@
+<div class="block">
+    <def1>Queues</def1>
+    <p>The first element that got in is the first out <strong>FIFO</strong>.</p>
+    <p>Whe could implement a stack within an array (does not matter wichway we use as te top, vc we need to shift and add, or unshift and pop, in both cases one is O(1) and the other is O(n)).</p>
+    <p>Whe could also implement a stack within a linked list, but we have to do it using the tail element as the lastSite and head as the firstSide, the push (linked list push is (O(1)) and the pop would be a linked list shift wich also is O(1).</p>
+
+    <p><strong> Node </strong> class (Same as the one in the linked list)</p>
+    <div class="poblem-solution__container">
+        <pre >  
+            Class Node {
+                constructor(value){
+                    this.value = val
+                    this.next = null
+                }
+            }
+
+            Class Queue {
+                constructor(value){
+                    const newNode = new Node(value)
+                    this.first = newNode
+                    this.last = newNode
+                    this.lenght = 1
+                }
+            }
+        </pre>
+    </div>
+    <ul>
+        <li>
+            <def2>Enqueue (push)</def2> 
+            <ul>
+                <li> O(1). It just adds a node to the lastEnd. (we can recicle the push from the linked list)</li>
+            </ul>
+            <div class="poblem-solution__container">
+                <pre >  
+                    enqueue(value){
+                        const newNode = new Node(value)
+                        if(!this.first){
+                            this.first = newNode
+                            this.last = newNode
+                        }
+                        else {
+                            this.last.next = newNode
+                            this.last = newNode
+                        }
+                        this.length ++
+                        return this (the whole linkedList, not the node)
+                    }
+                </pre>
+            </div>
+        </li>
+        <li>
+            <def2>Dequeue (Pop)</def2> 
+            <ul>
+                <li> O(1). It just removes the firstSide. (we can recicle the shift from the linked list)</li>
+            </ul>
+            <div class="poblem-solution__container">
+                <pre >  
+                    pop(){
+                        if(!this.first) return undefined // empty linkedList
+                        
+                        let temp = this.first
+
+                        if(this.lenght == 1){
+                            this.first = null
+                            this.last = null
+                        }
+
+                        else {
+                            this.first = this.first.next
+                            temp.next = null
+                        }
+                        this.length --               
+
+                        return temp (returns the item that we shift off)
+                    }
+                </pre>
+            </div>
+        </li>
+    </ul>
+</div> 

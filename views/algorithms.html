@@ -1,864 +1,238 @@
-<h2 class="main-title">Data structures and algorithms</h2>
-
-
-<div class="block">
-    <def1>Code efficiency</def1>
-    <p>There are two approaches when we want to measure the efficiency of a code: </p>
-    <ul>
-        <li><strong>Time efficiency (defined by the Time complexity).</strong></li>
-        <li><strong>Memory efficiency (defined by the Space complexity).</strong></li>
-    </ul>
-      </p>
-    <ul>
-        <li><def2>Time complexity</def2> We don't measure tieme complexity in time (bc it depends on the hardware), instead it's measured 
-            in the number of opeations.        
-        </li>
-        <li><def2>Space complexity</def2> It's the ammount of memory that something uses.
-    </ul>
-</div>
+<h2 class="main-title">Algorithms</h2>
 
 <div class="block">
-    <def1>Big O</def1>
-    <p>Is a way to mathematically figure out wich of two codes is better (wich one runs more efficiently). <strong> With Big O we measeure both (Time and space complexity).</strong></p>
-    <ul>
-        <li>
-            <def2>Omega Ω</def2> <p> Best case scenario for a code to resolve a problem.</p>
-            <def2>Theta Θ</def2> <p> Average case scenario for a code to resolve a problem.</p>
-            <def2>Omicron Ο</def2> <p> Also called O or BigO - Its the worst case scenario for a code to resolve a problem.</p>
-        </li>
-        
-    </ul>
+    <def1>Recursion</def1>
+    <p> Recursion is when a function that calls itself until it doesn't.</p>
+    <p> - Each time the funciton calls itself its supposed to make the main problem smaller</p>
+
+    <def2>Base case</def2>
+    <p> Its the final case in the recursion, the one that makes the recursivity stop and returns the result.</p>
+    <p> - If we don't have a base case we will have a <strong>stack overflow </strong> (infinity loop).</p>
+    <p> - It requirea a return statement (otherwise the recursion will never end).</p>
+
+    <def2>Recursive case</def2>
+    <p> Case where we need to call the function again.</p>   
 </div>
 
 
 <div class="block">
-    <def1>Big O Notation</def1>
-    <p>It defines the complexity of the code.</strong></p>
-    <ul>
-        <li>
-            <def2>O(n)</def2> 
-            <ul>
-                <li> Proportional complexity.</li>
-                <li> We pass n to the function, and it runs n times.
-                    <div class="poblem-solution__container">
-                        <pre >
-    function logItems(n){
-        for(let i=0; i&ltn; i++){
-            console.log(i)
-        }
-    }     
-                        </pre>
-                    </div>
-                </li>
-                <li> It's a simple for loop that runs n times.</li>
-                <li> The number of operations its proportional to n.</li>
-                <li> if we had 2 loops (one after another) the complexity will be <strong>O(2n)</strong> but we drop constants when defining the complexity,
-                    so the complexity still is <strong>O(n)</strong>.</li>
-                </li>  
+    <def1>Call stack</def1>
+    <p> When a function its called it enters the call stack, when it is completed it is removed from the called stack.</p>
+
+    <p> When a function calls another function inside, this second function will be on top of the first one in the call stack, 
+        so the seconf function has to be completed first, and then the first funtcion.</p>
+
+    <def2>Factorial</def2>
+    <p> 4! = 4 * 3 * 2 * 1 = 24</p>
+    <p> 4! = 4 * 3! = 24</p>
+    <p> 3! = 3 * 2! = 6</p>
+    <p> 2! = 2 * 1! = 2</p>
+    <p> 1! = 1</p>
+
+    <div class="poblem-solution__container">
+        <pre >
+            function factorial(n){
+                if(n == 1) return 1
+                return n * factorial(n-1)
+            }     
+        </pre>
+    </div>
+
+    <p> - <strong> n=1 is the base case</strong></p>
+    <p> - <strong> n>1 is the recursive case</strong></p>
+
+    <p>Call stack will be something like:</p>
+    <div class="poblem-solution__container">
+        <pre >
+
+            |            |
+            |factorial(1)|     
+            |factorial(2)|     
+            |factorial(3)|     
+            |factorial(4)|     
+            --------------
+        </pre>
+    </div>
+    <p>Where the last function to get in the stack is the first to get resolved. <strong>LIFO</strong></p>    
+</div>
+
+<div class="block">
+    <def1>Bubble sort</def1>
+    <p> Its the eassyest to explain of the sorting algorithms.</p>
+    <p> - Its a very unneficient sorting algorithm.</p>
+    <p> - Its for loop inside a for loop, so its <strong>bigO(n²)</strong>.</p>
+    <p> - Compares all the items 1 by 1 moving the greater element to the right and comparing it to the next, when we find the greater number
+        it is move to the end of the array, the the comparation starts again but ignoring the last element (bc it is already sorted). </p>
+    <p> - Al items are bubbled up to the top one by one.</p>
+
+    <div class="poblem-solution__container">
+        <pre >
+
+            function bubbleSort(array){
+                for(let i = array.length -1; i &gt 0; i-- ){
+                    for(let j = 0; i &lt i; j++ ){
+                        if(array[j] &gt array[j+1]){
+                            let temp = array[j] 
+                            array[j] = array[j+1] 
+                            array[j] = temp
+                        }
                     
-                <li> In this example, the BigO notation will be O(a+b).
-                    <div class="poblem-solution__container">
-                        <pre >
-    function logItems(a,b){
-        for(let i=0; i&lta; i++){
-            console.log(i)
-        }
-        for(let i=0; i&ltb; i++){
-            console.log(i)
-        }
-    }     
-                        </pre>
-                    </div>
-                </li>  
-            </ul>
-        </li>
-        <li>
-            <def2>O(n²)</def2> 
-            <ul>
-                <li> Loop within a loop.</li>
-                <li> Whe pass n to the function, and it runs a for inside a for so its notation will be O(n * n) = O(n²).
-                    <div class="poblem-solution__container">
-                        <pre >
-    function logItems(n){
-        for(let i=0; i&ltn; i++){
-            for(let j=0; j&ltn; j++){
-                console.log(i,j)
+                    }
+                }
+                return array
             }
-        }
-    }     
-                        </pre>
-                    </div>
-                </li>
-                <li> If we had 3 nested for loops, its BigO notation will be O(n * n * n) = O(n³).</li>
-                <li> <strong>It doesn't matter if the notation is O(n into the 2, 3, 4, 5) we are still going to wite it as O(n²).</strong></li>        
-                <li> In this example, the BigO notation will be O(a*b). 
-                    <div class="poblem-solution__container">
-                        <pre >
-    function logItems(a,b){
-        for(let i=0; i&lta; i++){
-            for(let j=0; j&ltb; j++){
-                console.log(i,j)
-            }
-        }
-    }     
-                        </pre>
-                        
-                    </div>
-                </li>  
-                <li><strong>When we can, we must use the different terms of inputs to define the BigO notation.</strong></li>
-            </ul>
-            <def3>Drop dominants</def3>
-            <p>If we have a nested for loop followed by a for loop, the BigO notation will be somehthing like: <strong>O(n²) + O(n) = O(n² + n) </strong>, we have to drop the non dominant notation. So te actual BigO notation is O(n²)</p>
-        </li>
-        <li>
-            <def2>O(1)</def2> 
-            <ul>
-                <li>Also refered as constant time complexity.</li>
-                <li> We pass n to the function, and it runs 1 time. 
-                    <div class="poblem-solution__container">
-                        <pre >
-    function logItems(n){
-        return n+n
-    }     
-                        </pre>
-                    </div>
-                </li>
-                <li>If we had the following code where there are 2 operations, the notation will be O(2), but we just simplify it and call it O(1).
-                    <div class="poblem-solution__container">
-                        <pre >
-    function logItems(n){
-        return n + n + n
-    }     
-                        </pre>
-                    </div>
-                </li>
-            </ul>
-        </li>
-        <li>
-            <def2>O(log n)</def2> 
-            <ul>
-                <li> Its when we work with and sorted array using the technique <strong>divide and conquer</strong>.<li>
-                <li> For example when searching for an specific number in a sorted array, we can split the array in half, then a condition to see in wich half the number we are searching could be, then we repeat the process: <strong>divide and conquer</strong>.<li>
-                <li> If we have an array of lenght 8 we can find any item in just 3 steps, why? <strong>divide and conquer</strong>.
-                    <div class="poblem-solution__container">
-                        <pre >
-    arr = [1, 2, 3, 4, 5, 6, 7, 8]
-    if we are looking for the num 1, we divide 1 time and determine where the num can be
-
-    *1st op: firstHalf = [1, 2, 3, 4] secondHalf = [5, 6 ,7 ,8]
-
-    it could be in the first, so then enw arr =[1 2, 3, 4] , so we split the array again
-
-    *2nd op: firstHalf = [1, 2] secondHalf = [4, 5]
-
-    arr = [1, 2] and we split again
-
-    *3rd op: firstHalf = [1] secondHalf = [2]
-
-    and we find the numer 1 in the first array in just 3 ops.
-                        </pre>
-                        
-                    </div>
-                </li>
-                <li> To calculate the number of operations required to find a number in a sorted array, we just <strong>log base2(n)</strong>.<li>
-                    <div class="poblem-solution__container">
-                        <pre >  
-    arr = [1, 2, 3, 4, 5, 6, 7, 8] 
-
-    arr.length = 8
-    operations = log base2 (8) = 3
-    bc 2³ = 8
-
-    if arr.length = 1073741824       
-    operations = log base2 (1073741824) = 30
-    bc 2^30 = 1073741824
-    
-    ∴ operations = log base 2(n)
-    bc 2^operations = n (where n = arr.lenght)
-                        </pre>
-                    </div>
-            </ul>
-        </li>
-        <li> Althoug log withot a base represents log base10, in the bigO notation we just represent lig base2 as log, so this notation is writhed: <strong>O(log n)</strong>.</li>
-
-    </ul>
-    </ul>
+        </pre>
+    </div>
 </div>
 
 
 <div class="block">
-    <def1>Array methods</def1>
-    <p>The array structure has many methods that we can work with, all of them have different big O's as they perform in different ways.</strong></p>
-    <ul>
-        <li>
-            <def2>Array.push(n)</def2>
-            <p><strong>O(1)</strong> - It just inserts a new item at the end of the array without changing all the previous elements in the array. We don't have to reindex anything so the complexity keeps being constant.</p>  
-            <div class="poblem-solution__container">
-                <pre >  
-    arr = [1, 3, 55, 6]
-    arr.push(99)
-    ∴ arr = [1, 3, 55, 6, 99]
-                </pre>
-            </div>
-        </li>
-        <li>
-            <def2>Array.pop()</def2>
-            <p><strong>O(1)</strong> - It just removes the last item of the array without changing all the previous elements in the array.</p>  
-            <div class="poblem-solution__container">
-                <pre >  
-    arr = [1, 3, 55, 6]
-    arr.pop()
-    ∴ arr = [1, 3, 55]
-                </pre>
-            </div>
-        </li>
-        <li>
-            <def2>Array.shift()</def2>
-            <p><strong>O(n) (where n=arr.lenght)</strong> - Shift removes the firs item (item with the index 0),  and then hast to reindex all the following items index -1, so the new firt element starts at 0 and so on (wich obiously increases the methdo complexity).</p>  
-            <div class="poblem-solution__container">
-                <pre >  
-    arr = [1, 3, 55, 6]
-    arr.shift()
-    ∴ arr = [3, 55, 6]
-                </pre>
-            </div>
-        </li>
-        <li>
-            <def2>Array.unshift(11)</def2>
-            <p><strong>O(n) (where n=arr.lenght)</strong> - Likewise in the shift method, reindex all the elements index +1 in order to add the new element in the position 0.</p>  
-            <div class="poblem-solution__container">
-                <pre >  
-    arr = [3, 55, 6]
-    arr.shift()
-    ∴ arr = [11, 3, 55, 6]
-                </pre>
-            </div>
-        </li>
-        <li>
-            <def2>Array.splice(1, 0, 'hi')</def2>
-            <p><strong>O(n) (where n=arr.lenght)</strong> - Put something ('hi') in the index of 1 and remove 0 items. It has to reindex all the items following the index where we add the new item
-                so it has a complexity of O(n-1-0) but as we drop constants, the complexity keeps being O(n) *<strong>BigO allways measures worst case</strong>*</p>  
-            <div class="poblem-solution__container">
-                <pre >  
-    arr = [11, 3, 55, 6]
-    arr.splice(1, 0, 'hi')
-    ∴ arr = [11, 'hi', 3, 55, 6]
-                </pre>
-            </div>
-        </li>
-        <li>
-            <def2>Array.find(x)</def2>
-            <p><strong>O(n) (where n=arr.lenght)</strong> - (Where x is a value) When we search for a specific value, the find method will start searching form index 0 to .lenght until it finds the value and returns the index. So it has a O(n) complexity</p>  
-            <div class="poblem-solution__container">
-                <pre >  
-    arr = [11, 3, 55, 6]
-    arr.find(3)
-    ∴ will search all positions starting from 0 until it finds 3 at pos 1, and returns 1
-                </pre>
-            </div>
-        </li>
-    </li>
-    <li>
-        <def2>Array[x]</def2>
-        <p><strong>O(1) (where n=arr.lenght)</strong> - (Where x is an index) When accesing a specific index (searching by index instead of value) we will get the asociated item un a single operation. So it has a O(1) complexity</p>  
-        <div class="poblem-solution__container">
-            <pre >  
-    arr = [11, 3, 55, 6]
-    arr[1]
-    ∴ will return the item in the index 1, it doesn't have to search anything.
-            </pre>
-        </div>
-    </li>
-    </ul>
-</div> 
+    <def1>Selection sort</def1>
+    <p> We've to keep track of the indexes.</p>
+    <p> - We store the index of the first item in the min var.</p>
+    <p> - Then we loop through the nex items searching for a lower than min value and store its index.</p>
+    <p> - At the end we take that minimum and first item and switch them, so the first item of the array is in order.</p>
+    <p> - Then we continue with the next not sorted item untill all of them are sorted.</p>
+    <p> - Its for loop inside a for loop, so its <strong>bigO(n²)</strong>.</p>
 
-
-<div class="block">
-    <def1>Classes</def1>
-    <p><strong>Are like a cookie cutter.</strong></p>
-    <p>All of the data structures use classes</p>
-    <ul>
-        <li>
-            <def2>constructor</def2>
-            <p>All the classes have a constructor, it allow us to construct and instance of a class.</p>
-            <p><strong>this.</strong> refference to the current instance beign created.</p>
-            <div class="poblem-solution__container">
-                <pre >  
-    class Cookie {
-        constructor(color){ this.color = color }
-        getColor(){ return this.color }
-        setColor(color){ this.color = color }    }
-
-    let cookieOne = new Cookie('green')
-
-    //***
-    class LinkedList {
-        constructor() { ... }
-        push() { ... }
-        unshift() { ... }
-        insert() { ... }
-        renmove() { ... }
-        pop() { ... }
-        shift() { ... }
-    }
-                </pre>
-            </div>
-        </li>
-    </ul>
-</div> 
-
-
-<div class="block">
-    <def1>Pointers</def1>
-    <p><strong>Variables that are reference to a space in memory instead of a value..</strong></p>
-    <p>All of the data structures use pointers</p>
-    <ul>
-        <li>
-
-            <div class="poblem-solution__container">
-                <pre >  
-    **NOT USING POINTERS
-    let num1 = 43
-    let num2 = num1
-    *log* num2 = 43
-
-    num1 = 22
-    *log* num2 = 43
-
-    **USING POINTERS
-    let obj1 = {value: 32}
-    let obj2 = obj1
-    *log* obj2 = {value = 32}
-
-    obj1.value = 66
-    *log* obj2 = {value = 66}
-
-    *both objects point to the same object
-                </pre>
-            </div>
-        </li>
-        <li>
-            <def2>JS garbage collector</def2>
-            <p>If we point some variables that used to be a refference of an object to another object, the object that is not beign used 
-                by any variable is still using memory but we can't access to it, Js periodically uses the garbage collector to clean things like this.</p>
-                <div class="poblem-solution__container">
-                    <pre >  
-        obj3 = {val: 9}
-
-        if we:
-        obj1=obj3
-        obj2=obj3
-
-        **the old obj1 object ( {value = 66} ) will still be in the memory untill the Js garbage collector cleans it.
-                    </pre>
-                </div>
-        </li>
-    </ul>
-</div> 
-
-<!-- linked list -->
-<div class="block">
-    <def1>Linked lists</def1>
-
-    <p><strong>Set of nodes that pont to the next one.</strong> a linked list has a head(first element), a tail(last element), and the last element .next points to null.</p>
-    <p>Dont have index like array items do.</p>
-    <p>Arrays are in contiguous spaces in memory, nodes in a linked list are all over the place .</p>
-    <p>When theres only one node, the head and tail point to the same one.</p>
-    <p>Under the hood, the linked list is like nested objects ({value: 1, next: {value:2, next: null}}) where the head points to the first node, and last points to the penultimate nodes .next.</p>
     <div class="poblem-solution__container">
-        <pre >  
-            Class Node {
-                constructor(value){
-                    this.value = val
-                    this.next = null
-                }
-            }
+        <pre >
 
-            Class LinkedList(value){
-                constructor{
-                    const newNode = new Node(value)
-                    this.head = newNode
-                    this.tail = this.head
-                    this.lenght = 1
+            function selectionSort(array){               
+                let min 
+                for(let i = 0; i &lt array.length -1 ; i++ ){
+                    min = i
+                    for(let j = i+1; j &lt array.length; j++ ){
+                        if(array[j] &lt array[min]){
+                            min = j 
+                        }
+
+                        if(i!==min){
+                            let temp = array[i]
+                            array[i] = array[min] 
+                            array[min] = temp                    
+                        }
+                    }
                 }
+                return array
             }
         </pre>
     </div>
-    <ul>
-        <li>
-            <def2>Push</def2> 
-            <ul>
-                <li> O(1). It just adds a nex node to the tail .next and then moves the tail. </li>
-            </ul>
-            <div class="poblem-solution__container">
-                <pre >  
-                    push(value){
-                        const newNode = new Node(value)
-                        if(!this.head){
-                            this.head = newNode
-                            this.tail = newNode
-                        }
-                        else {
-                            this.tail.next = newNode
-                            this.tail = newNode
-                        }
-                        this.length ++
-                        return this (the whole linkedList, not the node)
-                    }
-                </pre>
-            </div>
-        </li>
-        <li>
-            <def2>Pop</def2> 
-            <ul>
-                <li> O(n). It removes the tail, but to get the new tail it has to loop all the nodes until it finds the new last node (we don't know who is the pointer to a specefic node). </li>
-            </ul>
-            <div class="poblem-solution__container">
-                <pre >  
-                    pop(){
-                        if(!this.head) return undefined // empty linkedList
+</div>
 
-                        let temp = this.head
-                        let pre = null
-                        while (temp.netx){
-                            pre = temp
-                            temp = temp.next
-                        }
-                        this.tail = pre
-                        this.tail.next = null
-
-                        this.length --
-
-                        if(this.lenght === 0){
-                            this.head = null
-                            this.tail = null
-                        }
-                        return temp (returns the item that we poped off)
-                    }
-                </pre>
-            </div>
-        </li>
-        <li>
-            <def2>Remove at index 0 (Shift)</def2> 
-            <ul>
-                <li> O(1). Removes the first and points head to the .next. </li>
-            </ul>
-            <div class="poblem-solution__container">
-                <pre >  
-                    shift(){
-                        if(!this.head) return undefined // empty linkedList
-
-                        let temp = this.head
-                        else this.head = temp.next
-                        
-                        temp.next = null
-                        
-                        this.length --
-
-                        if(this.lenght === 0){
-                            this.head = null
-                            this.tail = null
-                        }
-
-                        return temp (returns the item that we shift off)
-                    }
-                </pre>
-            </div>
-        </li>
-        <li>
-            <def2>Add value at index 0 (Unshift)</def2> 
-            <ul>
-                <li> O(1). It adds the new node pointing to the first node, then the head points to the new node. </li>
-            </ul>
-            <div class="poblem-solution__container">
-                <pre >  
-                    unshift(value){
-                        const newNode = new Node(value)
-                        if(!this.head){
-                            this.head = newNode
-                            this.tail = newNode
-                        }
-                        else {
-                            newNode.next = this.head
-                            this.head = newNode    
-                        }
-                        
-                        this.length ++
-                        return this
-                    }
-                </pre>
-            </div>
-        </li>
-        <li>
-            <def2>Set - Changes value at specific index</def2> 
-            <ul>
-                <li> O(n). We have to search the element we want to change .next with </li>
-            </ul>
-            <div class="poblem-solution__container">
-                <pre >  
-                    set(index, value){
-                        let temp = this.get(index)
-                        
-                        if(temp){
-                            temp.value = value
-                            return true
-                        }
-                        return false
-                    }
-                </pre>
-            </div>
-        </li>
-        <li>
-            <def2>Insert - Inserts new node at specific index</def2> 
-            <ul>
-                <li> O(n). We have to search the index at the position we want to insert the new node and then change the .next of the previous </li>
-            </ul>
-            <div class="poblem-solution__container">
-                <pre >  
-                    insert(index, value){
-                        if(index &lt 0 || this.length &gt index) return undefined
-                        if(index == 0) return this.unsifth(value)
-                        if(index == this.length) return this.push(value)
-
-                        let temp = this.get(index-1)
-                        const newNode = new Node(value)
-                        
-                        newNode.next = temp.next
-                        temp.next = newNode               
-                        this.length++             
-                        return true
-                    }
-                </pre>
-            </div>
-        </li>
-        <li>
-            <def2>Remove at specific index</def2> 
-            <ul>
-                <li> O(n). We have to search the element we want to remove and change .next of the previous node. </li>
-            </ul>
-            <div class="poblem-solution__container">
-                <pre >  
-                    remove(index){
-                        if(index &lt 0 || this.length-1 &gt index) return undefined
-                        if(index == 0) return this.shift()
-                        if(index == this.length-1) return this.pop()
-
-                        let before = this.get(index-1)
-                        let temp = before.next
-                        before.next = temp.next
-                        this.length--
-                        return temp
-                    }
-                </pre>
-            </div>
-        </li>
-        <li>
-            <def2>Get by index</def2> 
-            <ul>
-                <li> O(n). We have to iterate through the nodes until we find the index. </li>
-            </ul>
-            <div class="poblem-solution__container">
-                <pre >  
-                    get(index){
-                        if(index &lt 0 || this.length &gt index) return undefined
-                        let temp = this.head
-                        for(let i = 0; i&lt index; i++){
-                            temp = temp.next
-                        }
-                        return temp
-                    }
-                </pre>
-            </div>
-        </li>
-        <li>
-            <def2>Reverse</def2> 
-            <ul>
-                <li> O(n). We have to reverse the relationship of the linked list nodes. </li>
-            </ul>
-            <div class="poblem-solution__container">
-                <pre >  
-                    reverse(){
-                        if(index &lt 0 || this.length &gt index) return undefined
-
-                        let temp = this.head
-                        this.head = this.tail
-                        this.tail = temp
-
-                        let next = temp.next
-                        let previous = null
-
-                        let reverse = new LinkedList(temp.value)
-                        for(let i=0; i &gt this.length; i++){
-                            next = temp.next
-                            temp.next = prev
-                            prev = temp
-                            temp = next
-                        }
-                        
-                        return this
-                    }
-                </pre>
-            </div>
-        </li>
-    </ul>
-</div> 
-
-<!-- doubly linked list -->
 <div class="block">
-    <def1>Doubly Linked lists</def1>
-    <p>Same as linked list but each node has a <strong> previous </strong> attribute that point to the previous node.</p>
-    <p>The constructor is the same as in the linkedList, the only thing that changes is the <strong> Node </strong> class.</p>
-    <div class="poblem-solution__container">
-        <pre >  
-            Class Node {
-                constructor(value){
-                    this.value = val
-                    this.next = null
-                    this.prev = null
-                }
-            }
+    <def1>Insertion sort</def1>
+    <p> It allways starts with the second item and will compare it with the first.</p>
+    <p> - If it is lower than the first we swap them and then move to the next index.</p>
+    <p> - Then the next val is compared to the previous, if it is lower is swaped and then compared to the previous untill it is not lower or it reaches the start of the array.</p>
+    <p> - Its for loop inside a for loop, so its <strong>bigO(n²)</strong>.</p>
 
-            Class DoublyLinkedList(value){
-                constructor{
-                    const newNode = new Node(value)
-                    this.head = newNode
-                    this.tail = this.head
-                    this.lenght = 1
+    <def2>BigO</def2>
+    <p> - Its for loop inside a for loop, so its <strong>bigO(n²)</strong>.</p>
+    <p> - But when the starting array is almost sorted its complexity its almost O(n), so its best case scenario is proportional <strong>Ω(n)</strong>.</p>
+
+    <div class="poblem-solution__container">
+        <pre >
+
+            function insertionSort(array){                
+                let temp 
+                for(let i = 1; i &lt array.length; i++){
+                    temp = array[i] 
+                    for(var j = i-1; array[j] &gt temp && j &gt -1; j--){
+                        array[j+1] = array[j]
+                    }
+                    array[j+1] = temp
                 }
+                return array
             }
+          
         </pre>
     </div>
-    <ul>
-        <li>
-            <def2>Push</def2> 
-            <ul>
-                <li> O(1). It just adds a nex node to the tail .next and then moves the tail, then the new node previous is pointed to the last node. </li>
-            </ul>
-            <div class="poblem-solution__container">
-                <pre >  
-                    push(value){
-                        const newNode = new Node(value)
-                        if(!this.head){
-                            this.head = newNode
-                            this.tail = newNode
-                        }
-                        else {
-                            this.tail.next = newNode
-                            newNode.prev = this.tail
-                            this.tail = newNode
-                        }
-                        this.length ++
-                        return this (the whole linkedList, not the node)
+</div>
+
+
+
+<div class="block">
+    <def1>Merge sort</def1>
+    <p> It uses recursion.</p>
+    <p> It takes the whole array and splits it in halfs untill there are only arrays with one value in it (wich is sorted),
+        the combines two by two all tis arrays of one item untill we have only arrays with 2 items (wich are sorted),
+        then again untill we only have arrays with 4 items (wich are sorted), and so on.</p>
+    <p> It looks unneficient, but its as efficient as we can make a sorting algorithm.</p>
+
+
+    <p> 1st it breks arrays in half.</p>
+    <p> <strong>Recursion case </strong> it breks arrays in half.</p>
+    <p> <strong>Base case </strong> when all arrays are lenght of 1.</p>
+
+    
+    <p> 2nd step it merges all arrays with the merge function.</p>
+    <p> <strong>Recursion case </strong> we have more than 1 array left to merge.</p>
+    <p> <strong>Base case </strong> all arrays are sorted into 1.</p>
+
+    <div class="poblem-solution__container">
+        <pre >
+            function mergeSort(array){       
+                
+                if(array.lenght == 1) return array
+
+                let mid = Math.floor(array.lenght/2)
+                let left = array.slice(0, mid)
+                let right = array(mid)
+
+                return merge(mergeSort(left), mergeSort(right))                
+            }
+          
+        </pre>
+    </div>
+
+    <def2>BigO</def2>
+    <p> - Space complexity <strong>bigO(n)</strong>.</p>
+    <p> - Time complexity - For breaking appart the arrays:<strong>bigO(log n)</strong>.</p>
+    <p> - Time complexity - For merging the arrays:<strong>bigO(n)</strong>.</p>
+    <p> - Time complexity - Total:<strong>bigO(n lon n)</strong>.</p>
+    <p> - A complexity of O(n log n) (n times log n) its obviously worse than O(n) but slightly better than O(n²):<strong>bigO(n lon n)</strong>.</p>
+
+
+
+
+
+    <def2>Merge</def2>
+    <p> Its the main function of the merge sort algorithm.</p>
+    <p> - It merges two <strong>SORTED</strong> arrays into one that is also sorted .</p>
+    <p> - One array uses I and the other J, we compare them one by one and the lowest is pushed to a sorted array.</p>
+
+
+    <div class="poblem-solution__container">
+        <pre >
+            function merge(array1, array2){                
+                let combined = []
+                let i = 0 
+                let j = 0 
+               
+                while(i &lt array1.length && j &lt array2.length){
+                    if(array1[i] &lt array2[j]){
+                        combined.push(array1[i])
+                        i++
+                    } else {
+                        combined.push(array2[j])
+                        j++
                     }
-                </pre>
-            </div>
-        </li>
-        <li>
-            <def2>Pop</def2> 
-            <ul>
-                <li> O(n). It removes the tail, but to get the new tail it has to loop all the nodes until it finds the new last node (we don't know who is the pointer to a specefic node). </li>
-            </ul>
-            <div class="poblem-solution__container">
-                <pre >  
-                    pop(){
-                        if(this.length === 0) return undefined
+                }
 
-                        let temp = this.head
+                while(i &lt array1.length){
+                    combined.push(array1[i])
+                    i++
+                }
+                
+                while(j &lt array2.length){
+                    combined.push(array2[j])
+                    j++
+                }
 
-                        if(this.length === 1){
-                            this.head = null
-                            this.tail = null
-                        }
-
-                        else {
-                            this.tail = this.tail.prev
-                            this.tail.next = null
-                            temp.prev = null
-                        }
-
-                        this.length --
-                        return temp (returns the item that we poped off)
-                    }
-                </pre>
-            </div>
-        </li>
-        <li>
-            <def2>Shift - Remove at index 0</def2> 
-            <ul>
-                <li> O(1). Removes the first and points head to the .next. </li>
-            </ul>
-            <div class="poblem-solution__container">
-                <pre >  
-                    shift(){
-                        if(!this.head) return undefined // empty linkedList
-
-                        if(this.lenght == 1){
-                            this.head = null
-                            this.tail = null
-                        }
-
-                        let temp = this.head
-                        else {
-                            this.head = this.head.next
-                            this.head.prev = null
-                        }
-                        this.length --               
-
-                        return temp (returns the item that we shift off)
-                    }
-                </pre>
-            </div>
-        </li>
-        <li>
-            <def2>Unshift - (Add value at index 0)</def2> 
-            <ul>
-                <li> O(1). It adds the new node pointing to the first node, then the head points to the new node. </li>
-            </ul>
-            <div class="poblem-solution__container">
-                <pre >  
-                    unshift(value){
-                        const newNode = new Node(value) 
-                        if(!this.head){
-                            this.head = newNode
-                            this.tail = newNode
-                        }
-                        else {
-                            newNode.next = this.head
-                            this.head.prev = newNode
-                            this.head = newNode   
-                        }
-                        
-                        this.length ++
-                        return this
-                    }
-                </pre>
-            </div>
-        </li>
-        <li>
-            <def2>Set - Changes value at specific index</def2> 
-            <ul>
-                <li> O(n). We have to search the element we want to change .next with </li>
-            </ul>
-            <div class="poblem-solution__container">
-                <pre >  
-                    set(index, value){
-                        let temp = this.get(index)
-                        
-                        if(temp){
-                            temp.value = value
-                            return true
-                        }
-                        return false
-                    }
-                </pre>
-            </div>
-        </li>
-        <li>
-            <def2>Insert - Inserts new node at specific index</def2> 
-            <ul>
-                <li> O(n). We have to search the index at the position we want to insert the new node and then change the .next of the previous </li>
-            </ul>
-            <div class="poblem-solution__container">
-                <pre >  
-                    insert(index, value){
-                        if(index &lt 0 || this.length &gt index) return undefined
-                        if(index == 0) return this.unsifth(value)
-                        if(index == this.length) return this.push(value)
-
-                        const newNode = new Node(value)
-                        let before = this.get(index-1)
-                        let after = before.next
-
-                        before.next = newNode
-                        newNode.prev = before
-                        newNode.next = after
-                        after.prev = newNode
-
-                        this.length++             
-                        return true
-                    }
-                </pre>
-            </div>
-        </li>
-        <li>
-            <def2>Remove at specific index</def2> 
-            <ul>
-                <li> O(n). We have to search the element we want to remove and change .next of the previous node. </li>
-            </ul>
-            <div class="poblem-solution__container">
-                <pre >  
-                    remove(index){
-                        if(index &lt 0 || this.length-1 &gt index) return undefined
-                        if(index == 0) return this.shift()
-                        if(index == this.length-1) return this.pop()
-
-                        let temp = this.get(index)
-                        temp.prev.next = temp.next
-                        temp.next.prev = temp.prev
-
-                        temp.next = null
-                        temp.prev = null
-                      
-                        this.length--
-                        return temp
-                    }
-                </pre>
-            </div>
-        </li>
-        <li>
-            <def2>Get by index</def2> 
-            <ul>
-                <li> O(n). We have to iterate through the nodes until we find the index. </li>
-            </ul>
-            <div class="poblem-solution__container">
-                <pre >  
-                    get(index){
-                        if(index &gt 0 || this.length &gt index) return undefined
-                        let temp = this.head
-                        if(index &lt this.length/2){
-                            for(let i = 0; i &lt index; i++){
-                                temp = temp.next
-                            }
-                        } else {
-                            temp = this.tail
-                            for(let i = this.length; i &gt index; i--){
-                                temp = temp.prev
-                            }
-                        }
-                        return temp
-                    }
-                </pre>
-            </div>
-        </li>
-        <li>
-            <def2>Reverse</def2> 
-            <ul>
-                <li> O(n). We have to reverse the relationship of the linked list nodes. </li>
-            </ul>
-            <div class="poblem-solution__container">
-                <pre >  
-                    reverse(){
-                        if(index &lt 0 || this.length &gt index) return undefined
-
-                        let temp = this.head
-                        this.head = this.tail
-                        this.tail = temp
-
-                        let next = temp.next
-                        let previous = null
-
-                        let reverse = new LinkedList(temp.value)
-                        for(let i=0; i &gt this.length; i++){
-                            next = temp.next
-                            temp.next = prev
-                            prev = temp
-                            temp = next
-                        }
-                        
-                        return this
-                    }
-                </pre>
-            </div>
-        </li>
-    </ul>
-</div> 
+                return combined
+            }
+          
+        </pre>
+    </div>
+</div>

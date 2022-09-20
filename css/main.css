@@ -91,6 +91,11 @@ header {
 .nav_item:hover .nav_item_flex-container {
   display: flex;
   margin-top: 1rem;
+  max-height: 500px;
+  overflow: auto;
+  border-bottom: 3px solid black;
+  border-left: 3px solid black;
+  border-right: 3px solid black;
 }
 .nav_item_flex-container {
   color: white;

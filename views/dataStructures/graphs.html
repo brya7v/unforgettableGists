@@ -1,0 +1,129 @@
+<div class="block">
+    <def1>Graphs</def1>
+    <p><def2>Vertex</def2> a vertex to a graph is what a node to a tree is.</p>
+    <p><def2>Edge</def2> An edge is a connection between two nodes. This can have weights.</p>
+    <ul>
+        <li>We can determine the most efficient ways to go from one vertex to another, we can have 2 fast links that are more efficient than 1 slow.</li>
+        <li><strong>Bidirectional relationship</strong> represented as a line without arrows, we can go fron one vertex to another.</li>
+        <li><strong>One way relationship</strong> edge has an arrow that indicates the direction.</li>
+        <li><strong>Binary tree</strong> is a graph where the vertex have only two connections.</li>
+    </ul>
+
+    <p><def2>Adjacency matrix</def2> Table where we can see if vertex hast a connection to another or not.</p>
+    <p>  - If theres connection it is represented with a 1 if not a 0.</p>
+    <p>  - If the connections are weighted the connections are represented with the weight, and if theres no connection with a 0.</p>
+
+
+    <p><def2>Adjacency list</def2> This is stored in an object, with key beign the vertex and the value being the vertex it has connection to.</p>
+    <p>  - An adjacency list of a graph is the complete representation of the graph itself</p>
+    <p>  - A has connection to E and B: <strong>{ A: ["B", "E"] }</strong></p>
+
+    <def2>BigO</def2>
+    <p><strong>In the adjacency list</strong></p> 
+    <p> -        Create a vertex O(1).</p>
+    <p> -        Remove a vertex O(v + e).</p>
+
+    <p> -        Create an edge O(1).</p>
+    <p> -        Remove an edge O(e).</p>
+
+    <br>
+    <p><strong>In the adjacency matrix</strong></p> 
+    <p> -        Create a vertex O(v²).</p>
+    <p> -        Remove a vertex O(v).</p>
+
+
+    <p> -        Create an edge O(1).</p>
+    <p> -        Remove an edge O(1).</p>
+
+
+    <def2>Space complexity</def2>
+
+    <p><strong>In the adjacency list</strong> we only store existing connections O(v)</p> 
+    <p><strong>In the adjacency matrix</strong> we  store existing connections and unexisting connections (wich makes it unneficient in space complexity O(v²))</p> 
+    <br>
+    <p>As the <strong>In the adjacency matrix</strong> has to store all the unexisting connections, the adjacency is a lot more efficient in memory.</p> 
+    <br>
+    
+
+    <def2>Constructor</def2>
+    <p><strong>Constructor</strong> for a adjacency list.</p>
+    <div class="poblem-solution__container">
+        <pre >  
+            Class Graph{
+                constructor(){
+                    this.adjacencyList = {}
+                }
+            }
+        </pre>
+    </div>
+
+    <def2>Add vertex</def2>
+    <p><strong>Add vertex</strong> method with no duplicates. Returns true if succes, return false if not.</p>
+    <div class="poblem-solution__container">
+        <pre >  
+            addVertex(vertex){
+                if(!this.adjacencyList[vertex]){
+                    this.adjacencyList[vertex] = []
+                    return true
+                }
+                return false
+            }
+        </pre>
+    </div>
+
+    <def2>Remove vertex</def2>
+    <p><strong>Remove vertex</strong> method with no duplicates. Removes the <strong>edges</strong> first, then the vertex. Returns true if succes, return false if not.</p>
+    <p><strong>Bidirectional advantage</strong> we just have to pop the connections of the vertex we want to delete, then we remove the vertex connection in each vertex poped.</p>
+    <div class="poblem-solution__container">
+        <pre >  
+            removeVertex(vertex){
+                if(!this.adjacencyList[vertex]){
+
+                    while(this.adjacencyList[vertex].length){
+                        let temp = this.adjacencyList[vertex].pop()
+                        this.removeEdge(vertex, temp)
+                    }
+
+                    delete this.adjacencyList[vertex]
+                   
+                    return this
+                }
+                return false
+            }
+        </pre>
+    </div>
+
+    <def2>Add edge</def2>
+    <p><strong>Add edge</strong> method with no duplicates. Adds edge to the vertex connections array. Returns true if succes, return false if not.</p>
+    <div class="poblem-solution__container">
+        <pre >  
+            addedge(vertex1, vertex2){
+                if(this.adjacencyList[vertex1] && this.adjacencyList[vertex1]){
+
+                    this.adjacencyList[vertex1].push(vertex2)
+                    this.adjacencyList[vertex2].push(vertex1)
+
+                    return true
+                }
+                return false
+            }
+        </pre>
+    </div>
+
+    <def2>Remove edge</def2>
+    <p><strong>remove edge</strong> method with no duplicates. removes edge to the vertex connections array. Returns true if succes, return false if not.</p>
+    <div class="poblem-solution__container">
+        <pre >  
+            removeedge(vertex1, vertex2){
+                if(this.adjacencyList[vertex1] && this.adjacencyList[vertex1]){
+
+                    this.adjacencyList[vertex1] = this.adjacencyList[vertex1].filter(v => v !== vertex2)
+                    this.adjacencyList[vertex2] = this.adjacencyList[vertex2].filter(v => v !== vertex1)
+
+                    return true
+                }
+                return false
+            }
+        </pre>
+    </div>
+</div>

@@ -236,3 +236,195 @@
         </pre>
     </div>
 </div>
+
+
+
+<div class="block">
+
+    <def1>Quick sort</def1>
+    <p> We've a pivot point starting from the first item.</p>
+    <p> Then it will be compared to every item in the array, if we found an item that is less than, we are going to exange it for the first item that is greater.</p>
+    <p> At the end we swap the pivot element with the last item that is less than this.</p>
+    <p> This way, at the left we have only elements lower than the pivot element, and at the right we've elements greater than the pivot element ('and this first pivot element will ve sorted').</p>
+    <p> Then we will run quick sort on the left side of the first pivot point, and our new pivot point will be the first item.</p>
+    <p> Then we will run quick sort on the right side of the first pivot point.</p>
+
+    <p> - It uses <strong>recursion</strong> everytime a pivot element is sorted, the array is splited in a left and a right side, and the quick sort function is runed again.</p>
+
+    <def2>Pivot</def2>
+    <p> The pivot function is the escential function for the quick sort algorithm.</p>
+    <p> It compares the first element of the array with all the others, if it founds an element lower, it will be swaped for the first element that is greater.</p>
+    <p> It uses 3 variables: </p>
+    <p><strong>Pivot</strong> points the pivot element(the first one). </p>
+    <p><strong>Swap</strong> starts as the pivot. Everytime we have something smaller in I, we ++ the swap pointer and swap the value with I. </p>
+    <p><strong>I</strong> Index that iterates over the whole array, comparing if the value is lower than the pivot, if it is, it is swaped with the swap index. </p>
+    <p>At the end it will return the index of swap, so we can continue running quick sort from 0 to swap and from swap+1 to .length </p>
+
+    <div class="poblem-solution__container">
+        <pre >
+            function swap(array, firstIndex, secondIndex){
+                let temp = array[firstIndex]
+                array[firstIndex] = array[secondIndex]
+                array[secondIndex] = temp
+            }
+
+            function pivot(array, pivotIndex = 0, endIndex = array.length-1){
+                let swapIndex = pivotIndex
+                for(let i= pivotIndex +1; i &lt= endIndex; i++){
+                    if(array[i] &lt array[pivotIndex]){
+                        swapIndex++
+                        swap(array, swapIndex, i)
+                    }
+                }
+                
+                swap(array, pivotIndex, swapIndex)
+                return swapIndex
+            }
+          
+
+            function quickSort(array, left=0, right = arra.lenth-1){
+                if(left &lt right){
+                    let pivotIndex = pivot(array, left, right)
+
+                    quickSort(array, left, pivotIndex -1)
+                    quickSort(array, pivotIndex+1, right)
+                }
+                return array
+            }
+        </pre>
+    </div>
+
+    <def2>Big O</def2>
+    <p> From a space complexity it has a O(1) bc works over the same array, its an adventage over merge sort wich.</p>
+    <p> It is good for random data.</p>
+    <p> For almost sorted data it is better insertion sort.</p>
+    <p> Time complexity best case Ω(n log n).</p>
+    <p> Time complexity worst case is with already sorted data <strong>O(n log n)</strong>, there is no spliting of the array.</p>
+</div>
+
+
+
+
+<div class="block">
+
+    <def1>Tree traversal</def1>
+    <p> Traversing is going through each item form beginning to end and then returning an array with all the nodes.</p>
+    <p> In a tree it is more complex, there are multiple ways to do this:</p>
+    
+    <p><strong>Breadth First Search</strong> Parent, then each child from left to right, then each child of each previous child from left to right until we go thorough all the nodes. </p>
+    <p><strong>Depht First search</strong> We go from bottom left to up the right, the deepest node will be the one on the right </p>
+     
+
+    <def2>Breadth First Search</def2>
+    <p> Start reading nodes from top to bottom from left to right.</p>
+    <p> We start storing the first node into a queue array, and pass thist value to the results array.</p>
+    <p> Every time the values are stored, the left and right props of the stored node are pushed into the queue array.</p>
+
+    <div class="poblem-solution__container">
+        <pre >
+            Class BST{
+                constructor(){
+                    this.root = null
+                }
+            
+                BFS(){
+                    let currentNode = this.root
+                    let queue = []
+                    let results = []
+
+                    queue.push(currentNode)
+
+                    while(queue.length){
+                        currentNode = queue.shift()
+                        results.push(currentNode.value)
+                        if(currentNode.left) queue.push(currentNode.left)
+                        if(currentNode.right) queue.push(currentNode.right)
+                    }
+                }
+                return results
+            }
+        </pre>
+    </div>
+
+    <def2>Deep First Search PreOrder</def2>
+    <p>Top to bottom, from left to right.</p>
+
+    <div class="poblem-solution__container">
+        <pre >
+            Class BST{
+                constructor(){
+                    this.root = null
+                }
+            
+                DFSPreOrder(){
+                    let results = []
+
+                    function traverse(currentNode){
+                        results.push(currentNode.value)
+                        if(currentNode.left) traverse(currentNode.left)
+                        if(currentNode.right) traverse(currentNode.right)
+                    }
+                    traverse(this.root)
+
+                    return results
+                }
+            }
+        </pre>
+    </div>
+
+
+    <def2>Deep First Search PostOrder</def2>
+    <p>Top to bottom, from left to right, but the values are writed from last to first, so the root node will be the one on the array result.</p>
+
+    <div class="poblem-solution__container">
+        <pre >
+            Class BST{
+                constructor(){
+                    this.root = null
+                }
+            
+                DFSPreOrder(){
+                    let results = []
+
+                    function traverse(currentNode){
+                        if(currentNode.left) traverse(currentNode.left)
+                        if(currentNode.right) traverse(currentNode.right)
+                        results.push(currentNode.value)
+                    }
+                    traverse(this.root)
+
+                    return results
+                }
+            }
+        </pre>
+    </div>
+
+    
+    <def2>Deep First Search In Order</def2>
+    <p>Start on the root, always go to the left untill theres a leaf and we write this value, then the parent then the right, so the result will be in ascending order.</p>
+
+    <div class="poblem-solution__container">
+        <pre >
+            Class BST{
+                constructor(){
+                    this.root = null
+                }
+            
+                DFSPreOrder(){
+                    let results = []
+
+                    function traverse(currentNode){
+                        if(currentNode.left) traverse(currentNode.left)
+                        results.push(currentNode.value)
+                        if(currentNode.right) traverse(currentNode.right)
+                    }
+                    traverse(this.root)
+
+                    return results
+                }
+            }
+        </pre>
+    </div>
+    
+    <strong>The three Deep First Search use the same code, just the results.push(currentNode.value) changes position depending on how we want the result to be. </strong>
+</div>

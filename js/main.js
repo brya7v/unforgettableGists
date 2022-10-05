@@ -68,10 +68,10 @@ $(`.section-${currentSection}`).fadeIn(500, ()=> {
                 navItemHtml += `</div>`
                 //append submenu container with items to the navItem
                 $(navItem).append(navItemHtml)
-                hideLoader(500)
+                hideLoader(250)
             })
-        },100)
-    },100)
+        },250)
+    },250)
 })
 
 navItems.forEach(e => {
@@ -270,3 +270,37 @@ function logItems(n){
         console.log(i)
     }
 }
+
+
+//5 longest palindrome
+
+var longestPalindrome = function(s) {    
+    let longest = ""
+
+    for(let i=0; i< s.length; i++){
+        if(longest.length < s.substring(i).length){
+            let substr = s.substring(i)            
+            let tempStr = ""
+            for(let j=0; j< substr.length; j++){
+                tempStr = substr.substring(0, substr.length-j) 
+                if(tempStr.length > longest.length && isPalindrome(tempStr)) {
+                    longest = tempStr
+                    break
+                }
+            }
+        } 
+        else break
+    }
+
+    function isPalindrome(str){
+        for(let i=0; i< Math.floor(str.length-1/2); i++){
+            if(str[i] != str[str.length-1-i]) return false
+        }
+        return true
+    }
+
+    return longest
+};
+
+// let x = "civilwartestingwhetherthatnaptionoranynartionsoconceivedandsodedicatedcanlongendureWeareqmetonagreatbattlefiemldoftzhatwarWehavecometodedicpateaportionofthatfieldasafinalrestingplaceforthosewhoheregavetheirlivesthatthatnationmightliveItisaltogetherfangandproperthatweshoulddothisButinalargersensewecannotdedicatewecannotconsecratewecannothallowthisgroundThebravelmenlivinganddeadwhostruggledherehaveconsecrateditfaraboveourpoorponwertoaddordetractTgheworldadswfilllittlenotlenorlongrememberwhatwesayherebutitcanneverforgetwhattheydidhereItisforusthelivingrathertobededicatedheretotheulnfinishedworkwhichtheywhofoughtherehavethusfarsonoblyadvancedItisratherforustobeherededicatedtothegreattdafskremainingbeforeusthatfromthesehonoreddeadwetakeincreaseddevotiontothatcauseforwhichtheygavethelastpfullmeasureofdevotionthatweherehighlyresolvethatthesedeadshallnothavediedinvainthatthisnationunsderGodshallhaveanewbirthoffreedomandthatgovernmentofthepeoplebythepeopleforthepeopleshallnotperishfromtheearth"
+// console.log(longestPalindrome(x))

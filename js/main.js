@@ -304,3 +304,30 @@ var longestPalindrome = function(s) {
 
 // let x = "civilwartestingwhetherthatnaptionoranynartionsoconceivedandsodedicatedcanlongendureWeareqmetonagreatbattlefiemldoftzhatwarWehavecometodedicpateaportionofthatfieldasafinalrestingplaceforthosewhoheregavetheirlivesthatthatnationmightliveItisaltogetherfangandproperthatweshoulddothisButinalargersensewecannotdedicatewecannotconsecratewecannothallowthisgroundThebravelmenlivinganddeadwhostruggledherehaveconsecrateditfaraboveourpoorponwertoaddordetractTgheworldadswfilllittlenotlenorlongrememberwhatwesayherebutitcanneverforgetwhattheydidhereItisforusthelivingrathertobededicatedheretotheulnfinishedworkwhichtheywhofoughtherehavethusfarsonoblyadvancedItisratherforustobeherededicatedtothegreattdafskremainingbeforeusthatfromthesehonoreddeadwetakeincreaseddevotiontothatcauseforwhichtheygavethelastpfullmeasureofdevotionthatweherehighlyresolvethatthesedeadshallnothavediedinvainthatthisnationunsderGodshallhaveanewbirthoffreedomandthatgovernmentofthepeoplebythepeopleforthepeopleshallnotperishfromtheearth"
 // console.log(longestPalindrome(x))
+
+
+//6. Zigzag Conversion
+var convert = function(s, numRows) {
+    let matrix = {}
+
+    for(let i=0; i < numRows; i++){ matrix[i] = [] }
+
+    let index = 0
+    let indexRef = 1
+    for(let i=0; i < s.length; i++){
+
+        matrix[index].push(s[i])        
+        
+        index += indexRef
+                
+        if(index == numRows-1) indexRef = -1
+        if(index == 0) indexRef = 1    
+        if(numRows == 1) index = 0
+    }
+
+    let text = ""
+    for(let i=0; i < numRows; i++){ text += matrix[i].join("") }
+    return text
+}
+
+console.log(convert("AB", 3))

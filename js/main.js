@@ -330,4 +330,71 @@ var convert = function(s, numRows) {
     return text
 }
 
-console.log(convert("AB", 3))
+// console.log(convert("AB", 3))
+
+
+//7. Reverse Integer
+
+var reverse = function(x) {
+    
+    let str = ''+x
+    let rev = ''
+
+    for(let i=str.length-1; i>=0 ; i--){
+        if(str[i] != '-')rev += str[i]
+    }
+
+    if(Math.log2(rev)>31) return 0
+    rev = +rev
+    if(x<0) rev = -rev
+    return rev
+};
+
+//console.log(reverse(-12349996))
+
+
+
+
+
+//8. String to Integer (atoi)
+/**
+ * @param {string} s
+ * @return {number}
+ */
+ var myAtoi = function(s) {
+    let num = ''
+    let numFlag = false
+    let symbolFlag = false
+    let negativeFlag = false
+
+    for(let i=0; i<s.length ; i++){
+
+        if(s[i] == ' ' || (s[i]>=0 && s[i]<=9) || ((s[i] == '-' || s[i] == '+') && !numFlag)) {
+            
+            if(s[i] == ' ' && (numFlag || symbolFlag)) break
+            if(s[i] == '-' || s[i] == '+') {
+                if(!symbolFlag) {
+                    symbolFlag = true
+                    if(s[i] == '-')negativeFlag = true
+                }                    
+                else return 0
+            }
+            else if(s[i] != ' ' ){
+                numFlag = true
+                num +=s[i]
+            }
+        }
+        else if(num.length>0 && num!='-') break
+        else if(!numFlag) return 0
+    }
+
+    if(isNaN(+num)) num =0
+    if(num != 0){
+        if(negativeFlag) num = -num
+        if(num>0 && Math.log2(num)>=31) return Math.pow(2,31)-1
+        if(num<0 && Math.log2(-num)>=31) return -Math.pow(2,31)
+    }
+    return +num
+};
+
+console.log(myAtoi("   +0 123"))

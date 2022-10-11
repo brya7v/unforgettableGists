@@ -397,4 +397,22 @@ var reverse = function(x) {
     return +num
 };
 
-console.log(myAtoi("   +0 123"))
+// console.log(myAtoi("   +0 123"))
+
+
+var isPalindrome = function(x) {
+    let length = Math.ceil(Math.log10(x+1))
+    let tempX = x
+    let palindrome = 0
+    for(let i=length-1, j=0; i >= 0; i--, j++) {
+        let z = Math.floor(tempX/(1*10**i))
+
+        tempX = tempX - (z * (1*10**i))
+        palindrome+= (1*10**j) * z
+    } 
+
+    if(x == palindrome) return true
+    return false
+};
+
+// console.log(isPalindrome(-123321))

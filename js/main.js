@@ -42,20 +42,20 @@ $(`.section-${currentSection}`).fadeIn(500, ()=> {
 
                     //set def1 lements ids, create submenu items
                     $(block).find(`def1`).each((i, def1) => {
-                        let def1_id = ""+section+$(def1).text().replaceAll(" ", "_").replaceAll("%", "_").replaceAll("*", "star").replace(".", "dot")
+                        let def1_id = ""+section+$(def1).text().replaceAll(" ", "_").replaceAll("%", "_").replaceAll("*", "star").replaceAll(".", "dot").replaceAll("(", "_").replaceAll(")", "_").replaceAll("/", "_")
                         $(def1).prop('id', def1_id)
                         navItemHtml += `<div class="nav_item_flex-container-item" onclick="scrollToElement('${def1_id}')"> ${$(def1).text()}</div>`
                     })
 
                     //set def2 lements ids, create submenu items
                     $(block).find(`def2`).each((i, def2) => {
-                        let def2_id = ""+section+$(def2).text().replaceAll(" ", "_").replaceAll("%", "_").replaceAll("*", "star").replace(".", "dot")
+                        let def2_id = ""+section+$(def2).text().replaceAll(" ", "_").replaceAll("%", "_").replaceAll("*", "star").replaceAll(".", "dot").replaceAll("(", "_").replaceAll(")", "_").replaceAll("/", "_")
                         $(def2).prop('id', def2_id)
                         navItemHtml += `<div class="nav_item_flex-container-item nav_item_flex-container-item--sec" onclick="scrollToElement('${def2_id}')"> ${$(def2).text()}</div>`
 
                         //set def3 lements ids, create submenu items
                         $(def2).parent().find(`def3`).each((i, def3) => {
-                            let def3_id = ""+section+$(def3).text().replaceAll(" ", "_").replaceAll("%", "_").replaceAll("*", "star").replace(".", "dot")
+                            let def3_id = ""+section+$(def3).text().replaceAll(" ", "_").replaceAll("%", "_").replaceAll("*", "star").replaceAll(".", "dot").replaceAll("(", "_").replaceAll(")", "_").replaceAll("/", "_")
                             $(def3).prop('id', def3_id)
                             navItemHtml += `<div class="nav_item_flex-container-item nav_item_flex-container-item--third" onclick="scrollToElement('${def3_id}')"> ${$(def3).text()}</div>`
                         })

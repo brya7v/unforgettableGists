@@ -1,0 +1,153 @@
+<div class="block">
+    <def2>Interface Segregation Principle (ISP)</def2>
+
+    <p>Theres a problem regarding this SOLID principle and Javascript bc it doesn't use interfaces.</p>
+    <p>Although we can formalize the interaction of interfaces with specific code, to make a class behave like an interface.</p>
+
+    <p>Lets say we have a machine intarface, with specific methods</p>
+    <div class="poblem-solution__container">
+      <pre>  
+        class Machine
+        {
+          constructor()
+          {
+            if (this.constructor.name === 'Machine')
+              throw new Error('Machine is abstract!');
+          }
+        
+          print(doc) {}
+          fax(doc) {}
+          scan(doc) {}
+        }
+      </pre>
+  </div>
+
+  <p>We could create another class that extends Machine to use all of this methods.</p>
+  <div class="poblem-solution__container">
+    <pre>  
+      
+      class MultiFunctionPrinter extends Machine
+      {
+        print(doc) {
+          //
+        }
+
+        fax(doc) {
+          //
+        }
+
+        scan(doc) {
+          //
+        }
+      }
+    </pre>
+  </div>
+
+
+  <p>But lets say we just one a printer.</p>
+  <p>The print method is ok, but the other ones are not going to work.</p>
+  <p>If we leave a method that does nothing, it will leads us to a Principle: <strong>Principle of Least surprice</strong>.</p>
+  <div class="poblem-solution__container">
+    <pre>        
+      class OldFashionedPrinter extends Machine
+      {
+        print(doc) {
+          // ok
+        }
+      
+        // omitting this is the same as no-op impl
+      
+        // fax(doc) {
+        //   // do nothing
+        // }
+      
+        scan(doc) {
+          // throw new Error('not implemented!');
+          throw new NotImplementedError(
+            'OldFashionedPrinter.scan')
+        }
+      }
+    </pre>
+  </div>
+
+  <def3>Principle of Least surprice</def3>
+  <p>There should not be some magic and unpredictable results, si if there is a method thas says it does something, it should do it.</p>
+  <p>To prevent instead of leaving the method returning nothing, it should throw an error, so it's funcitonality is explicit if someone tries to use it.</p>
+
+
+  <p>To throw that specific error, we could handle it as follows.</p>
+  <div class="poblem-solution__container">
+    <pre>        
+      class NotImplementedError extends Error
+      {
+        constructor(name)
+        {
+          let msg = `${name} is not implemented!`;
+          super(msg);
+          // maintain proper stack trace
+          if (Error.captureStackTrace)
+            Error.captureStackTrace(this, NotImplementedError);
+          // your custom stuff here :)
+        }
+      }
+    </pre>
+  </div>
+
+  <p>This is still user unfriendly, bc having interfaces full of stuff we don't need, when we use them we will have to do a bunch of additional stuff
+    to handle unused methods.</p>
+
+
+  <br>
+  <p>The correct approach, following the interface segregation principle</p>
+  <strong>We have to segregate or split up interfaces into different parts, so people don't implement more than what they need</strong>
+  <div class="poblem-solution__container">
+    <pre>        
+      // solution
+      class Printer
+      {
+        constructor()
+        {
+          if (this.constructor.name === 'Printer')
+            throw new Error('Printer is abstract!');
+        }
+      
+        print(){}
+      }
+      
+      class Scanner
+      {
+        constructor()
+        {
+          if (this.constructor.name === 'Scanner')
+            throw new Error('Scanner is abstract!');
+        }
+      
+        scan(){}
+      }
+
+
+      //WE CAN'T class Photocopier extends Printer, Scanner
+      
+      class Photocopier extends aggregation(Printer, Scanner)
+      {
+        print()
+        {
+          // IDE won't help you here
+        }
+
+        scan()
+        {
+          //
+        }
+      }
+
+      // we don't allow this!
+      // let m = new Machine();
+
+      let printer = new OldFashionedPrinter();
+      printer.fax(); // nothing happens
+      //printer.scan();
+    </pre>
+  </div>
+
+</div>

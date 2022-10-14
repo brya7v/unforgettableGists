@@ -1,0 +1,133 @@
+<div class="block">
+    <def2>Dependency Inversion (DIP)</def2>
+
+    <p>Does not have anything to do with dependency injection.</p>
+
+    <p>Defince the relation that low level module and high level modules should have.</p>
+    
+    <strong>Javascript limitations affect bc... depending on abstractions
+        is a better approach not just for development but also for testing.</strong>
+    
+
+    <def3>Low level module</def3>
+    <p>Low level module has to do with storing data</p>
+
+    <def3>High level module</def3>
+    <p>Hight level module has to do with processing and getting data out</p>
+
+    <br>
+
+    <strong>High level modules (reseach) should not directly DEPEND on low level modules (relationships), isntead it should depend on abstracitons
+        like abstract classes and interfaces.</strong>
+
+
+    <p>In the example, we are messing with this principle by: accesing relationships.data, bc we are depending in the lowlevel class property. </p>
+    <p>This works, but the problem is that, if later we change the relationship class property data=[] to another data structure, we will also 
+        have to change the Research class. </p>
+
+
+
+<p>If we have to finAllChildernOf inside the Relationship class its a better approach bc if later we change the Rel.data property, we also have to change the
+    finAllChildernOf method wich is alreary in the same class. </p>
+
+    <strong>If we modify a class we should need to modify more stuff of the same class, not from all the project (SINGLE RESPONIBILITY PRINCIPLES)</strong>
+
+    <div class="poblem-solution__container">
+        <pre>  
+            let Relationship = Object.freeze({
+                parent: 0,
+                child: 1,
+                sibling: 2
+              });
+              
+              class Person
+              {
+                constructor(name)
+                {
+                  this.name = name;
+                }
+              }
+              
+              // LOW-LEVEL (STORAGE)
+              
+              class RelationshipBrowser
+              {
+                constructor()
+                {
+                  if (this.constructor.name === 'RelationshipBrowser')
+                    throw new Error('RelationshipBrowser is abstract!');
+                }
+              
+                findAllChildrenOf(name) {}
+              }
+              
+              class Relationships extends RelationshipBrowser
+              {
+                constructor()
+                {
+                  super();
+                  this.data = [];
+                }
+              
+                addParentAndChild(parent, child)
+                {
+                  this.data.push({
+                    from: parent,
+                    type: Relationship.parent,
+                    to: child
+                  });
+                  this.data.push({
+                    from: child,
+                    type: Relationship.child,
+                    to: parent
+                  });
+                }
+              
+              
+                findAllChildrenOf(name) {
+                  return this.data.filter(r =>
+                    r.from.name === name &&
+                    r.type === Relationship.parent
+                  ).map(r => r.to);
+                }
+              }
+              
+              // HIGH-LEVEL (RESEARCH)
+              
+              class Research
+              {
+                // constructor(relationships)
+                // {
+                //   // problem: direct dependence ↓↓↓↓ on storage mechanic
+                //   let relations = relationships.data;
+                //   for (let rel of relations.filter(r =>
+                //     r.from.name === 'John' &&
+                //     r.type === Relationship.parent
+                //   ))
+                //   {
+                //     console.log(`John has a child named ${rel.to.name}`);
+                //   }
+                // }
+              
+                constructor(browser)
+                {
+                  for (let p of browser.findAllChildrenOf('John'))
+                  {
+                    console.log(`John has a child named ${p.name}`);
+                  }
+                }
+              }
+              
+              let parent = new Person('John');
+              let child1 = new Person('Chris');
+              let child2 = new Person('Matt');
+              
+              // low-level module
+              let rels = new Relationships();
+              rels.addParentAndChild(parent, child1);
+              rels.addParentAndChild(parent, child2);
+              
+              new Research(rels);
+        </pre>
+    </div>
+</div>

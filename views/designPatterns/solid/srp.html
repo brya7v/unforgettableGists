@@ -1,0 +1,91 @@
+
+<div class="block">
+    <def2>Single Responsibility Principle (SRP)</def2>
+    <p>A class should have a single primary Responsibility and as a consequence it should only have one reason to change, that reason
+        beign somehow related to its Responsibility, in other words <strong>it's a bad idea to add more than Responsibilityto a class</strong>
+    </p>
+    <p>In the next class example, the class Journal has only one job: handling entries</p>
+    <div class="poblem-solution__container">
+        <pre>  
+
+            //import requires a npm project based to work
+
+            import fs from 'fs'
+            class Journal
+            {
+                constructor(){
+                    this.entries = {}
+                }
+
+                addEntry(text){
+                    let c = ++Journal.count
+                    let entry = `${c}: ${text}`
+                    this.entries[c] = entry
+                    return c
+                }
+
+                removeEntry(index){
+                    delete this.entries[index]
+                }
+
+                toString(){
+                    return Object.values(this.entries).join('\n')
+                }
+
+
+
+                //THIS  FUNCTIONS SHOULDN'T BE IN THE SAME CLASS, WE SHOULD ADD ANOTHER CLASS FOR PERSISTENCE
+                save(filename){
+                    fs.writeFileSync(filename, this.toString())
+                }
+
+                load(filename){
+
+                }
+                loadFromUrl(url){
+
+                }
+            }
+            Journal.count = 0
+
+            let j = new Journal()
+            j.addEntry('test entry number one')
+            j.addEntry('second entry')
+            j.addEntry('another entry ')
+
+            console.log(j.toString())
+        </pre>
+    </div>
+
+    <p>Instead of the Journal class doing the files related stuff, we should have another class that can handle that files related stuff
+        in a general way, so we can work with the Journal class or others that we may use in the future, instead of each Journal type class
+        having it's own file management methods inside.
+    </p>
+    <br>
+    <p>This way, if our files are not beign saved properly, we don't have to look the specific class to find the problem, we just have to checkit
+        in the PersistenceManager class
+    </p>
+    <div class="poblem-solution__container">
+        <pre>  
+            class PersistenceManager{
+
+                preprocess(journal){
+                    
+                }
+
+                saveToFile(journal, filename){
+                    fs.writeFileSync(filename, this.toString())
+                }
+            }
+
+            let p = new PersistenceManager()
+            let filename = 'c:/temp/journal.txt'
+
+            p.saveToFile(j, filename)
+        </pre>
+    </div>
+    <def3>Separation of concerns</def3>
+    <p>Separation of functionalities / responsibilities into different objects / classes, so the code becomes easier to work with, easier to refactor, debug, etc. 
+
+    </p>
+</div>

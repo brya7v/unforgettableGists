@@ -1,0 +1,169 @@
+
+<div class="block">
+    <def2>Open/Closed Principle (OCP)</def2>
+
+    <p>States that objects are open for extension, but close for modification</p>
+    <p>It's preferable to add new functionalities by creating them into new Clases instead of modifying an existing one bc it can generate problems due to it
+        beign implemented in other codes, or it will require modifications in unit testing code, etc. </p>
+
+    <strong>We never jump to an existing class and modify it, we should create a new one.</strong>
+    <div class="poblem-solution__container">
+        <pre>  
+
+            let Color = Object.freeze({
+                red: 'red',
+                green: 'green',
+                blue: 'blue'
+            })
+
+            
+            let Size = Object.freeze({
+                small: 'small',
+                medium: 'medium',
+                large: 'large'
+            })
+
+
+            class Product{
+                constructor(name, color, size){
+                    this.name = name
+                    this.color = color
+                    this.size = size
+                }
+            }
+
+            class ProductFilter{
+                filterByColor(products, color){
+                    return products.filter(p => p.color === color)
+                }
+
+                filterBySize(products, size){
+                    return products.filter(p => p.size === size)
+                }
+
+                //IF WE CONTINUE ADDING FILTER METHODS, WE'LL HAVE SOMETHING CALLED: STATE SPACE EXPLOSION
+                //ITS NOT PRACTICAL TO WRITE ONE FILTER FOR EACH SPECIFIC SEARCH CASE
+
+                //EACH FILTER SHOULD BE IN A SEPARATED CLASS
+
+                filterBySizeAndColor(products, size, color){
+                    return products.filter(p => p.size === size && p.color === color)
+                }
+            }
+
+            let apple = new Product('Apple', Color.green, Size.small)
+            let tree = new Product('Tree', Color.green, Size.large)
+            let house = new Product('House', Color.blue, Size.large)
+
+            let products = [apple, tree, house]
+
+            let pf = new ProductFilter()
+
+            console.log(`Green products (bad approach):`)
+            for(let p of pf.filterByColor(products, Color.green)){
+                console.log(` * ${p.name} is green`)
+            }
+
+        </pre>
+    </div>
+
+    <def3>State space explosion</def3>
+    <p>For this example, we started with the filterByColor, then added filterBySize, then filterByColorAndSize, it's not practical to write all combinations 
+        for the search cases, this will create a sate space explosion.
+    </p>
+    <def3>Specification pattern</def3>
+    <p>This patter takes us away from the state space explosion methods, wich allow us to write something more easeir to work with</p>
+    <p>If we have each filter in a separated class, if then we need to add more filters we don't have to modify the already existing classes, we just create a brand new class
+        and implement it where it's needed (OPEN FOR NEW ADDITIONS, CLOSED FOR MODIFICATIONS)
+    </p>
+
+    <div class="poblem-solution__container">
+        <pre>  
+            class ColorSpecification{
+                constructor(color){
+                    this.color = color
+                }
+
+                isSatisfied(item){
+                    return item.color === color
+                }
+            }
+
+            class SizeSpecification{
+                constructor(size){
+                    this.size = size
+                }
+
+                isSatisfied(item){
+                    return item.size === size
+                }
+            }
+
+            class BetterFilter{
+                filter(items, spec){
+                    return items.filter(x=> spc.isSatisfied(x))
+                }
+            }
+
+            let bf = new BetterFilter()
+            console.log(`Green products (good approach):`)
+            for(let p of bf.filter(products, 
+                new ColorSpecification(Color.green))){
+                console.log(` * ${p.name} is green`)
+            }
+        </pre>
+    </div>
+    <div class="poblem-solution__container">
+        <pre>  
+
+            //COMBINATOR WITH AN AND SPECIFICATION - HOW IT SHOULD BE DONE FOLLOWING THE OPEN/CLOSE PRINCIPLE
+            console.log('Large and Green prods:')
+            let spec = new AndSpecification(
+                new ColorSpecification(Color.green),
+                new SizeSpecification(Size.large)
+            )
+            for(let p of bf.filter(products, spec)){
+                console.log(` * ${p.name} is large and green`)
+            }
+
+            //FOR MULTIPLE FILTERS WE SHOULD ADD A MULTIPLIER
+
+            class AndSpecification{
+                constructor(...specs)
+                {
+                    this.specs = specs
+                }
+
+                isSatisfied(item){
+                    return this.specs.every(x => x.isSatisfied(item))
+                }
+            }
+
+            //THERE ALSO CAN BE OrSpecification, 
+        </pre>
+    </div>
+
+    <strong>Typically in object oriented programming the Specification classes would have some sort of abstract class</strong>
+    <p>In js there are no abrstract classes but we can force it into the constructor</p>
+    <p>An abstract class defines methods but not its implementation, it does not have a constructor, its just used to be extended from other clases </p>
+    <div class="poblem-solution__container">
+        <pre>  
+            class Specification{
+                constructor(){
+                    if(this.constructor.name === 'Specification')
+                    throw new Error('Specification is abstract!')
+                }
+
+                isSatisfied(item){
+
+                }
+            }
+
+            Class ColorSpecification extends Specification {
+
+
+            }
+        </pre>
+    </div>
+
+</div>

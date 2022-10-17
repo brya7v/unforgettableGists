@@ -1,0 +1,169 @@
+<div class="block">
+    <def2>Builder</def2>
+    <p><strong>- A builder is a separate component for building an object</strong></p>
+    <p><strong>- Can either give builder an initializer or return it via a static function</strong></p>
+    <p><strong>- A fluent builder returns this</strong></p>
+    <p><strong>- Different facets of an object can be build with different builders working in tandem bia a base class</strong></p>
+    <br>
+    <strong>When piecewise object construction is complicated, (builder) provides an API for doing it succintly</strong></p>
+    <p>When construction gets a little bit too complicated</p>
+    <p>It is a SEPARATED component that helps you build up a particular object structure</p>
+    <strong>Motivation:</strong>
+    <p>- Some objects are simple and can be created in a single initializer call</p>
+    <p>- Other objects require lot of ceremony to create</p>
+    <p>- Having an object with 10 initializer arguments is not productive</p>
+    <p>- Instead, opt for piecewise construction</p>
+    <p>- Builder provides an API for constructing an object step-by-step</p>
+
+    <br>    
+    <p>A builder is something that can help us construct a particular object</p>
+    <p>Example: construct a chunk of html</p>
+
+    <div class="poblem-solution__container">
+        <pre>  
+    const hello = 'hello'
+    let html = []
+    html.push('&ltp&gt')
+    html.push(hello)
+    html.push('&lt/p&gt')
+
+    console.log(html.join(''))
+    //although this is an overkill for creating an html structure, it would be easier to just use string
+    //interpolation in a template string
+
+    const words = ['hello', 'world']
+    let html = []
+    html.push('&ltul&gt')
+    for(let word of words)
+        html.push(`  li ${word} /li`)
+    html.push('&lt/ul&gt')
+        </pre>
+    </div>
+    
+    <p>Although we can use more conditional funcitons to create complex sets of html, its still not 
+        Succintly enought, thats where we can use a more structured approeach:<strong> builder pattern</strong></p>
+
+    <div class="poblem-solution__container">
+        <pre>  
+    class Tag {
+        static get indentSize() { return 2; }
+         
+        constructor(name='', text=''){
+            this.name =name
+            this.text =text
+            this.children = []
+        }
+
+        toStringImpl(indent)
+        {
+          let html = [];
+          let i = ' '.repeat(indent * Tag.indentSize);
+          html.push(`${i}&lt${this.name}&gt\n`);
+          if (this.text.length > 0)
+          {
+            html.push(' '.repeat(Tag.indentSize * (indent+1)));
+            html.push(this.text);
+            html.push('\n');
+          }
+      
+          for (let child of this.children)
+            html.push(child.toStringImpl(indent+1));
+      
+          html.push(`${i}&lt/${this.name}&gt\n`);
+          return html.join();
+        }
+
+        toString()
+        {
+          return this.toStringImpl(0);
+        }
+        
+        
+        //The builder can be used with let builder = new HtmlBuilder(name), or builder = Tag.create('ul') 
+        static create(name)
+        {
+          return new HtmlBuilder(name);
+        }
+    }
+        </pre>
+    </div>
+    <p>In this example the <strong>tag class</strong> can create nested structures of html with childs,
+        but we still need the <strong>Builder</strong> </p>
+
+    <div class="poblem-solution__container">
+        <pre>  
+
+    class HtmlBuilder {
+        constructor(rootName){
+            this.root = Tag(rootName)
+            this.rootName = rootName
+        }
+
+        // non-fluent
+        addChild(childName, childText)
+        {
+          let child = new Tag(childName, childText);
+          this.root.children.push(child);
+        }
+
+        // fluent
+        addChildFluent(childName, childText)
+        {
+          let child = new Tag(childName, childText);
+          this.root.children.push(child);
+          return this;
+        }
+
+        toString()
+        {
+          return this.root.toString();
+        }
+
+        build()
+        {
+          return this.root;
+        }
+
+        clear()
+        {
+          this.root = new Tag(this.rootName);
+        }
+    }
+
+    //The builder can be used with let builder = new HtmlBuilder(name), or builder = Tag.create('ul') 
+    
+        </pre>
+    </div>
+
+    <p>In this example the <strong>tag class</strong> can create nested structures of html with childs,
+        but we still need the <strong>Builder</strong> </p>
+
+
+    <def3>Fluent interface</def3>
+    <p>A fluent interface is when the methods return the object after doing what they are supposed to.
+        this way we can <strong>concatenate</strong> methods one after another, <strong>(fluent builder)</strong> </p>
+    <p>In a fluent interface, we we are done with an interface method, we've to return a refference to the containing object <strong>this</strong></p>
+    <div class="poblem-solution__container">
+        <pre>  
+            // non-fluent
+            addChild(childName, childText)
+            {
+              let child = new Tag(childName, childText);
+              this.root.children.push(child);
+            }
+
+            //This way we can 
+
+            // fluent builder
+            builder.clear();
+            builder
+                .addChildFluent('li', 'foo')
+                .addChildFluent('li', 'bar')
+                .addChildFluent('li', 'baz');
+            console.log(builder.toString());
+        </pre>
+    </div>
+
+    <p>Otherwhise, in a <strong>non fluent builder</strong> we've to call the method in separated lines, or in something like a for (instead of chaining)</p>
+</div>
+

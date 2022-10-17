@@ -1,0 +1,201 @@
+<div class="block">
+    <def2>Abstract Factory</def2>
+    <p><strong>- Hierarchies of factories can be used to create related objects.</strong></p>
+    <p><strong>- Its a more complicated idea that desnt map fully with javascript.</strong></p>
+    <p><strong>- Its used one theres a hierarchy of classes, (HotDrink ↠ Tea and Coffe) thus: the factories will also have some sort of Hierarchy
+        wich instanciate those Tea and Coffe factories, there are many ways to make this connections, for example .</strong></p>
+<p>This way the HotDrinkMachine interacts with the Tea and Coffe abstract classes. </p>
+        <div class="poblem-solution__container">
+            <pre>  
+            let AvailableDrink = Object.freeze({
+                coffee: CoffeeFactory,
+                tea: TeaFactory
+            });
+        
+            class HotDrinkMachine
+            {
+            constructor()
+            {
+                this.factories = {};
+                for (let drink in AvailableDrink)
+                {
+                this.factories[drink] = new AvailableDrink[drink]();
+                }
+            }
+            </pre>
+        </div>
+
+    
+
+    <p>For this example, we've two classes (Tea and Coffe) wich extends the class HotDrink</p>
+
+    <p>Tea and coffe have different ways of consume(), and although they both extend HotDrink, each one
+        requires a different factory to make them.
+    </p>
+
+    <p>The TeaFactory and the CoffeFactory are separated, but they both extend the HotDrinkFactory</p>
+
+    <p>The class HotDrinkMachine can make drinks, wich uses the other factories</p>
+    <div class="poblem-solution__container">
+        <pre>  
+
+    //WE ARE BREAKING THE OPEN CLOSE PRINCIPLE BC THE CLASS HOTDRINKMACHINE IS ACCESSING DIRECTLY THE TEAFACTORY.PREPARE METHODS
+    makeDrink(type)
+    {
+        switch (type)
+        {
+        case 'tea':
+            return new TeaFactory().prepare(200);
+        case 'coffee':
+            return new CoffeeFactory().prepare(50);
+        default:
+            throw new Error(`Don't know how to make ${type}`);
+        }
+    }
+        </pre>
+    </div>
+
+
+    <p>A better approach would be have an association between the HotDrinkFactory and the TeaFactory (not by a switch)</p>
+    <p>We have an object of AvailableDrinks with factories, and in the HotDrinkMachine we have an object with instances of each factory</p>
+    <div class="poblem-solution__container">
+        <pre>  
+        let AvailableDrink = Object.freeze({
+            coffee: CoffeeFactory,
+            tea: TeaFactory
+        });
+    
+        class HotDrinkMachine
+        {
+        constructor()
+        {
+            this.factories = {};
+            for (let drink in AvailableDrink)
+            {
+            this.factories[drink] = new AvailableDrink[drink]();
+            }
+        }
+        </pre>
+    </div>
+
+    <p><strong>So then we can just:</strong></p>
+    <div class="poblem-solution__container">
+        <pre> 
+            let d = this.factories[name].prepare(amount)
+
+            consumer(d)
+        </pre>
+    </div>
+
+
+    <div class="poblem-solution__container">
+        <pre>  
+    const readline = require('readline');
+    let rl = readline.createInterface({
+    input: process.stdin,
+    output: process.stdout
+    });
+    const async = require('async');
+
+    class HotDrink
+    {
+    consume() {}
+    }
+
+    class Tea extends HotDrink
+    {
+    consume() {
+        console.log('This tea is nice with lemon!');
+    }
+    }
+
+    class Coffee extends HotDrink
+    {
+    consume()
+    {
+        console.log(`This coffee is delicious!`);
+    }
+    }
+
+    class HotDrinkFactory
+    {
+    prepare(amount) { /* abstract */ }
+    }
+
+    class TeaFactory extends HotDrinkFactory
+    {
+    prepare(amount) {
+        console.log(`Grind some beans, boil water, pour ${amount}ml`);
+        return new Coffee();
+    }
+    }
+
+    class CoffeeFactory extends HotDrinkFactory
+    {
+    prepare(amount) {
+        console.log(`Put in tea bag, boil water, pour ${amount}ml`);
+        return new Tea();
+    }
+    }
+
+    let AvailableDrink = Object.freeze({
+    coffee: CoffeeFactory,
+    tea: TeaFactory
+    });
+
+    class HotDrinkMachine
+    {
+    constructor()
+    {
+        this.factories = {};
+        for (let drink in AvailableDrink)
+        {
+        this.factories[drink] = new AvailableDrink[drink]();
+        }
+    }
+
+    makeDrink(type)
+    {
+        switch (type)
+        {
+        case 'tea':
+            return new TeaFactory().prepare(200);
+        case 'coffee':
+            return new CoffeeFactory().prepare(50);
+        default:
+            throw new Error(`Don't know how to make ${type}`);
+        }
+    }
+
+    interact(consumer)
+    {
+        rl.question('Please specify drink and amount ' +
+        '(e.g., tea 50): ', answer => {
+        let parts = answer.split(' ');
+        let name = parts[0];
+        let amount = parseInt(parts[1]);
+        let d = this.factories[name].prepare(amount);
+        rl.close();
+        consumer(d);
+        });
+    }
+    }
+
+    let machine = new HotDrinkMachine();
+    // rl.question('which drink? ', function(answer)
+    // {
+    //   let drink = machine.makeDrink(answer);
+    //   drink.consume();
+    //
+    //   rl.close();
+    // });
+    machine.interact(
+    function (drink) {
+        drink.consume();
+    }
+    );
+
+        </pre>
+    </div>
+</div>
+

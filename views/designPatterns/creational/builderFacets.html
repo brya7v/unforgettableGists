@@ -1,0 +1,170 @@
+<div class="block">
+    <def2>Builder Facets</def2>
+    <strong>When a single builder it's insuficient for building another</strong>
+    <strong>- Different facets of an object can be build with different builders working in tandem bia a base class</strong>
+
+    <p>Multiple builders that interact with each other to create a more complex final object</p>
+
+    <p>- In this example we have separated builder for the address, and one for the earnings</p>
+    <p>- We are using 3 classes as builders, one for each 'object' we have a builder class (address, employee, and earning)</p>
+    <p>- But we also need a <strong>base class</strong> that is the one that implements all the other builders, in This
+    example its called the personBuilder </p>
+
+    <br>
+    <p>We also are using the Person class wich is the final object we are going to create altough it'
+        stored inside the PersonBuilder, also all the builders that create a part of the Person object
+    will be making refference to the this.person of the BaseBuilder person refference bc of this section:</p>
+
+    <div class="poblem-solution__container">
+        <pre>  
+            class PersonBuilder
+            {
+                constructor(person=new Person())
+                {
+                this.person = person;
+                }
+            }
+
+            get works()
+            {
+                return new PersonJobBuilder(this.person);   ///PASSES THIS.PERSON
+            }
+
+            //ALSO ALL THE BUILDERS EXTEND THE BASE BUILDER AND INVOKE THE SUPER constructor
+            class PersonJobBuilder extends PersonBuilder
+            {
+                constructor(person)
+                {
+                    super(person);  
+                }
+            }
+
+        </pre>
+    </div>
+
+    <def3>Base Builder</def3>
+    <p>Is the class that Stores the object we are working with</p>
+    <p>Implements multiple builders to create the required object to be created easier</p>
+    <div class="poblem-solution__container">
+        <pre>  
+
+    class Person
+    {
+        constructor()
+        {
+        // address info
+        this.streetAddress = this.postcode = this.city = '';
+    
+        // employment info
+        this.companyName = this.position = '';
+        this.annualIncome = 0;
+        }
+    
+        toString()
+        {
+        return `Person lives at ${this.streetAddress}, ${this.city}, ${this.postcode}\n`
+            + `and works at ${this.companyName} as a ${this.position} earning ${this.annualIncome}`;
+        }
+    }
+    
+    class PersonBuilder
+    {
+        constructor(person=new Person())
+        {
+        this.person = person;
+        }
+    
+        get lives()
+        {
+        return new PersonAddressBuilder(this.person);
+        }
+    
+        get works()
+        {
+        return new PersonJobBuilder(this.person);
+        }
+    
+        //THE BASE BUILDER .BUILD RETURNS THE FINAL OBJECT OF THE BASE CLASS (PERSON) NOT (PERSONBUILDER)
+        //SO WE END UP WITH THE REQUIRED OBJECT OF THE REQUIRED CLASS (NOT OF THE BUILDER)
+        build()
+        {
+        return this.person;
+        }
+    }
+    
+    class PersonJobBuilder extends PersonBuilder
+    {
+        constructor(person)
+        {
+        super(person);
+        }
+    
+        at(companyName)
+        {
+        this.person.companyName = companyName;
+        return this;
+        }
+    
+        asA(position)
+        {
+        this.person.position = position;
+        return this;
+        }
+    
+        earning(annualIncome)
+        {
+        this.person.annualIncome = annualIncome;
+        return this;
+        }
+    }
+    
+    class PersonAddressBuilder extends PersonBuilder
+    {
+        constructor(person)
+        {
+        super(person);
+        }
+    
+        at(streetAddress)
+        {
+        this.person.streetAddress = streetAddress;
+        return this;
+        }
+    
+        withPostcode(postcode)
+        {
+        this.person.postcode = postcode;
+        return this;
+        }
+    
+        in(city)
+        {
+        this.person.city = city;
+        return this;
+        }
+    }
+    
+        </pre>
+    </div>  
+    <p>Then, with all the builders and base builder set up, we can use the base builder to create a person
+        using chaining, due to the fluent interfaces approach in all builders<p>
+
+    <p>The build() is a final return this.person, to store the final object in person</p>
+    <div class="poblem-solution__container">
+        <pre>  
+    let pb = new PersonBuilder();
+    let person = pb
+        .lives.at('123 London Road').in('London').withPostcode('SW12BC')
+        .works.at('Fabrikam').asA('Engineer').earning(123000)
+        .build();
+    console.log(person.toString());
+        </pre>
+    </div>
+
+    <p>- The personBuilder makes refferense to a specific person instance</p>
+    <p>- The .lives and .works are subbuilders tha return the object instance so we can access the methods,
+        but they also are making refferense to the same person bc they extend the base class personBuilder
+        that is passing the this.person refference to the subBuilders with inheritance.
+    </p>
+
+</div>

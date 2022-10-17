@@ -1,0 +1,133 @@
+<div class="block">
+    <def2>Factory</def2>
+
+    <p><strong>- Is an entity that can take care of object creation (its not necessarily a class) .</strong></p>
+    <p><strong>- Can be external or reside insid the object as an inner class.</strong></p>
+
+
+
+    <p><strong>- Follows single Responsibility priciple principle / and the separation of concerns .</strong></p>
+
+    <p>Instead of having the class Point with the factory methods, we will have the PointFactory class</p>
+
+    <p>The methods are not longer static, so instead of: </p>
+    <p><strong>Not using factory design pattern</strong></p>
+    <div class="poblem-solution__container">
+        <pre>  
+    let p1 = Point.newPolarPoint(5, Math.PI/2);
+        </pre>
+    </div>
+    <p>We can work without the static functions but we will have to instanciate the class</p>
+    <div class="poblem-solution__container">
+        <pre>  
+    let pf = new PointFactory()
+    let p2 = pf.newPolarPoint(5, Math.PI/2);
+        </pre>
+    </div>
+
+    <p>Or we can implement a factory getter that returns the factory, so we dont need to instanciate it</p>
+    <div class="poblem-solution__container">
+        <pre>  
+    // this line will not work if newCartesianPoint is static!
+    let p3 = Point.factory.newCartesianPoint(2, 3);
+
+    //Point.factory returns new PointFactory()
+        </pre>
+    </div>
+
+
+    <p><strong>The Factory design pattern no longer implements static factory methods. We've to instanciate the factory to access them.
+        or we can have a Point class with a getter that returns the new PointFactory()
+    </strong></p>
+
+    <div class="poblem-solution__container">
+        <pre>  
+    static get factory()
+    {
+        return new PointFactory();
+    }
+
+    // so we can 
+    let p3 = Point.factory.newCartesianPoint(2, 3);
+        </pre>
+    </div>
+
+
+    <div class="poblem-solution__container">
+        <pre>  
+            CoordinateSystem = {
+                CARTESIAN : 0,
+                POLAR : 1
+              };
+              
+              class Point
+              {
+                constructor(x, y)
+                {
+                  this.x = x;
+                  this.y = y;
+                }
+              
+                // constructor(a, b, cs=CoordinateSystem.CARTESIAN)
+                // {
+                //   switch (cs)
+                //   {
+                //     case CoordinateSystem.CARTESIAN:
+                //       this.x = a;
+                //       this.y = b;
+                //       break;
+                //     case CoordinateSystem.POLAR:
+                //       this.x = a * Math.cos(b);
+                //       this.y = a * Math.sin(b);
+                //       break;
+                //   }
+                //
+                //   // steps to add a new system
+                //   // 1. augment CoordinateSystem
+                //   // 2. change ctor
+                // }
+              
+                static newCartesianPoint(x, y)
+                {
+                  return new Point(x, y);
+                }
+              
+                static newPolarPoint(rho, theta)
+                {
+                  return new Point(rho*Math.cos(theta), rho*Math.sin(theta));
+                }
+              
+                static get factory()
+                {
+                  return new PointFactory();
+                }
+              }
+              
+              class PointFactory
+              {
+                // not necessarily static
+                newCartesianPoint(x, y)
+                {
+                  return new Point(x, y);
+                }
+              
+                static newPolarPoint(rho, theta)
+                {
+                  return new Point(rho*Math.cos(theta), rho*Math.sin(theta));
+                }
+              }
+              
+              let p1 = new Point(2, 3, CoordinateSystem.CARTESIAN);
+              console.log(p1);
+              // Point → PointFactory
+              let p2 = PointFactory.newPolarPoint(5, Math.PI/2);
+              console.log(p2);
+              
+              // this line will not work if newCartesianPoint is static!
+              let p3 = Point.factory.newCartesianPoint(2, 3);
+              console.log(p3);
+
+        </pre>
+    </div>
+</div>
+

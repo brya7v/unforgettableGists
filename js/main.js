@@ -416,3 +416,132 @@ var isPalindrome = function(x) {
 };
 
 // console.log(isPalindrome(-123321))
+
+
+
+// 10 10. Regular Expression Matching
+/**
+ * @param {string} s
+ * @param {string} p
+ * @return {boolean}
+ */
+//  var isMatch = function(s, p) {
+    
+//     let sArray = s.split('')
+//     let pArray = p.split('')
+
+//     let pix = 0
+//     let lastSC = ''
+//     let lastPC = ''
+//     let indx = 0
+
+//     if(!p.includes('*') && !p.includes('.')) if(s != p) return false
+
+//     for (sc of sArray){
+
+//         console.log(`${sc} - ${pArray[pix]}       -     ${pArray[pix+1]} - ${lastSC} - ${lastPC} `)
+
+//         if(pArray[pix] == sc || pArray[pix] == '.'){
+//             console.log('x1')
+//             lastSC = sc
+//             lastPC = pArray[pix]
+//             pix++
+//         }
+//         else if(pArray[pix+1] == '*' && lastSC != sc){
+//             console.log('x2.0')
+//             lastSC = sc
+//             pix++
+//         }
+//         else if(pArray[pix] == '*' && lastSC == sc){
+//             console.log('x2.1')            
+//             if(sArray[indx+1] != sc && lastPC !='.') pix++
+//         }
+//         else if(pArray[pix] == '*' && lastPC == "."){
+//             console.log('x2.2')
+//             if(pArray[pix+1] != undefined && pArray[pix+1] != '.' && pArray[pix+1] != '*' && pArray[pix+2] == undefined){
+//                 console.log('xxx')
+//                 if(indx == sArray.length-1 && sc !=pArray[pix+1] ) {
+//                     return false             
+//                 }
+//             }
+//         }
+//         else if(pArray[pix+1] == '*'){
+//             console.log('x3')            
+//         }
+//         else {
+//             console.log('x4')          
+//             return false
+//         }
+
+//         indx++
+//     }
+
+//     return true
+// };
+var isMatch = function(s, p) {
+    
+
+
+    function getSubstrings(s, p){
+
+        let sArray = s.split('')
+        let pArray = p.split('')
+    
+        let curr = pArray[0]
+        let two = pArray[1]
+        let three = pArray[2]
+
+        let comp = sArray[0]
+        
+        let index = 0 
+        if(two == undefined)
+        if(curr == comp ){
+            return []
+        }
+    }
+}
+
+console.log(isMatch('abasdasda', '.*x'))
+
+    // if(!p.includes('*') && !p.includes('.')) if(s != p) return false
+
+    // for (sc of sArray){
+
+    //     console.log(`${sc} - ${pArray[pix]}       -     ${pArray[pix+1]} - ${lastSC} - ${lastPC} `)
+
+    //     if(pArray[pix] == sc || pArray[pix] == '.'){
+    //         console.log('x1')
+    //         lastSC = sc
+    //         lastPC = pArray[pix]
+    //         pix++
+    //     }
+    //     else if(pArray[pix+1] == '*' && lastSC != sc){
+    //         console.log('x2.0')
+    //         lastSC = sc
+    //         pix++
+    //     }
+    //     else if(pArray[pix] == '*' && lastSC == sc){
+    //         console.log('x2.1')            
+    //         if(sArray[indx+1] != sc && lastPC !='.') pix++
+    //     }
+    //     else if(pArray[pix] == '*' && lastPC == "."){
+    //         console.log('x2.2')
+    //         if(pArray[pix+1] != undefined && pArray[pix+1] != '.' && pArray[pix+1] != '*' && pArray[pix+2] == undefined){
+    //             console.log('xxx')
+    //             if(indx == sArray.length-1 && sc !=pArray[pix+1] ) {
+    //                 return false             
+    //             }
+    //         }
+    //     }
+    //     else if(pArray[pix+1] == '*'){
+    //         console.log('x3')            
+    //     }
+    //     else {
+    //         console.log('x4')          
+    //         return false
+    //     }
+
+    //     indx++
+    // }
+
+    // return true

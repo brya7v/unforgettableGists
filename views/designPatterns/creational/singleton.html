@@ -1,0 +1,30 @@
+<div class="block">
+    <def2>Singleton</def2>
+    <p><strong>Is a static method that creates objects</strong></p>
+    <p><strong>- A component responsible solely for the wholesale (not piecewise) creation of objects.</strong></p>
+    <p>Example: we are working with geometry</p>
+    <p>We cannot implement multiple constructors, we could switch inside the constructor but is a messy solution</p>
+    <p><strong>Not using factory design pattern</strong></p>
+    <div class="poblem-solution__container">
+        <pre>  
+    let p1 = new Point(2, 3, CoordinateSystem.CARTESIAN);
+        </pre>
+    </div>
+    <p>A good solution will be a factory method</p>
+
+    <p><strong>Using factory design pattern</strong></p>
+    <div class="poblem-solution__container">
+        <pre>  
+    // Point → PointFactory
+    let p2 = PointFactory.newPolarPoint(5, Math.PI/2);
+    console.log(p2);
+        </pre>
+    </div>
+
+    <p><strong>Factory methods are static, so they can't be accessed from the obj, just from the class as in(Point.newPolarPoint(1,2))</strong></p>
+
+    <div class="poblem-solution__container">
+        <pre>  
+        </pre>
+    </div>
+</div>

@@ -1,0 +1,240 @@
+<div class="block">
+    <def2>Prototype</def2>
+    
+
+    <p><strong>- Is a partially or fully initialized object that we can copy (clone) and make use of it</strong></p>
+
+    <p><strong>- Used for complicated objects</strong> (that aren't designed from scratch): they reiterate existing designs</p>
+    <p>- An existing (partially or fully constructed design) is a<strong> Prototype.</strong></p>
+    <p>- We make a copy (clone) of the protoype and custemize it <strong>requires 'deep copy' support.</strong></p>
+    <p>- We can make the copy convenient <strong>via a Factory.</strong></p>
+
+    
+
+    <!-- DEEP COPY -->
+    <def3>Deep copy</def3>
+    <p>- Implementation of the deepCopy interface method <strong>In every used class by the required object so we can deepCopy an instance of the class we need.</strong></p>
+
+    <p>Example: we have a Person class wich has an Address prop</p>
+    <p>We can instanciate once the Person and then copy it, for a new person that has the same address, just different name and streetname</p>
+    <div class="poblem-solution__container">
+        <pre>  
+        let john = new Person('John',
+            new Address('123 London Road', 'London', 'UK'));
+
+        //but we cant just 
+        let jane = john     // bc this is just a memory refference
+        </pre>
+    </div>
+    <p>To enable the copying of an object, we've to implement in the used classes (Person and Address) a deepCopy method
+        wich returns a new instance of the same class with the same this props
+    </p>
+
+    <div class="poblem-solution__container">
+        <pre>  
+    //Address class
+    deepCopy()
+    {
+    return new Address(
+        this.streetAddress,
+        this.city,
+        this.country
+    );
+    }
+
+    //Person class
+    deepCopy()
+    {
+    return new Person(
+        this.name,
+        this.address.deepCopy() // needs to be recursive
+    );
+    }
+
+
+    //So then, to clone the object we just have to:
+    let jane = john.deepCopy();
+
+
+    //And then change the required props
+    jane.name = 'Jane';
+    jane.address.streetAddress = '321 Angel St'; // oops
+
+
+        </pre>
+    </div>
+
+    <p><strong>The problem with this approach:</strong> if we have a complex object that implements lots of classes, all of them will require to implement the deepCopy interface method</p>
+
+
+    <!-- fullscript -->
+    <div class="poblem-solution__container">
+        <pre>  
+    class Address
+    {
+        constructor(streetAddress, city, country) {
+        this.streetAddress = streetAddress;
+        this.city = city;
+        this.country = country;
+        }
+    
+        deepCopy()
+        {
+        return new Address(
+            this.streetAddress,
+            this.city,
+            this.country
+        );
+        }
+    
+        toString()
+        {
+        return `Address: ${this.streetAddress}, ` +
+            `${this.city}, ${this.country}`;
+        }
+    }
+    
+    class Person
+    {
+        constructor(name, address)
+        {
+        this.name = name;
+        this.address = address; //!
+        }
+    
+        deepCopy()
+        {
+        return new Person(
+            this.name,
+            this.address.deepCopy() // needs to be recursive
+        );
+        }
+    
+        toString()
+        {
+        return `${this.name} lives at ${this.address}`;
+        }
+    }
+    
+    let john = new Person('John',
+        new Address('123 London Road', 'London', 'UK'));
+    
+    let jane = john.deepCopy();
+    
+    jane.name = 'Jane';
+    jane.address.streetAddress = '321 Angel St'; // oops
+    
+    console.log(john.toString()); // oops, john is called 'jane'
+    console.log(jane.toString());
+        </pre>
+    </div>
+
+
+
+    
+    <!-- COPY BY SERIALIZATION -->
+    <def3>Serialization</def3>
+    <p>- When we have complex objects, the deepCopy can be a little too much work.</strong></p>
+
+    <p>We can <strong>clone</strong> through serialization instead of deepCopying it.</p>
+
+    <p>In a simple object we could</p>
+    <div class="poblem-solution__container">
+        <pre>  
+        let john = new Person('John',
+        new Address('123 London Road', 'London', 'UK'));
+        
+        --THIS IS THE SERIALIZATION - DES SERIALIZATION PROCESS
+        let jane = JSON.parse(JSON.stringify(john));
+        </pre>
+    </div>
+    <p>The <strong>problem</strong> comes when the objects methods, they are inside the objects prototype.</p>
+    <p>The JSON.stringify will work with the person propertues, but the methods lose its relationship wit the class, so they will stop working.</p>
+    <p>If we try to <strong>jane.greet()</strong> we will get an error <strong>Uncaught TypeError: jane.greet is not a functio</strong>
+         bc jane has the name and address props, but lost the class methods</p>
+
+    <p>The serializaer has to be aware of the types of objects we are trying to serializer and deserialize</p>
+
+
+    <div class="poblem-solution__container">
+        <pre>  
+    class Serializer
+    {
+        constructor(types){
+        this.types = types;
+        }
+    
+
+        //ADDS THE CLASS TYPE TO EVERY OBJECT WE TRY TO SERIALIZE
+        markRecursive(object)
+        {
+        // anoint each object with a type index
+        let idx = this.types.findIndex(t => {
+            return t.name === object.constructor.name;      //we get the used classes by obj.constructor.name recursive
+        });
+        if (idx !== -1)
+        {
+            object['typeIndex'] = idx;
+    
+            for (let key in object)                         //we get the used classes by obj.constructor.name recursive
+            {
+            if (object.hasOwnProperty(key) && object[key] != null)       
+                this.markRecursive(object[key]);
+            }
+        }
+        }
+    
+        reconstructRecursive(object)
+        {
+        if (object.hasOwnProperty('typeIndex'))
+        {
+            let type = this.types[object.typeIndex];        ////Type is the class
+            
+            let obj = new type();                           ////Obj is the instance of the storedClass in the object
+
+            for (let key in object)                         ////Set kwnown props on the obj, bc the obj is an instance of the class it'll contain all the class related interface methods
+            {
+            if (object.hasOwnProperty(key) && object[key] != null) {
+                obj[key] = this.reconstructRecursive(object[key]);
+            }
+            }
+            delete obj.typeIndex;                           ////delete typeindex bc is not needed in the obj to be returned
+            return obj;
+        }
+        return object;
+        }
+    
+        clone(object)
+        {
+        this.markRecursive(object);
+        let copy = JSON.parse(JSON.stringify(object));
+        return this.reconstructRecursive(copy);
+        }
+    }
+
+
+
+    
+    
+        </pre>
+    </div>
+
+    <p><strong>HAving a serializer</strong> is a must robust solution to object cloning than the deepCopy, once we have the serializer classwe can
+    use it in all the class instances we want to clone, we just have to initialiaer the serializer and give it the classLists</p>
+    <div class="poblem-solution__container">
+        <pre>  
+
+        // try a dedicated serializer
+        let s = new Serializer([Person,Address]); // pain point
+        jane = s.clone(john);
+
+        jane.name = 'Jane';
+        jane.address.streetAddress = '321 Angel St';
+
+        console.log(john.toString());
+        console.log(jane.toString());
+
+        </pre>
+    </div>
+
+</div>

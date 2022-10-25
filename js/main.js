@@ -478,30 +478,54 @@ var isPalindrome = function(x) {
 
 //     return true
 // };
+
 var isMatch = function(s, p) {
     
+    console.log(`${s}    -    ${p}`)
+    let s1 = s[0]
+    let s2 = s[1]
+
+    let p1 = p[0]
+    let p2 = p[1]
+    let p3 = p[2]
 
 
-    function getSubstrings(s, p){
-
-        let sArray = s.split('')
-        let pArray = p.split('')
-    
-        let curr = pArray[0]
-        let two = pArray[1]
-        let three = pArray[2]
-
-        let comp = sArray[0]
-        
-        let index = 0 
-        if(two == undefined)
-        if(curr == comp ){
-            return []
-        }
+    if(p1 == null ){
+        if(s1 == null) return true
+        else return false
     }
+    else {
+        if(s1 == null && p2 == '*' && p3 != undefined) return isMatch(s, p.substring(2))
+        if(s1 == null && p2 == '*' && p3 == undefined) return true
+        if(s1 == null) return false
+    }
+
+    if(p2 == undefined || p2 != '*'){
+        console.log('x1')
+        if(s1 == p1 || p1 == '.') return isMatch(s.substring(1), p.substring(1))
+        else return false
+    }
+
+    if(p2 == '*'){
+        console.log('x2')
+
+        if(p1=='.'){
+            if(p3 == undefined) return true
+
+            else {
+                return isMatch(s.substring(s.lastIndexOf(p3)), p.substring(2))
+            }
+        }
+
+        if(s2 != s1 && p3 == s1) return isMatch(s, p.substring(2))
+
+        if(s1 == p1) return isMatch(s.substring(1), p.substring())
+        else return isMatch(s, p.substring(2))
+    }    
+
 }
 
-console.log(isMatch('abasdasda', '.*x'))
+console.log(isMatch('aaa', 'ab*a*c*a'))
 
     // if(!p.includes('*') && !p.includes('.')) if(s != p) return false
 

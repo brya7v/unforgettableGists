@@ -1,30 +1,255 @@
 <div class="block">
     <def2>Singleton</def2>
-    <p><strong>Is a static method that creates objects</strong></p>
-    <p><strong>- A component responsible solely for the wholesale (not piecewise) creation of objects.</strong></p>
-    <p>Example: we are working with geometry</p>
-    <p>We cannot implement multiple constructors, we could switch inside the constructor but is a messy solution</p>
-    <p><strong>Not using factory design pattern</strong></p>
+
+    <p><strong>A constructor can choose what to return; wa can keep returnning same instance</strong></p>
+
+    <p><strong>Directly depending on the Singleton is a bad idea: introduce a dependency instead</strong></p>
+    <p><strong>For testing issues we've to use dummy dependencies (ex dummy db)</strong></p>
+
+    <p><strong>Singleton: A component which is instantiated only once</strong></p>
+
+    <p><strong>Singleton Design Pattern:</strong> Prevents us from creating more than one instance of a desired object.</strong></p>
+
+    <p><strong>Commonly hated design pattern</strong></p>
+
+    <p><strong>-For some components it only makes sense to have only one instance in the system.</strong></p>
+
+    <p>Example on singletons (we only need 1 instance of):</p>
+    <ul>
+        <li>DB repository</li>
+        <li>Object factory</li>
+        <li>- <strong>Constructor call is expensive</strong>
+            <ul>
+                <li>We want intialization to only happe once</li>
+                <li>We provide everyone with the same instance</li>
+            </ul>
+        </li>
+        <li>- <strong>We want to prevent anyone to create aditional copies of this object (main idea of a singleton)</strong>        </li>
+    </ul>
+
+
+    <!-- Singleton implementation -->
+
+    <def3>Singleton implementation</def3>
+
+    <p>Singleton can be implemented from different ways in js, but the ecmascript 6+ allows us to do the next:</p>
+
+    <p><strong>When someone calls the constructor, it will always return the same instance</p>
     <div class="poblem-solution__container">
         <pre>  
-    let p1 = new Point(2, 3, CoordinateSystem.CARTESIAN);
+    
+    class Singleton {
+
+        // CONSTRUCTOR FOR A SINGLETON CLASS -->
+        constructor()
+        {
+            const instance = this.constructor.instance;
+            if (instance) {
+            return instance;
+            }
+        
+            this.constructor.instance = this;
+        }
+        
+        foo() {
+            console.log('Doing something...')
+        }
+        }
+        
+        let s1 = new Singleton();
+        let s2 = new Singleton();
+        console.log('Are they identical? ' + (s1 === s2));
+        s1.foo();
         </pre>
     </div>
-    <p>A good solution will be a factory method</p>
 
-    <p><strong>Using factory design pattern</strong></p>
+
+
+
+
+    <!-- MONOSTATE -->
+
+    
+    <def3>Monostate</def3>
+    <p><strong>Many instances that share the same data</strong></p>
+    
+    <p>Instead of storing the getters and setters inside the class, we can store the values class level</p>
+
+    <p><strong>When someone calls the constructor, it will always return the same instance</strong></p>
     <div class="poblem-solution__container">
         <pre>  
-    // Point → PointFactory
-    let p2 = PointFactory.newPolarPoint(5, Math.PI/2);
-    console.log(p2);
+    
+    class ChiefExecutiveOfficer
+    {
+        get name() { return ChiefExecutiveOfficer._name; }
+        set name(value) { ChiefExecutiveOfficer._name = value; }
+    
+        get age() { return ChiefExecutiveOfficer._age; }
+        set age(value) { ChiefExecutiveOfficer._age = value; }
+    
+        toString()
+        {
+        return `CEO's name is ${this.name} ` +
+            `and he is ${this.age} years old.`;
+        }
+    }
+
+    // THERE IS ONLY ONE INSTANCE OF ._age and ._name, they are not PER INSTANCE bc they are at the level of the class -->
+
+    ChiefExecutiveOfficer._age = undefined;
+    ChiefExecutiveOfficer._name = undefined;
+    
+    let ceo = new ChiefExecutiveOfficer();
+    ceo.name = 'Adam Smith';
+    ceo.age = 55;
+    
+    let ceo2 = new ChiefExecutiveOfficer();
+    ceo2.name = 'John Gold';
+    ceo2.age = 66;
+    
+    console.log(ceo.toString());
+    console.log(ceo2.toString());
+
+    output: CEO's name is John Gold and he is 66 years old.
+    output: CEO's name is John Gold and he is 66 years old.
         </pre>
     </div>
 
-    <p><strong>Factory methods are static, so they can't be accessed from the obj, just from the class as in(Point.newPolarPoint(1,2))</strong></p>
 
+    <p><strong>the getters and setters are per instance, but the values store at class leve ._age and ._name are shared between all the instance,
+        so if the value is changed in the setter of an instance, it will be changed in all the others bc is a class level refference. </p>
+
+
+
+
+    
+    <!-- SINGLETON PROBLEMS -->    
+    <def3>Singleton Problems</def3>
+    
+    <p>Instead of storing the getters and setters inside the class, we can store the values class level</p>
+
+    <p><strong>When someone calls the constructor, it will always return the same instance</strong></p>
     <div class="poblem-solution__container">
         <pre>  
-        </pre>
+    
+    const fs = require('fs');
+    const path = require('path');
+    
+    class MyDatabase
+    {
+        constructor()
+        {
+        const instance = this.constructor.instance;
+        if (instance) {
+            return instance;
+        }
+    
+        this.constructor.instance = this;
+    
+    
+        console.log(`Initializing database`);
+        this.capitals = {};
+    
+        let lines = fs.readFileSync(
+            path.join(__dirname, 'capitals.txt')
+        ).toString().split('\r\n');
+    
+        for (let i = 0; i &lt lines.length/2; ++i)
+        {
+            this.capitals[lines[2*i]] = parseInt(lines[2*i+1]);
+        }
+        }
+    
+        getPopulation(city)
+        {
+        // possible error handling here
+        return this.capitals[city];
+        }
+    }
+    
+    // ↑↑↑ low-level module
+    
+    // ↓↓↓ high-level module
+    
+    class SingletonRecordFinder
+    {
+        totalPopulation(cities)
+        {
+        return cities.map(
+            city => new MyDatabase().getPopulation(city)    //BAD APPROACH -INSTANCE AND USE DB DIRECTLY
+        ).reduce((x,y) => x+y);
+        }
+    }
+    
+    class ConfigurableRecordFinder
+    {
+        //CORRECT APPROACH - SET DB AS A PARAM OF THE RECORDFINDER
+        constructor(database)
+        {
+        this.database = database;
+        }
+    
+        totalPopulation(cities)
+        {
+        return cities.map(
+            city => this.database.getPopulation(city)
+        ).reduce((x,y) => x+y);
+        }
+    }
+    
+    //ONly for testing  -->
+    class DummyDatabase
+    {
+        constructor()
+        {
+        this.capitals = {
+            'alpha': 1,
+            'beta': 2,
+            'gamma': 3
+        };
+        }
+    
+        getPopulation(city)
+        {
+        // possible error handling here
+        return this.capitals[city];
+        }
+    }
+    
+
+    //A unit test will be using dummy test    
+    // Jasmine INTEGRATION bc its using a 'real db' test -->
+    describe('singleton database', function()
+    {
+
+        //  makes two instances of the db and makes sure they are the same (they are a singleton) -->
+        it('is a singleton', function()
+        {
+        const db1 = new MyDatabase();
+        const db2 = new MyDatabase();
+        expect(db1).toBe(db2);
+        });
+    
+        //   -->
+        it('calculates total population', function()
+        {
+        let rf = new SingletonRecordFinder();
+        let cities = ['Seoul', 'Mexico City'];
+        let tp = rf.totalPopulation(cities);
+        expect(tp).toEqual(17400000+17500000);
+        });
+    
+        //This is the better approach to unit test bc its using a dummy db  -->
+
+        it('calculates total population better', function()
+        {
+        let db = new DummyDatabase();
+        let rf = new ConfigurableRecordFinder(db);
+        expect(rf.totalPopulation(['alpha', 'gamma'])).toEqual(4);
+        });
+    });
     </div>
+
+
+    <p><strong> </strong></p>
 </div>

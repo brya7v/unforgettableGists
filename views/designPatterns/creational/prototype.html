@@ -210,11 +210,7 @@
         let copy = JSON.parse(JSON.stringify(object));
         return this.reconstructRecursive(copy);
         }
-    }
-
-
-
-    
+    }   
     
         </pre>
     </div>
@@ -236,5 +232,203 @@
 
         </pre>
     </div>
+
+
+
+
+    <!-- PROTOTYPE FACTORY -->
+    <def3>Prototype Factory</def3>
+    <p>- It's a merge between the prorotype and the factory design patterns.</strong></p>
+
+    <p>Instead of using the serializer explicitly, we can create a prototype factort</p>
+
+    <p>Fist we define the classFactory wich will have (in this case a .main and a .aux predefined props with some nulls)</p>
+    <div class="poblem-solution__container">
+        <pre>  
+
+            class EmployeeFactory
+            {
+              static _newEmployee(proto, name, suite)
+              {
+                let copy = EmployeeFactory.serializer.clone(proto);
+                copy.name = name;
+                copy.address.suite = suite;
+                return copy;
+              }
+            
+
+              //FIRST FACTORY METHOD TO CREATE AN INSTANCE BASED ON THE .MAIN PROTOTYPE
+              static newMainOfficeEmployee(name, suite)
+              {
+                return this._newEmployee(
+                  EmployeeFactory.main, name, suite
+                );
+              }
+            
+              //SECOND FACTORY METHOD TO CREATE AN INSTANCE BASED ON THE .AUX PROTOTYPE
+              static newAuxOfficeEmployee(name, suite)
+              {
+                return this._newEmployee(
+                  EmployeeFactory.aux, name, suite
+                );
+              }
+            }
+
+
+            //THEN OUTSIDE THE CLASS WE ADD
+
+            //Serializer as a prop as a prop of the class
+            EmployeeFactory.serializer = new Serializer([Employee, Address]);
+            
+            //a .main instance as a prop of the class   (MAIN PROTOTYPE)
+            EmployeeFactory.main = new Employee(null,
+                new Address(null, '123 East Dr', 'London'));
+
+            //a secondary .aux instance as a prop of the class (AUX PROTOTYPE)
+            EmployeeFactory.aux = new Employee(null,
+                new Address(null, '200 London Road', 'Oxford'));
+
+        </pre>
+    </div>
+
+
+
+    <p>The serializaer has to be aware of the types of objects we are trying to serializer and deserialize</p>
+
+
+    <div class="poblem-solution__container">
+        <pre>  
+            class Address
+            {
+              constructor(suite, streetAddress, city)
+              {
+                this.suite = suite;
+                this.streetAddress = streetAddress;
+                this.city = city;
+              }
+            
+              toString()
+              {
+                return `Suite ${this.suite}, ` +
+                  `${this.streetAddress}, ${this.city}`;
+              }
+            }
+            
+            class Employee // renamed
+            {
+              constructor(name, address)
+              {
+                this.name = name;
+                this.address = address; //!
+              }
+            
+              toString()
+              {
+                return `${this.name} works at ${this.address}`;
+              }
+            
+              greet()
+              {
+                console.log(
+                  `Hi, my name is ${this.name}, ` +
+                  `I work at ${this.address.toString()}` //!
+                );
+              }
+            }
+            
+            class Serializer
+            {
+              constructor(types){
+                this.types = types;
+              }
+            
+              markRecursive(object)
+              {
+                // anoint each object with a type index
+                let idx = this.types.findIndex(t => {
+                  return t.name === object.constructor.name;
+                });
+                if (idx !== -1)
+                {
+                  object['typeIndex'] = idx;
+            
+                  for (let key in object)
+                  {
+                    if (object.hasOwnProperty(key) && object[key] != null)
+                      this.markRecursive(object[key]); // ^^^^^^^^^^ important
+                  }
+                }
+              }
+            
+              reconstructRecursive(object)
+              {
+                if (object.hasOwnProperty('typeIndex'))
+                {
+                  let type = this.types[object.typeIndex];
+                  let obj = new type();
+                  for (let key in object)
+                  {
+                    if (object.hasOwnProperty(key) && object[key] != null) {
+                      obj[key] = this.reconstructRecursive(object[key]);
+                    }
+                  }
+                  delete obj.typeIndex;
+                  return obj;
+                }
+                return object;
+              }
+            
+              clone(object)
+              {
+                this.markRecursive(object);
+                let copy = JSON.parse(JSON.stringify(object));
+                return this.reconstructRecursive(copy);
+              }
+            }
+            
+            class EmployeeFactory
+            {
+              static _newEmployee(proto, name, suite)
+              {
+                let copy = EmployeeFactory.serializer.clone(proto);
+                copy.name = name;
+                copy.address.suite = suite;
+                return copy;
+              }
+            
+              static newMainOfficeEmployee(name, suite)
+              {
+                return this._newEmployee(
+                  EmployeeFactory.main, name, suite
+                );
+              }
+            
+              static newAuxOfficeEmployee(name, suite)
+              {
+                return this._newEmployee(
+                  EmployeeFactory.aux, name, suite
+                );
+              }
+            }
+            
+            EmployeeFactory.serializer = new Serializer([Employee, Address]);
+            EmployeeFactory.main = new Employee(null,
+              new Address(null, '123 East Dr', 'London'));
+            EmployeeFactory.aux = new Employee(null,
+              new Address(null, '200 London Road', 'Oxford'));
+    
+        </pre>
+    </div>
+
+    <p><strong>At the end</strong> we will be 'basing' a certain type of instance with previously prototyped props in each factory</p>
+    <div class="poblem-solution__container">
+        <pre>  
+
+            let john = EmployeeFactory.newMainOfficeEmployee('John', 4321);
+            let jane = EmployeeFactory.newAuxOfficeEmployee('Jane', 222);
+
+        </pre>
+    </div>
+
 
 </div>

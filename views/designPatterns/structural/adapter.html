@@ -1,0 +1,430 @@
+<div class="block">
+
+
+    <!-- ADAPTER NO CACHING -->
+    <def2>Adapter</def2>
+    
+    <p><strong>-Implementing an adapter is easy.</strong></p>
+    <p><strong>-We have to determine the api we have and the one we need.</strong></p>
+    <p><strong>-Then we create a component which aggregates (has a reference to, ...) the adaptee.</strong></p>
+    <p><strong>-Downside: intermediate representations can pile up: we have to use caching and other optimizations.</strong></p>
+
+    
+    <p><strong>- A construct wich adapts an existing interface X to conform to the required interface Y.</strong></p>
+
+
+
+    <p>Example:</p>
+    <p>We have a Point and Line classes, we can draw Lines, but we cant draw specific Figures (Rectangle, square, etc) </p>
+    <p>We have a function to drow a single point, but we don't know how to draw a complete figure</p>
+    <p>So we need to build an <strong>Adapter</strong> </p>
+
+    <div class="poblem-solution__container">
+        <pre>  
+
+            //creates dotted lines, from point to point creating an array with those points (thats why we extend Array)
+            class LineToPointAdapter extends Array
+            {
+                constructor(line)
+                {
+                super();
+                console.log(`${LineToPointAdapter.count++}: Generating ` +
+                    `points for line ${line.toString()} (no caching)`);
+            
+                let left = Math.min(line.start.x, line.end.x);
+                let right = Math.max(line.start.x, line.end.x);
+                let top = Math.min(line.start.y, line.end.y);
+                let bottom = Math.max(line.start.y, line.end.y);
+            
+                if (right - left === 0)
+                {
+                    for (let y = top; y &lt= bottom; ++y)
+                    {
+                    this.push(new Point(left, y));
+                    }
+                }
+                else if (line.end.y - line.start.y === 0)
+                {
+                    for (let x = left; x &lt= right; ++x)
+                    {
+                    this.push(new Point(x, top));
+                    }
+                }
+                }
+            }
+
+
+        </pre>
+    </div>
+
+    <p>We created an adapter that uses the Line and the Point classes to create the points (based in the lines it generates the points)</p>
+
+    <p>The points are beign pushed to the adapter instance inside the loops of the dots creation</p>
+    <div class="poblem-solution__container">
+        <pre>  
+            //this = adapter instance
+
+            if (right - left === 0)
+            {
+                for (let y = top; y &lt= bottom; ++y)
+                {
+                this.push(new Point(left, y));
+                }
+            }
+            else if (line.end.y - line.start.y === 0)
+            {
+                for (let x = left; x &lt= right; ++x)
+                {
+                this.push(new Point(x, top));
+                }
+            }
+        </pre>
+    </div>
+
+    <p><strong>The problem is that if we use multiple times the drawPoint funciton,  we will be pushing into the previously existing array </strong></p>
+    <p><strong>Bc WE ARE NOT USING CACHING </strong></p>
+
+    <div class="poblem-solution__container">
+        <pre>  
+    let drawPoints = function()
+    {
+        for (let vo of vectorObjects)
+        for (let line of vo)
+        {
+            let adapter = new LineToPointAdapter(line);
+            adapter.forEach(drawPoint);
+        }
+    };
+    
+    drawPoints(); 
+    drawPoints();   //DUPLICATED POINTS IN THE THIS.PUSH (IT HAS THIS.PUSH BS EXTENDS ARRAY)
+        </pre>
+    </div>
+
+    <p>The solution is using an adapter with CACHING</p>
+
+    <!-- COMPLETE CODE -->
+    <div class="poblem-solution__container">
+        <pre>  
+        class Point
+        {
+            constructor(x, y)
+            {
+            this.x = x;
+            this.y = y;
+            }
+        
+            toString()
+            {
+            return `(${this.x}, ${this.y})`;
+            }
+        }
+        
+        class Line
+        {
+            constructor(start, end)
+            { 
+            this.start = start;
+            this.end = end;
+            }
+        
+            toString()
+            {
+            return `${this.start.toString()}→${this.end.toString()}`;
+            }
+        }
+        
+        class VectorObject extends Array {}
+        
+        class VectorRectangle extends VectorObject
+        {
+            constructor(x, y, width, height)
+            {
+            super();
+            this.push(new Line(new Point(x,y), new Point(x+width, y) ));
+            this.push(new Line(new Point(x+width,y), new Point(x+width, y+height) ));
+            this.push(new Line(new Point(x,y), new Point(x, y+height) ));
+            this.push(new Line(new Point(x,y+height), new Point(x+width, y+height) ));this.push
+            }
+        }
+        
+        // ↑↑↑ this is your API ↑↑↑
+        
+        // ↓↓↓ this is what you have to work with ↓↓↓
+        
+        let vectorObjects = [
+            new VectorRectangle(1, 1, 10, 10),
+            new VectorRectangle(3, 3, 6, 6)
+        ];
+        
+        let drawPoint = function(point)
+        {
+            process.stdout.write('.');
+        };
+        
+        // ↓↓↓ to draw our vector objects, we need an adapter ↓↓↓
+        
+        class LineToPointAdapter extends Array
+        {
+            constructor(line)
+            {
+            super();
+            console.log(`${LineToPointAdapter.count++}: Generating ` +
+                `points for line ${line.toString()} (no caching)`);
+        
+            let left = Math.min(line.start.x, line.end.x);
+            let right = Math.max(line.start.x, line.end.x);
+            let top = Math.min(line.start.y, line.end.y);
+            let bottom = Math.max(line.start.y, line.end.y);
+        
+            if (right - left === 0)
+            {
+                for (let y = top; y &lt= bottom; ++y)
+                {
+                this.push(new Point(left, y));
+                }
+            }
+            else if (line.end.y - line.start.y === 0)
+            {
+                for (let x = left; x &lt= right; ++x)
+                {
+                this.push(new Point(x, top));
+                }
+            }
+            }
+        }
+        LineToPointAdapter.count = 0;
+        
+        let drawPoints = function()
+        {
+            for (let vo of vectorObjects)
+            for (let line of vo)
+            {
+                let adapter = new LineToPointAdapter(line);
+                adapter.forEach(drawPoint);
+            }
+        };
+        
+        drawPoints();
+        drawPoints();
+        </pre>
+    </div>
+
+
+
+
+
+    <!-- ADAPTER CACHING -->
+    <def2>Adapter witch Caching</def2>    
+    <p>Sometimes the adapter design pattern causes us to repeat objects, to prevent this we can implement caching with some sort of unique value (for example a generated hashcode) </p>
+
+    <p><strong>- Caching means that we store the precomputed points and we yield them without regenerating them again. to do this we are going to use a hashCode.</strong></p>
+    <p>We have to prevent the generation of the same points </p>
+    <p>To prevent that, we have to convert the line into a string using JSON.stringify and then get its hashCode wich will give us a 32bit value that we are going to store in a cache</p>
+
+   <strong>The lineToPointAdapter using and object to store the [hash]:points no longer needs to extedn Array and invoque super, bc we are not using it as an array</strong>
+       <div class="poblem-solution__container">
+           <pre>  
+   
+            String.prototype.hashCode = function(){
+                if (Array.prototype.reduce){
+                  return this.split("").reduce(function(a,b){
+                    a=((a&lt&lt5)-a)+b.charCodeAt(0);return a&a},0);
+                }
+                let hash = 0;
+                if (this.length === 0) return hash;
+                for (let i = 0; i &lt this.length; i++) {
+                  const character = this.charCodeAt(i);
+                  hash  = ((hash&lt&lt5)-hash)+character;
+                  hash = hash & hash; // Convert to 32-bit integer
+                }
+                return hash;
+              };
+   
+   
+              //And inside the LineToPointAdapter constructor we are going to check the hashes in the cache, if they already exist we dont create it again
+              
+              class LineToPointAdapter extends Array
+              {
+                constructor(line)
+                {
+                  super();
+              
+                  this.hash = JSON.stringify(line).hashCode();
+                  if (LineToPointAdapter.cache[this.hash])
+                    return; // we already have it
+              
+                    console.log(`${LineToPointAdapter.count++}: Generating ` +
+                    `points for line ${line.toString()} (with caching)`);
+              
+                  let points = [];
+              
+                  let left = Math.min(line.start.x, line.end.x);
+                  let right = Math.max(line.start.x, line.end.x);
+                  let top = Math.min(line.start.y, line.end.y);
+                  let bottom = Math.max(line.start.y, line.end.y);
+              
+                  if (right - left === 0)
+                  {
+                    for (let y = top; y &lt= bottom; ++y)
+                    {
+                      points.push(new Point(left, y));
+                    }
+                  }
+                  else if (line.end.y - line.start.y === 0)
+                  {
+                    for (let x = left; x &lt= right; ++x)
+                    {
+                      points.push(new Point(x, top));
+                    }
+                  }
+              
+                  LineToPointAdapter.cache[this.hash] = points;         //inside the HASH WE
+                }
+              
+            ....
+
+            LineToPointAdapter.cache = {} //HERE WE STORE THE HASHES
+
+           </pre>
+        </div>
+   
+        <p>And then if we call multiple times </p>
+       
+   
+        <!-- COMPLETE CODE -->
+        <div class="poblem-solution__container">
+           <pre>  
+            class Point
+            {
+              constructor(x, y)
+              {
+                this.x = x;
+                this.y = y;
+              }
+            
+              toString()
+              {
+                return `(${this.x}, ${this.y})`;
+              }
+            }
+            
+            class Line
+            {
+              constructor(start, end)
+              {
+                this.start = start;
+                this.end = end;
+              }
+            
+              toString()
+              {
+                return `${this.start.toString()}→${this.end.toString()}`;
+              }
+            }
+            
+            class VectorObject extends Array {}
+            
+            class VectorRectangle extends VectorObject
+            {
+              constructor(x, y, width, height)
+              {
+                super();
+                this.push(new Line(new Point(x,y), new Point(x+width, y) ));
+                this.push(new Line(new Point(x+width,y), new Point(x+width, y+height) ));
+                this.push(new Line(new Point(x,y), new Point(x, y+height) ));
+                this.push(new Line(new Point(x,y+height), new Point(x+width, y+height) ));this.push
+              }
+            }
+            
+            // ↑↑↑ this is your API ↑↑↑
+            
+            // ↓↓↓ this is what you have to work with ↓↓↓
+            String.prototype.hashCode = function(){
+              if (Array.prototype.reduce){
+                return this.split("").reduce(function(a,b){
+                  a=((a&lt&lt5)-a)+b.charCodeAt(0);return a&a},0);
+              }
+              let hash = 0;
+              if (this.length === 0) return hash;
+              for (let i = 0; i &lt this.length; i++) {
+                const character = this.charCodeAt(i);
+                hash  = ((hash&lt&lt5)-hash)+character;
+                hash = hash & hash; // Convert to 32-bit integer
+              }
+              return hash;
+            };
+            
+            class LineToPointAdapter extends Array
+            {
+              constructor(line)
+              {
+                super();
+            
+                this.hash = JSON.stringify(line).hashCode();
+                if (LineToPointAdapter.cache[this.hash])
+                  return; // we already have it
+            
+                console.log(`${LineToPointAdapter.count++}: Generating ` +
+                  `points for line ${line.toString()} (with caching)`);
+            
+                let points = [];
+            
+                let left = Math.min(line.start.x, line.end.x);
+                let right = Math.max(line.start.x, line.end.x);
+                let top = Math.min(line.start.y, line.end.y);
+                let bottom = Math.max(line.start.y, line.end.y);
+            
+                if (right - left === 0)
+                {
+                  for (let y = top; y &lt= bottom; ++y)
+                  {
+                    points.push(new Point(left, y));
+                  }
+                }
+                else if (line.end.y - line.start.y === 0)
+                {
+                  for (let x = left; x &lt= right; ++x)
+                  {
+                    points.push(new Point(x, top));
+                  }
+                }
+            
+                LineToPointAdapter.cache[this.hash] = points;
+              }
+            
+              get items()
+              {
+                return LineToPointAdapter.cache[this.hash];
+              }
+            }
+            LineToPointAdapter.count = 0;
+            LineToPointAdapter.cache = {};
+            
+            let vectorObjects = [
+              new VectorRectangle(1, 1, 10, 10),
+              new VectorRectangle(3, 3, 6, 6)
+            ];
+            
+            let drawPoint = function(point)
+            {
+              process.stdout.write('.');
+            };
+            
+            let draw = function()
+            {
+              for (let vo of vectorObjects)
+              {
+                for (let line of vo)
+                {
+                  let adapter = new LineToPointAdapter(line);
+                  adapter.items.forEach(drawPoint);
+                }
+              }
+            };
+            
+            draw();
+            draw();
+           </pre>
+       </div>
+</div>  

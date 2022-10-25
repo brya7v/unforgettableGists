@@ -525,47 +525,51 @@ var isMatch = function(s, p) {
 
 }
 
-console.log(isMatch('aaa', 'ab*a*c*a'))
+//console.log(isMatch('aaa', 'ab*a*c*a'))
 
-    // if(!p.includes('*') && !p.includes('.')) if(s != p) return false
 
-    // for (sc of sArray){
+var maxArea = function(height) {
+    
+    let maxArea = 0
+    let a
+    
+    for(let i = 0; i< height.length-1; i++){
 
-    //     console.log(`${sc} - ${pArray[pix]}       -     ${pArray[pix+1]} - ${lastSC} - ${lastPC} `)
+        if(height[i] * (height.length-1-i) > maxArea) {
 
-    //     if(pArray[pix] == sc || pArray[pix] == '.'){
-    //         console.log('x1')
-    //         lastSC = sc
-    //         lastPC = pArray[pix]
-    //         pix++
-    //     }
-    //     else if(pArray[pix+1] == '*' && lastSC != sc){
-    //         console.log('x2.0')
-    //         lastSC = sc
-    //         pix++
-    //     }
-    //     else if(pArray[pix] == '*' && lastSC == sc){
-    //         console.log('x2.1')            
-    //         if(sArray[indx+1] != sc && lastPC !='.') pix++
-    //     }
-    //     else if(pArray[pix] == '*' && lastPC == "."){
-    //         console.log('x2.2')
-    //         if(pArray[pix+1] != undefined && pArray[pix+1] != '.' && pArray[pix+1] != '*' && pArray[pix+2] == undefined){
-    //             console.log('xxx')
-    //             if(indx == sArray.length-1 && sc !=pArray[pix+1] ) {
-    //                 return false             
-    //             }
-    //         }
-    //     }
-    //     else if(pArray[pix+1] == '*'){
-    //         console.log('x3')            
-    //     }
-    //     else {
-    //         console.log('x4')          
-    //         return false
-    //     }
+            for(let j = i+1; j< height.length; j++){
+                a = height[i]
+                if( a > height[j]) a = height[j]
 
-    //     indx++
-    // }
+                let area = a * (j-i)
 
-    // return true
+                if(maxArea < area) maxArea = area
+            }
+        }
+    }
+    return maxArea
+};
+
+
+//STOCK SOLUTION
+var maxArea = function(height) {
+    let l=0;
+    let m;
+    let r=height.length-1;
+    let res=0
+    while (l<r){
+        m=Math.min(height[l], height[r]);
+        area =m*(r-l);
+        res=Math.max(area, res);
+        if (m===height[l]){
+            l++;
+        }
+        else{
+            r--;
+        }
+    }
+    return res 
+};
+
+
+// console.log(maxArea([1,3,2,5,25,24,5]))

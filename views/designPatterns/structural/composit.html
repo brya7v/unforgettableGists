@@ -1,0 +1,326 @@
+<div class="block">
+
+
+    <!-- Composit -->
+    <def2>Composit</def2>
+    
+    <p><strong>*Is a mechanism for threating individial (scalar) objects and compositions of objects in a uniform manner.</strong></p>
+
+    <p><strong>-Example: we should be able to iterate through a single object, or an array </strong> (bc sometimes this behavior is required)</p>
+
+    <p><strong>-Can be used when Objects use other objects fields/methods through inheritance and composition.</strong></p>
+    <p><strong>-Composition lets us make compound objects: </strong> E.g. a mathematical expression composed of simple expressions;
+        or  a shape group made of several different shapes.
+    </p>
+    <p><strong>-Composite design pattern is used to treat both single (scalar) and composite objects uniformly.</strong></p>
+
+
+    <p><strong>*Javascript supports iteration with [Symbol.iterator].</strong></p>
+    <p><strong>*A single object can make itself iterable by yielding this.</strong></p>
+
+    <br>
+    <br>
+
+    <!-- //SHAPES EXAMPLE -->
+    <def3>Composit Shapes ex1</def3>
+    <br>
+    <p><strong>-Shapes example:.</strong></p>
+    <br>
+
+    <p>What we want is The GraphicObject class to behave like:</p>
+    <p>- It can be a graphic object or it can be an array of graphic objects (thats why it has a children prop)</p>
+    <p>- The print prints the actual object or all the childrens</p>
+
+    <br>
+    <br>
+
+    <p>We can create a multiple of 'drawings' in the GraphicObject instance, like this:</p>
+    <div class="poblem-solution__container">
+        <pre>  
+    let drawing = new GraphicObject();
+    drawing.children.push(new Square('Red'));
+    drawing.children.push(new Circle('Yellow'));    ///THIS FIGURES ARE PUSHED AS CHILDRENS OF THE DRAWING
+        </pre>
+    </div>
+
+    <p>↑↑↑ This is not a representation of the composit pattern, this is: ↓↓↓</p>
+
+    <div class="poblem-solution__container">
+        <pre>  
+    let group = new GraphicObject();
+    group.children.push(new Circle('Blue'));
+    group.children.push(new Square('Blue'));
+    drawing.children.push(group);           ////WE ARE ADDING THE COMPLETE GROUP AS A CHILD OF DRAWING 
+        </pre>
+    </div>
+
+
+    <p>↑↑↑ Te GraphicObject shape childs and group of shapes childs that also can have childs and groups can be printed
+        with recursion ↓↓↓ (TREATS ELEMENTS AND GROUPS OF ELEMENTS THE SAME WAY → Composit design pattern)</p> 
+    <div class="poblem-solution__container">
+        <pre>  
+    print(buffer, depth)
+    {
+        buffer.push('*'.repeat(depth));
+        if (depth > 0)
+        buffer.push(' ');
+        if (this.color)
+        buffer.push(this.color + ' ');
+        buffer.push(this.name);
+        buffer.push('\n');
+
+        for (let child of this.children)
+        child.print(buffer, depth+1);
+    }
+        </pre>
+    </div>
+
+    <div class="poblem-solution__container">
+        <pre>  
+
+    class GraphicObject 
+    {   
+    get name()
+    {
+        return this._name;
+    }
+
+    constructor(name='Group ' + (GraphicObject.count++))
+    {
+        this.children = [];
+        this.color = undefined;
+        this._name = name;
+    }
+
+    print(buffer, depth)
+    {
+        buffer.push('*'.repeat(depth));
+        if (depth > 0)
+        buffer.push(' ');
+        if (this.color)
+        buffer.push(this.color + ' ');
+        buffer.push(this.name);
+        buffer.push('\n');
+
+        for (let child of this.children)
+        child.print(buffer, depth+1);
+    }
+
+    toString()
+    {
+        let buffer = [];
+        this.print(buffer, 0);
+        return buffer.join('');
+    }
+    }
+    GraphicObject.count = 0;
+
+    class Circle extends GraphicObject
+    {
+    constructor(color)
+    {
+        super('Circle');
+        this.color = color;
+    }
+    }
+
+    class Square extends GraphicObject
+    {
+    constructor(color)
+    {
+        super('Square');
+        this.color = color;
+    }
+    }
+
+    let drawing = new GraphicObject();
+    drawing.children.push(new Square('Red'));
+    drawing.children.push(new Circle('Yellow'));
+
+    let group = new GraphicObject();
+    group.children.push(new Circle('Blue'));
+    group.children.push(new Square('Blue'));
+    drawing.children.push(group);
+
+    console.log(drawing.toString());
+
+
+        </pre>
+    </div>
+
+
+
+
+
+    <!-- //COMPOSIT NEURONS EXAMPLE -->
+    <def3>Composit Neurons ex1</def3>
+    <br>
+    <br>
+
+    <p>We have the classes Neuron and NeuronLayer(group of Neurons)</p>
+    <p>A neuron can connect to a neuron, or a neuronLayer, and a NeuronLayer can connect to a neuron or also a NeuronLayer</p>
+    <p>The bad approach would be have a method to each type of possible connection, the correct approach would be having just one method
+        that works with all the permutations (composit pattern design)
+    </p>
+
+    <p><strong>There are a couple of problems with this design patter in JS: 1st, a Class cant extend multiple classes, to be able to do This
+    we can use a stackoverflow aggregation method</strong></p>
+
+    <div class="poblem-solution__container">
+        <pre>  
+        https://stackoverflow.com/questions/29879267/
+        var aggregation = (baseClass, ...mixins) => {
+            class base extends baseClass {
+            constructor (...args) {
+                super(...args);
+                mixins.forEach((mixin) => {
+                copyProps(this,(new mixin));
+                });
+            }
+            }
+            let copyProps = (target, source) => {  // this function copies all properties and symbols, filtering out some special ones
+            Object.getOwnPropertyNames(source)
+                .concat(Object.getOwnPropertySymbols(source))
+                .forEach((prop) => {
+                if (!prop.match(/^(?:constructor|prototype|arguments|caller|name|bind|call|apply|toString|length)$/))
+                    Object.defineProperty(target, prop, Object.getOwnPropertyDescriptor(source, prop));
+                })
+            };
+            mixins.forEach((mixin) => {
+            // outside constructor() to allow aggregation(A,B,C).staticFunction() to be called etc.
+            copyProps(base.prototype, mixin.prototype);
+            copyProps(base, mixin);
+            });
+            return base;
+        };
+        </pre>
+    </div>
+
+
+    <br>
+    <br>
+
+    <p><strong>We can iterate trough a NeuronLayer bc it extends Array, for the Connectable connectTo method to work we have to be able to 'iterate' through a single neuron,
+        to achive this we've to: use the [Symbol.iterator] that returns as next the single element value THIS, and then stops with done:returned++
+    </strong></p>
+    <div class="poblem-solution__container">
+        <pre>  
+
+    class Neuron extends Connectable
+    {
+        constructor()
+        {
+        super();
+        this.in = [];
+        this.out = [];
+        }
+        ...
+        ...
+
+        //We've to use [Symbol.iterator] bc the class Neuron is not iterable by itself, NeuronLayer is bc extends Array
+        [Symbol.iterator]()
+        {
+            let returned = false;
+            return {
+            next: () => ({
+                value: this,
+                done: returned++
+            })
+            }
+        }
+    }
+
+        </pre>
+    </div>
+
+
+    <div class="poblem-solution__container">
+        <pre>  
+
+
+            
+            class Connectable
+            {
+              connectTo(other)
+              {
+                for (let from of this)
+                  for (let to of other)
+                  {
+                    from.out.push(to);
+                    to.in.push(from);
+                  }
+              }
+            }
+            
+            class Neuron extends Connectable
+            {
+              constructor()
+              {
+                super();
+                this.in = [];
+                this.out = [];
+              }
+            
+              // connectTo(other)
+              // {
+              //   this.out.push(other);
+              //   other.in.push(this);
+              // }
+            
+              toString()
+              {
+                return `A neuron with ${this.in.length} inputs ` +
+                  `and ${this.out.length} outputs`;
+              }
+            
+              [Symbol.iterator]()
+              {
+                let returned = false;
+                return {
+                  next: () => ({
+                    value: this,
+                    done: returned++
+                  })
+                }
+              }
+            }
+            
+            // multiple inheritance is impossible, so...
+            class NeuronLayer extends aggregation(Array, Connectable)
+            {
+              constructor(count)
+              {
+                super();
+                while (count --> 0)
+                  this.push(new Neuron());
+              }
+            
+              toString()
+              {
+                return `A layer with ${this.length} neurons`;
+              }
+            }
+            
+            let neuron1 = new Neuron();
+            let neuron2 = new Neuron();
+            let layer1 = new NeuronLayer(3);
+            let layer2 = new NeuronLayer(4);
+            
+            neuron1.connectTo(neuron2);
+            neuron1.connectTo(layer1);
+            layer2.connectTo(neuron1);
+            layer1.connectTo(layer2);
+            
+            console.log(neuron1.toString());
+            console.log(neuron2.toString());
+            console.log(layer1.toString());
+            console.log(layer2.toString());
+
+        </pre>
+    </div>
+   
+   
+   
+   
+
+</div>

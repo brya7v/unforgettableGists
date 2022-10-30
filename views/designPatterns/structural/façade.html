@@ -1,0 +1,98 @@
+<div class="block">
+
+
+    <!-- Façade -->
+    <def2>Façade</def2>
+    
+    
+    <p><strong>-We tipically build a Fasade to provide a simplified API over a set of classes.</strong></p>
+    <p><strong>-We can optionally expose internals though the fasade.</strong></p>
+    <p><strong>-Provides a simple, easy to undestand api/user interface over a large and sophisticated body of code.</strong></p>
+    <p><strong>-Consist in exposing several components thorugh a single and easy to use interface.</strong></p>
+
+    <p><strong>-We want to balance complexity and presentation/usability</strong></p>
+
+
+
+    <p>Example:</p>
+    <p>When we think of a console, we just uset to log stuff (print strings and values), but internaly
+        its actually very complex, it needs for example a viewport and a buffer(to preprocess the strings that we are going
+        to show in the viewport), but we dont really use the buffer and viewport directly, they are implicit inside the console,
+    thats why the console class is a good example of the<strong>Façade</strong> patter design </p>
+    
+    <p>The console is a Façade for the buffers and viewports and all those related classes management</p>
+    <p> but at the end, we just want everything inside the Façade (the console class) </p>
+    <p>The console class is a lot better to work as a fasade instead of micromanaging all the buffers and viewports separately 
+        and in addition we want a set of <strong>defaults to what most ussers actually want</strong>, so it hides most of the complexity to the 
+        console class user, although it can also give access to the low level class methods if thats what we want to do</p>
+
+
+    <div class="poblem-solution__container">
+        <pre>  
+    class Buffer extends Array
+    {
+    constructor(width=30, height=20)
+    {
+        super();
+        this.width = width;
+        this.height = height;
+        this.alloc(width*height);
+    }
+
+    write(text, position=0)
+    {
+        // write to the buffer
+    }
+    }
+
+    class Viewport
+    {
+    constructor(buffer=new Buffer())
+    {
+        this.buffer = buffer;
+        this.offset = 0;
+    }
+
+    // high-level
+    append(text, pos)
+    {
+        this.buffer.write(text, pos + this.offset);
+    }
+
+    getCharAt(index)
+    {
+        return this.buffer[this.offset + index];
+    }
+    }
+
+    class Console
+    {
+    constructor()
+    {
+        this.buffer = new Buffer();
+        this.currentViewport = new Viewport(
+        this.buffer
+        );
+        this.buffers = [this.buffer];
+        this.viewports = [this.currentViewport];
+    }
+
+    // high-level
+    write(text)
+    {
+        this.currentViewport.buffer.write(text);
+    }
+
+    // low-level
+    getCharAt(index)
+    {
+        return this.currentViewport.getCharAt(index);
+    }
+    }
+
+    let c = new Console();
+    c.write('hello');
+    let ch = c.getCharAt(0);
+
+        </pre>
+    </div>

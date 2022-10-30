@@ -1,0 +1,108 @@
+<div class="block">
+
+
+    <!-- Bridge -->
+    <def2>Bridge</def2>
+    
+    <p><strong>-Prevents a 'Cartesian product' complexity exposion</strong></p>
+
+    <p><strong>-Its a mechanism that decouples an interface (hierarchy) from an implementation (hierarchy)</strong></p>
+    <p><strong>-Reminder: JShas duck typing, so definitions of interpfaces are not strictly necessary</strong></p>
+
+
+    <p><strong>-Example:</strong></p>
+    <p><strong>-we've a threadsheduler that can be preemptive or cooperative, also it can run in windows or unix</strong></p>
+    <p><strong>-We'll end up in a 2x2 scenario and will have to create one class for each one: WindowsPTS, WindowsCTS, UnixPTS, UnixCTS.</strong></p>
+    
+    <p>ITs something thats not scallable at all</p>
+    <p><strong>The bridge patter helps us to not have that explosion of required classes</strong></p>
+
+
+    <p>Example, we can render shapes by pixels and vectors, the wrong aproach would be having 1 class per permutation, circlePixe, circleVector, trianglePixel, triangleVector etc</p>
+
+    <p>The correct aproach its having a Redern hierarchy, (A connection between the shape and the type of rendering)</p>
+
+    <p>Inside the shape constructor we will integrate the renderer</p>
+
+   <p>At the end, we've a class per each type of rendering, each one knows how to draw a circle in his own way, so we just:</p>
+
+   <div class="poblem-solution__container">
+    <pre>  
+   // imagine Square, Triangle
+   // different ways of rendering: vector, raster
+   // we don't want a cartesian product of these
+   
+
+   //TYPES OF RENDERERSS
+   let raster = new RasterRenderer();
+   let vector = new VectorRenderer();
+
+   //CIRCLE                 //WE PASS THE TYPE OF RENDERER WE WANT TO USE
+   let circle = new Circle(vector, 5);
+   circle.draw();
+   circle.resize(2);
+   circle.draw();
+
+    </pre>
+   </div>
+
+
+   <p><strong>This gets us away from having too many classses, downside: does not get us away from having too many methods in each class (each render class has to have a method for each shape)</strong>></p>
+
+
+    <div class="poblem-solution__container">
+        <pre>  
+    class VectorRenderer
+    {
+        renderCircle(radius)
+        {
+        console.log(`Drawing a circle of radius ${radius}`);
+        }
+    }
+    
+    class RasterRenderer
+    {
+        renderCircle(radius)
+        {
+        console.log(`Drawing pixels for circle of radius ${radius}`);
+        }
+    }
+    
+    class Shape
+    {
+        constructor(renderer)
+        {
+        this.renderer = renderer;
+        }
+    }
+    
+    class Circle extends Shape
+    {
+        constructor(renderer, radius) {
+        super(renderer);
+        this.radius = radius;
+        }
+    
+        draw()
+        {
+        this.renderer.renderCircle(this.radius);
+        }
+    
+        resize(factor)
+        {
+        this.radius *= factor;
+        }
+    }
+    
+    // imagine Square, Triangle
+    // different ways of rendering: vector, raster
+    // we don't want a cartesian product of these
+    
+    let raster = new RasterRenderer();
+    let vector = new VectorRenderer();
+    let circle = new Circle(vector, 5);
+    circle.draw();
+    circle.resize(2);
+    circle.draw();
+        </pre>
+    </div>

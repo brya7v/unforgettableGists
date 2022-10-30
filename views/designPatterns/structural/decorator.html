@@ -1,0 +1,187 @@
+<div class="block">
+
+
+    <!-- Decorator -->
+    <def2>Decorator</def2>
+    
+    <p><strong>*It facilitates the addition of behaviors to individual objects without inheriting from them.</strong></p>
+
+    <p><strong>-It exists: so we can add aditional functionalities to a class without modifying it</strong></p>
+    <p><strong>-Useful when we do not want to rewrite or alter existing code (OCR) </strong></p>
+    <p><strong>-We want to keep new functionality separate (SRP)</strong></p>
+
+
+    <br><br>
+    <p><strong>-We have two options:</strong>
+    <ul>
+        <li>→ Inherit from required object (if posible)</li>
+        <li>→ else: Build a Decorator, wich simply references the decorated object(s)</li>
+    </ul>
+    </p>
+
+
+    <!-- //SHAPES EXAMPLE -->
+    <def3>Decorator Shapes ex1</def3>
+    <br>
+    <p><strong>-Shapes example:.</strong></p>
+    <br>
+
+    <p>Whe have the shape class, and a circle that extends shape:</p>
+
+    <p>If we wanted to add a color property to the Circle class, a bad approach would be modifying the Shape class (bc it goes agains the Open and Close principle)</p>
+    <div class="poblem-solution__container">
+        <pre>  
+        class Shape {}
+
+        class Circle extends Shape
+        {
+            constructor(radius=0)
+            {
+            super();
+            this.radius = radius;
+            }
+        }
+        </pre>
+    </div>
+
+    <p>All we have to do is build a <strong>Decorator</strong> wich is a class that wraps another class, and adds the new features (withouth affecting the original class)</p>
+    <div class="poblem-solution__container">
+        <pre> 
+            // we don't want ColoredSquare, ColoredCircle, etc.
+            class ColoredShape extends Shape                ← the ColoredShape class is a decorator of the class Shape
+            {
+                constructor(shape, color)
+                {
+                super();
+                this.shape = shape;
+                this.color = color;
+                }
+            
+                toString()
+                {
+                return `${this.shape.toString()} ` +
+                    `has the color ${this.color}`;
+                }
+            } 
+
+            This shape decoration is also modifying the aready exising method toString() to adapt it to the new implementation,
+            this way we can modify methods of the extended class or add new ones without affecting the original
+
+
+            ***IMPORTANT
+            class ColoredShape extends Shape
+            {
+                constructor(shape, color)
+                {
+                super();
+                this.shape = shape;
+                this.color = color;
+                }
+            }
+
+            Colored shape extends shape, but the shape itself (And the shape methods) will be in the this.shape property,
+            the new methods and props will be in this.
+        
+            So.. a decorator is a class thath extends another and adds it as a prop, in order to have all its props and add new ones to the current this
+        </pre>
+    </div>
+
+    <p>Following this implementation, thr coloredShape does not have the resize method, but Shape does, so if we want to resize a coloredShape we would have to:</p>
+    <div class="poblem-solution__container">
+        <pre> 
+            let redCircle = new ColoredShape(circle, 'red');
+            redCircle.resize(2)  → THIS WON'T work
+
+            redCircle.shape.resize(2)  → THIS Works!
+        </pre>
+    </div>
+
+
+
+
+    <!-- full code -->
+    <div class="poblem-solution__container">
+        <pre>  
+        class Shape {}
+
+        class Circle extends Shape
+        {
+            constructor(radius=0)
+            {
+            super();
+            this.radius = radius;
+            }
+        
+            resize(factor)
+            {
+            this.radius *= factor;
+            }
+        
+            toString()
+            {
+            return `A circle of radius ${this.radius}`;
+            }
+        }
+        
+        class Square extends Shape
+        {
+            constructor(side=0)
+            {
+            super();
+            this.side = side;
+            }
+        
+            toString()
+            {
+            return `A square with side ${this.side}`;
+            }
+        }
+        
+        // we don't want ColoredSquare, ColoredCircle, etc.
+        class ColoredShape extends Shape
+        {
+            constructor(shape, color)
+            {
+            super();
+            this.shape = shape;
+            this.color = color;
+            }
+        
+            toString()
+            {
+            return `${this.shape.toString()} ` +
+                `has the color ${this.color}`;
+            }
+        }
+        
+        class TransparentShape extends Shape
+        {
+            constructor(shape, transparency)
+            {
+            super();
+            this.shape = shape;
+            this.transparency = transparency;
+            }
+        
+            toString()
+            {
+            return `${this.shape.toString()} has ` +
+                `${this.transparency * 100.0}% transparency`;
+            }
+        }
+        
+        let circle = new Circle(2);
+        console.log(circle.toString());
+        
+        let redCircle = new ColoredShape(circle, 'red');
+        console.log(redCircle.toString());
+        
+        // impossible: redHalfCircle is not a Circle
+        // redHalfCircle.resize(2);
+        
+        let redHalfCircle = new TransparentShape(redCircle, 0.5);
+        console.log(redHalfCircle.toString());
+        
+            
+        </pre>
+    </div>

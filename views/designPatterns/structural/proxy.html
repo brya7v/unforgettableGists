@@ -1,0 +1,242 @@
+<div class="block">
+
+
+    <!-- proxy -->
+
+    <def2>Proxy</def2>
+    <p><strong>*A proxy has the same interface as the underlying object</strong></p>
+    <p><strong>*To create a proxy, simply replicate the existing interface of an object</strong></p>
+    <p><strong>*Then we add relevant functionality to the redefined member function</strong></p> 
+    <p><strong>*There are different proxies (communication, logging, caching, etc) with different behaviors and different uses</strong></p>
+    <br>
+    <p><strong>Is a class that functions as an interface to a particular resource. That resource may be remote, expoensive to construct, or may require logging or some other added functionality.</strong></p>
+    <br>
+    <p>If we are calling <strong>foo.Bar()</strong></p>
+    <p>This assumes that foo is in the same process as Bar()</p>
+    <p>What if, later on, you want to put all Foo-related operations into a separate process</p>
+    <p>     - Can we avoid changing the code?</p>
+    <p>The <strong>Proxy design pattern</strong> can help us with this</p>
+    <p>    <strong>*By having the same interface, with entrirely different behavior</strong></p>
+    <p>    <strong>*This is called a <em>Communicaiton proxy</em></strong> but there are other types: logging, virtual, guarding, etc...</p>
+
+
+    <!-- VALUE PROXY -->
+    <def3>Value proxy</def3>
+    <p><strong>Is simpliest type of proxy.</strong></p>
+    <br>
+    <p>A typical example is a percentage multiplication:</p>
+    <p>If we want to multiply a value * 5% value, we are not just goint tu multiply * 5</p>
+    <p>We internally have to do the process te get the multiplication * 5% and return the result</p>
+
+    <p><strong>Value proxys are good for reprecenting a concept wich are almost a direct map to a number</strong></p>
+
+
+    <div class="poblem-solution__container">
+        <pre>
+    class Percentage
+    {
+        constructor(percent)
+        {
+        this.percent = percent; // 0 to 100
+        }
+    
+        toString()
+        {
+        return `${this.percent}%`;
+        }
+    
+        valueOf()
+        {
+        return this.percent/100;
+        }
+    }
+    
+    let fivePercent = new Percentage(5);                        //Once we createe the fivePercent we can use it as a number
+    console.log(`${fivePercent} of 50 is ${50*fivePercent}`);
+        </pre>
+    </div>
+
+    <def3>String template X interface</def3>
+    <p>When loging fivePercent we will just get:<strong> Object { percent: 5 } </strong></p>
+    <p>If we log using template string `${fivePercent}` it will return the toString interface method:<strong> "5%" </strong></p>
+    <p>If we log using template string convertion to a value or use as a value tu do a calculation
+        `${+fivePercent}` it will return the valueOf interface method:<strong> 0.05 </strong></p>
+
+
+
+    <!-- PROPERTY PROXY -->
+
+    <def3>Property proxy</def3>
+    <p><strong>It masquerades getter and setters to do additional stuff, like logging setters.</strong></p>
+    <br>
+    <p>For examploe we have creatures of a game, each one has its own properties:</p>
+    <p>The class has its props and getters and setters, but the setters are going to be a bit diffrent:</p>
+    <p>The setters will log the prop and value that are beign seted, and then sets the value</p>
+
+    <p><strong>This way, everytime we set a new prop to the creature, it will be logging (or doing additional stuff) the new prop and value seted</strong></p>
+    <p>In a game we will endup with a log of CRPG logstyles of life, dmg, etc...</p>
+
+    <div class="poblem-solution__container">
+        <pre>
+            class Property
+            {
+              constructor(value, name='')
+              {
+                this._value = value;
+                this.name = name;
+              }
+            
+              get value() { return this._value; }
+              set value(newValue)
+              {
+                if (this._value === newValue)
+                  return;
+                console.log(`Assigning ${newValue} to ${this.name}`);
+                this._value = newValue;
+              }
+            }
+            
+            class Creature
+            {
+              constructor()
+              {
+                this._agility = new Property(10, 'agility');
+              }
+            
+              get agility() { return this._agility.value; }
+              set agility(value) {
+                this._agility.value = value;                /////logs (`Assigning ${newValue} to ${this.name}`) to expose properties
+              }
+            }
+            
+            let c = new Creature();
+            c.agility = 12;
+            c.agility = 13;
+
+            ///THIS WILL LOG:
+
+            Assigning 12 to Agility 
+            Assigning 13 to Agility 
+        </pre>
+    </div>
+
+    <!-- Protection PROXY -->
+
+    <def3>Protection proxy</def3>
+    <p><strong>We add it to controll access to a particular resource, while conserving the interface as much as we can, and only those thar are allowed to use the resource can have access to it .</strong></p>
+    <br>
+    <p>We have a resource in unguarded state, then we add wraper that tries to mimic the interface of the original object, but it performs additional checks ( for protection)</p>
+    <br>
+
+    <p><strong>In this example we have a car that has to verify that the driver age is &gt 18 before using the drive() method, so we have to:</strong></p>
+    <p>Create a CarProxy, where we can only have a 'car' if we have first a driver (user), and then validates the age</p>
+    <p>CarProxy is a protection proxy that mimics the Car class, the original class Car can be drived without any protection, 
+        the CarProxy requires instanciates a car, but to drive it requires first a driver and an age validation, otherwise it returns an error msg.
+    </p>
+
+    <div class="poblem-solution__container">
+        <pre>
+            class Car
+            {
+                drive()
+                {
+                console.log('Car being driven');
+                }
+            }
+            
+            class CarProxy
+            {
+                constructor(driver)
+                {
+                this.driver = driver;
+                this._car = new Car();
+                }
+            
+                drive()
+                {
+                if (this.driver.age >= 16)
+                    this._car.drive();
+                else
+                    console.log('Driver too young');
+                }
+            }
+            
+            class Driver
+            {
+                constructor(age)
+                {
+                this.age = age;
+                }
+            }
+            
+            let car = new Car();
+            car.drive();
+            
+            let car2 = new CarProxy(new Driver(12)); // try 22
+            car2.drive();                
+        </pre>
+    </div>
+
+
+      <!-- Virtual PROXY -->
+
+      <def3>Virtual proxy</def3>
+      <p><strong>It shows you a resource that we dont have yet. It masquerades as a real object.</strong></p>
+      <br>
+  
+      <p><strong>In this example we can have images, photos of people to be displayed</strong></p>
+      <p>We can log the img from the url and then draw the img</p>
+      <p>The problem is, if we never call draw, we are waisting computational time</p>
+      <p>If we are not going to call draw() we dont need to request the img</p>
+      <br>
+
+      <p>In this case we need a virtual proxy, where we make the impression that we have the img ready to draw, but we dont request it untill we draw</p>
+      <p>Instead of downloading the img in the image constrctor, we are going to load the img(if it does not exist) inside the draw method (lazyImage class)</p>
+      <p>This way we can  let img = new LazyImage('http://pokemon.com/pikachu.png'); initialize the img, but if we never draw it, we are never going to request the img, (UNTIL WE CALL DRAW()), 
+        and if we call multiple draw() the img will be requested only the first time.
+      </p>    
+  
+      <div class="poblem-solution__container">
+          <pre>
+        class Image
+        {
+            constructor(url)
+            {
+            this.url = url;
+            console.log(`Loading image from ${this.url}`);
+            }
+        
+            draw()
+            {
+            console.log(`Drawing image ${this.url}`);
+            }
+        }
+        
+        class LazyImage
+        {
+            constructor(url)
+            {
+            this.url = url;
+            }
+        
+            draw()
+            {
+            if (!this.image)
+                this.image = new Image(this.url);
+            this.image.draw();
+            }
+        }
+        
+        function drawImage(img)
+        {
+            console.log('About to draw the image');
+            img.draw();
+            console.log('Done drawing the image');
+        }
+        
+        let img = new LazyImage('http://pokemon.com/pikachu.png');
+        drawImage(img);
+          </pre>
+      </div>
+
+</div>

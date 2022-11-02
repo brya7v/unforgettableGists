@@ -1,0 +1,467 @@
+<div class="block">
+
+
+    <!-- Chain of responsibility -->
+
+    <def2>Chain of responsibility</def2>
+
+    <p><strong>*Chain of Responsibility can be implemented as a chan of references (linked list) or a centralized construct(event based infraestructure)</strong></p>
+    <p><strong>*Enlist objects in the chain, possibly controlling thei order/priority</strong></p>
+    <p><strong>*In a linked list implementation, one member can impede further processing</strong></p>
+    <p><strong>*Support removal of objects from the chain(lifetime control)</strong></p>
+
+    <p><strong>A chain of components who all get a chance to process something, like a command or a query, optionally having default processing implementation and an avility to terminate the processing chain
+    </strong></p>
+
+
+    <p><strong>*Unethical behavior by an employee; who takes the blame?</strong></p>
+    <p><strong> - Employee, Manager, CEO</strong></p>
+
+    <br>
+    <p><strong>*You click a graphical element on a form</strong></p>
+    <p> - Button handles it, stops further processing</p>
+    <p> - Or, Underlying group box handles the event</p>
+    <p> - Or, Underlying window</p>
+
+    <br>
+    <p><strong>*Card computer game</strong></p>
+    <p> - Creature has attack and defense value</p>
+    <p> - Thos can be boosted by other cards, in a specific order (chain of responsibility)</p>
+
+
+
+
+    <!-- Method chain -->
+    <def3>Method chain</def3>
+    <p><strong>This helps when we need to apply multiple modifiers to a class, one after another (in chain). Using a classModifier class that has the add(modifier) 
+        and the handle() wich applies the modifierand then calls sper.handle()</strong> This way we can chain applye multiple modifiers.</p>
+    <p><strong>The method chaining works just like a linked list, with the add(modifier) in the .next and also the handle calling the super.handle to move to the next one</strong></p>
+    <p><strong>We can stop the modifiers propagation by adding to the list a modifiera that leaves empty the handle() method and dont calls super.handle()</strong></p>
+
+    <br>
+    <p>Wehave a videogame creatures that have props and can do multiple stuff:</p>
+
+    <p>If we want to apply modifiers to that creature, we have to use the metod chain:</p>
+    <p><strong>The modifiers work as a linked list, with the next pointing to the next modifier</strong></p>
+    <p><strong>handle() will apply all the modifiers</strong></p>
+
+    <p><strong>Following this pattern we can chain apply( one after another) multiple modifiers to the same object (each modifier is a class that extends
+        the creatureModifier class that has the add(modifier) as in a linked list, and has the handle() method that applies the modifier
+        and calls the this.next modifier).</strong></p>
+
+    <div class="poblem-solution__container">
+        <pre>
+            class CreatureModifier
+            {
+              constructor(creature)
+              {
+                this.creature = creature;
+                this.next = null;
+              }
+            
+              add(modifier)
+              {
+                if (this.next) this.next.add(modifier);
+                else this.next = modifier;
+              }
+            
+              handle()
+              {
+                if (this.next) this.next.handle();
+              }
+            }        
+
+            class DoubleAttackModifier extends CreatureModifier ///EXT OF MODIFIER
+            {
+              constructor(creature)
+              {
+                super(creature);
+              }
+            
+              handle()                      /// HANDLE APPLIES CHANGES AND THE CALLS SUPER.HANDLE
+              {
+                console.log(`Doubling ${this.creature.name}'s attack`);
+                this.creature.attack *= 2;
+                super.handle();             ///CALLS SUPER.HANDLE() TO INIT THE HANDLE() CHAIN 
+              }
+            }
+
+
+        </pre>
+    </div>
+
+
+    <p>If we want to stop the chain of methods, we can add a modifier that leaves empty the handle() method, like this: </p>
+
+    <div class="poblem-solution__container">
+        <pre>
+            class NoBonusesModifier extends CreatureModifier
+            {
+              constructor(creature)
+              {
+                super(creature);
+              }
+            
+              handle()
+              {
+                console.log('No bonuses for you!');
+              }
+            }
+
+
+            root.add(new NoBonusesModifier(goblin));        /// Handle will end here
+            root.add(new DoubleAttackModifier(goblin));      // do nothing         
+            root.add(new IncreaseDefenseModifier(goblin));   // do nothing
+
+            root.handle();
+
+           
+        </pre>
+    </div>
+
+    <p><strong>Complete code</strong></p>
+    <div class="poblem-solution__container">
+        <pre>
+            class Creature {
+                constructor(name, attack, defense) {
+                  this.name = name;
+                  this.attack = attack;
+                  this.defense = defense;
+                }
+              
+                toString() {
+                  return `${this.name} (${this.attack}/${this.defense})`;
+                }
+              }
+              
+              class CreatureModifier
+              {
+                constructor(creature)
+                {
+                  this.creature = creature;
+                  this.next = null;
+                }
+              
+                add(modifier)
+                {
+                  if (this.next) this.next.add(modifier);
+                  else this.next = modifier;
+                }
+              
+                handle()
+                {
+                  if (this.next) this.next.handle();
+                }
+              }
+              
+              class NoBonusesModifier extends CreatureModifier
+              {
+                constructor(creature)
+                {
+                  super(creature);
+                }
+              
+                handle()
+                {
+                  console.log('No bonuses for you!');
+                }
+              }
+              
+              class DoubleAttackModifier extends CreatureModifier
+              {
+                constructor(creature)
+                {
+                  super(creature);
+                }
+              
+                handle()
+                {
+                  console.log(`Doubling ${this.creature.name}'s attack`);
+                  this.creature.attack *= 2;
+                  super.handle();
+                }
+              }
+              
+              class IncreaseDefenseModifier extends CreatureModifier
+              {
+                constructor(creature)
+                {
+                  super(creature);
+                }
+              
+                handle() {
+                  if (this.creature.attack &lt= 2)
+                  {
+                    console.log(`Increasing ${this.creature.name}'s defense`);
+                    this.creature.defense++;
+                  }
+                  super.handle();
+                }
+              }
+              
+              let goblin = new Creature('Goblin', 1, 1);
+              console.log(goblin.toString());
+              
+              let root = new CreatureModifier(goblin);
+              
+              //root.add(new NoBonusesModifier(goblin));
+              
+              root.add(new DoubleAttackModifier(goblin));
+              //root.add(new DoubleAttackModifier(goblin));
+              
+              root.add(new IncreaseDefenseModifier(goblin));
+              
+              // eventually...
+              root.handle();
+              console.log(goblin.toString());
+        </pre>
+    </div>
+
+
+    
+    <!-- Command query separation -->
+    <def3>Command query separation</def3>
+    <p><strong>We have to separate the commands from the queries</strong></p>
+    <p><strong>Command</strong>: asking for an action or change (e.g set attack value to 2)</p>
+    <p><strong>Query</strong>:asking for information (e.g, give me the attack value)</p>
+    <p><strong>CQS</strong>:Having separate means of sending commands and queries to e.g.m direct field access.</p>
+
+
+     <!-- Broker chain -->
+     <def3>Broker chain</def3>
+     <p><strong>This helps when we need to apply multiple modifiers to a class, one after another (in chain). Using a classModifier class that has the add(modifier) 
+         and the handle() wich applies the modifierand then calls sper.handle()</strong> This way we can chain applye multiple modifiers.</p>
+     <br>
+     <p>In this example we'll have an event, that people can:</p>
+     <p>- subscribe</p>
+     <p>- unsubscribe</p>
+     <p>- theres also a method to trigger to fire the event: fire()</p>
+
+     <p>We have game creatures with props that can be affected by modifiers, but this time, this modifiers will be comming from the events</p>
+     <p>This time, the creature will have initial_attack and initial_defense instead of just attack and defense, bc we cant attack and defense
+        to give us the current values
+     </p>
+
+     <p>Following this pattern, the getters will have inside a query that calculates the current values everitime</p>
+     <div class="poblem-solution__container">
+        <pre>
+    class Creature
+    {
+        constructor(game, name, attack, defense)
+        {
+        this.game = game;
+        this.name = name;
+        this.initial_attack = attack;
+        this.initial_defense = defense;
+        }
+    
+        get attack()
+        {
+        let q = new Query(this.name, WhatToQuery.attack,
+            this.initial_attack);
+        this.game.performQuery(this, q);
+        return q.value;
+        }
+    
+        get defense()
+        {
+        let q = new Query(this.name, WhatToQuery.defense,
+            this.initial_defense);
+        this.game.performQuery(this, q);
+        return q.value;
+        }
+    
+        toString()
+        {
+        return `${this.name}: (${this.attack}/${this.defense})`;
+        }
+    }
+</pre>
+     </div>
+
+     <p>This way the getters apply all the modifiers that the creature is subscribed to, later if it unsubscribes from it it wil no longer be 
+        calculated in the nex getter call()
+     </p>
+     
+     <div class="poblem-solution__container">
+        <pre>
+     let game = new Game();
+     let goblin = new Creature(game, 'Strong Goblin', 2, 2);
+     console.log(goblin.toString());
+     
+     let dam = new DoubleAttackModifier(game, goblin);
+     console.log(goblin.toString());
+     
+     let idm = new IncreaseDefenseModifier(game, goblin);
+     console.log(goblin.toString());
+     idm.dispose();
+     
+     dam.dispose();
+     console.log(goblin.toString());>
+
+        </pre>
+     </div>
+
+     <p>Complete code:</p>
+     <div class="poblem-solution__container">
+         <pre>
+    class Event
+    {
+        constructor()
+        {
+        this.handlers = new Map();
+        this.count = 0;
+        }
+    
+        subscribe(handler)
+        {
+        this.handlers.set(++this.count, handler);
+        return this.count;
+        }
+    
+        unsubscribe(idx)
+        {
+        this.handlers.delete(idx);
+        }
+    
+        fire(sender, args)
+        {
+        this.handlers.forEach(function (v, k)
+        {
+            v(sender, args);
+        });
+        }
+    }
+    
+    let WhatToQuery = Object.freeze({
+        'attack': 1,
+        'defense': 2
+    });
+    
+    class Query
+    {
+        constructor(creatureName, whatToQuery, value)
+        {
+        this.creatureName = creatureName;
+        this.whatToQuery = whatToQuery;
+        this.value = value;
+        }
+    }
+    
+    class Game
+    {
+        constructor()
+        {
+        this.queries = new Event();
+        }
+    
+        performQuery(sender, query)
+        {
+        this.queries.fire(sender, query);
+        }
+    }
+    
+    class Creature
+    {
+        constructor(game, name, attack, defense)
+        {
+        this.game = game;
+        this.name = name;
+        this.initial_attack = attack;
+        this.initial_defense = defense;
+        }
+    
+        get attack()
+        {
+        let q = new Query(this.name, WhatToQuery.attack,
+            this.initial_attack);
+        this.game.performQuery(this, q);
+        return q.value;
+        }
+    
+        get defense()
+        {
+        let q = new Query(this.name, WhatToQuery.defense,
+            this.initial_defense);
+        this.game.performQuery(this, q);
+        return q.value;
+        }
+    
+        toString()
+        {
+        return `${this.name}: (${this.attack}/${this.defense})`;
+        }
+    }
+    
+    class CreatureModifier
+    {
+        constructor(game, creature)
+        {
+        this.game = game;
+        this.creature = creature;
+        this.token = game.queries.subscribe(
+            this.handle.bind(this)
+        );
+        }
+    
+        handle(sender, query)
+        {
+        // implement in inheritors
+        }
+    
+        dispose()
+        {
+        game.queries.unsubscribe(this.token);
+        }
+    }
+    
+    class DoubleAttackModifier extends CreatureModifier
+    {
+        constructor(game, creature)
+        {
+        super(game, creature);
+        }
+    
+        handle(sender, query) {
+        if (query.creatureName === this.creature.name &&
+            query.whatToQuery === WhatToQuery.attack)
+        {
+            query.value *= 2;
+        }
+        }
+    }
+    
+    class IncreaseDefenseModifier extends CreatureModifier
+    {
+        constructor(game, creature)
+        {
+        super(game, creature);
+        }
+    
+        handle(sender, query)
+        {
+        if (query.creatureName === this.creature.name &&
+            query.whatToQuery === WhatToQuery.defense)
+        {
+            query.value += 2;
+        }
+        }
+    }
+    
+    let game = new Game();
+    let goblin = new Creature(game, 'Strong Goblin', 2, 2);
+    console.log(goblin.toString());
+    
+    let dam = new DoubleAttackModifier(game, goblin);
+    console.log(goblin.toString());
+    
+    let idm = new IncreaseDefenseModifier(game, goblin);
+    console.log(goblin.toString());
+    idm.dispose();
+    
+    dam.dispose();
+    console.log(goblin.toString());
+         </pre>
+     </div>
+</div>
+ 

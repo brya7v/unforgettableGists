@@ -1,0 +1,145 @@
+<div class="block">
+
+
+    <!-- Command design pattern -->
+
+    <def2>Command</def2>
+    <p><strong>*Encapsulates the details of an operation in a separate object</strong></p>
+    <p><strong>*Define instruction for applying the command (either in the command itself or elsewhere)</strong></p>
+    <p><strong>*We can optionally define instructions to undo the command (if succed flag)</strong></p>
+    <p><strong>*We can create composite commands (macros) to be secuenced one after another</strong></p>
+
+    <p><strong>*Is an object wich represents an instruction to performa particular action. Contains all the information necessary for the action to be taken</strong></p>
+
+    <p><strong>Ordinari statements are perishable</strong></p>
+    <p> - We cannot undo member assignments</p>
+    <p> - Cannot directly serialize a sequence of actions (calls)</p>
+
+   
+    <p><strong>So we want an object that represents an operation</strong></p>
+    <p> - Ex. the person instance should change its age to value 22, <strong>And store the age change somewhere</strong></p>
+    <p> - Ex. the car instance should do explode(), <strong>But we should store the person who blew it up and when</strong></p>
+
+    <p> - Uses <strong>GUI: commands, multi-level undo/redo, macro recording, etc..</strong></p>
+
+
+    <p>Example: Bank account that we want to modify</p>
+    <p>It has a current balance, and we also can deposit() an amount to increase the balance, or withdraw() and reduce the balanse.</p>
+    <p>The BankAccount works well by itself, but if we want to keep a the instruction of the deposits and withdraws (so we can undo them), we can implement the command design pattern
+        by creating a BankAccountCommand class
+    </p>
+
+    <p>It has in the constructor an account, an action and an ammout, it also has a succed flag that checks on the action completition</p>
+
+    <p>This way, instead of just calling <strong>BankAccount .deposit(50) or .withdraw(50), we've to:</strong></p>
+    <div class="poblem-solution__container">
+        <pre>
+        let ba = new BankAccount(100);                                  //instanciate the bank account
+
+        let cmd = new BankAccountCommand(ba, Action.deposit, 50);       //instanciate the bankAccountCommand and pass the ba, action and amount 
+        cmd.call();                                                     // call() to perform the action
+        console.log(ba.toString());                                     //here changes where made
+
+        console.log('Performing undo:');                
+        cmd.undo();                                                     //Here we undo the previous action
+        console.log(ba.toString());                                     //here changes where undone
+        </pre>
+    </div>
+
+    <p><strong>To undo the action, first we've to check if the selected action was completed, and then do the action in reverse, if we withdraw then we deposit,
+        if we deposit then we withdraw.</strong></p>
+
+    <p><strong>If the selected action was not called in first place, the undo will not do anithing, so we have </strong></p>
+
+    <div class="poblem-solution__container">
+        <pre>
+    class BankAccount
+    {
+        constructor(balance=0)
+        {
+            this.balance = balance;
+        }
+
+        deposit(amount)
+        {
+            this.balance += amount;
+            console.log(
+            `Deposited ${amount}, balance is now ${this.balance}`
+            );
+        }
+
+        withdraw(amount)
+        {
+            if (this.balance - amount >= BankAccount.overdraftLimit)
+            {
+            this.balance -= amount;
+            console.log(
+                `Withdrew ${amount}, balance is now ${this.balance}`
+            );
+            return true;
+            }
+            return false;
+        }
+
+        toString()
+        {
+            return `Balance: ${this.balance}`;
+        }
+    }
+    BankAccount.overdraftLimit = -500;
+
+    let Action = Object.freeze({
+    'deposit': 1,
+    'withdraw': 2
+    });
+
+    class BankAccountCommand
+    {
+    constructor(account, action, amount)
+    {
+        this.account = account;
+        this.action = action;
+        this.amount = amount;
+        this.succeeded = false;
+    }
+
+    call()
+    {
+        switch (this.action)
+        {
+        case Action.deposit:
+            this.account.deposit(this.amount);
+            this.succeeded = true;
+            break;
+        case Action.withdraw:
+            this.succeeded = this.account.withdraw(this.amount);
+            break;
+        }
+    }
+
+    undo()
+    {
+        if (!this.succeeded) return;
+        switch (this.action)
+        {
+        case Action.deposit:
+            this.account.withdraw(this.amount);
+            break;
+        case Action.withdraw:
+            this.account.deposit(this.amount);
+            break;
+        }
+    }
+    }
+
+    let ba = new BankAccount(100);
+
+    let cmd = new BankAccountCommand(ba, Action.deposit, 50);
+    cmd.call();
+    console.log(ba.toString());
+
+    console.log('Performing undo:');
+    cmd.undo();
+    console.log(ba.toString());
+        </pre>
+    </div>

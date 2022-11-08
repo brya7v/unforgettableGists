@@ -2,13 +2,21 @@
     <!-- Iterator design pattern -->
 
     <def2>Iterator</def2>
+
+    <p><strong>*An iterator specifies how you can traverse an object</strong></p>
+    <p><strong>*Stateful iterators cannot be recursive</strong></p>
+    <p><strong>*YIELD keyword allows for much more succinct iteration</strong></p>
+
+
+
+    <p><strong>*It's an object that facilitates the traversal of a data structure</strong></p>
     <p><strong>*Iteration(traversal) is a core functionality of various data structures</strong></p>
     <p><strong>*An iterator is a class tat facilitates the traversal (for example traversal of a tree)</strong></p>
     <p>- It keeps reference to the current element</p>
     <p>- Knows how to move to a different element</p>
     <p>- Knows when its done and there are no elements to move to</p>
     <p><strong>Javascript supports this through:</strong></p>
-    <p>- Symbol.iteratonr member that returns</p>
+    <p>- Symbol.iterator member that returns</p>
     <p>- An iterator object with a function called next() that </p>
     <p>- Returns an object containing</p>
     <p><strong>  - The value beign iterated</strong></p>
@@ -18,8 +26,488 @@
     <p><strong> * An iterator is not iterable</strong></p>
 
 
+
+    <!-- ARRAY BACKED PROPERTIES -->
+    <def3>Array backed props</def3>
+    <p>- Example: computer game creatures with props(strenght, agility, life and so on), this get initialited in the constructor</p>
+    <p><strong>If we want some statictics for ex:</strong></p>
+    <p><strong>- Sum of stats()</strong></p>
+    <p><strong>- Max stat()</strong></p>
+    <p><strong>- Average stats()</strong></p>
+
+    <p>To get all of those statictics, we depend on the quantity of properties, to get tu sum, to compare and get the max, and divide between the num of props to get the avg</p>
+
     <div class="poblem-solution__container">
         <pre>
+
+    //TO GET AVG STAT
+    get averageStat()
+    {
+      return sumOfStats() / 3.0; /// → 3.0 is a magic number
+    }
+
         </pre>
     </div>
+
+
+    <p>The problem, is that we dont how many props are, dividing the sum of stats by 3 is a magic number that we know works, but the design is bery brittle, if we add more props
+        we will have to rewrite the methods,
+    </p>
+
+    <p>- To avoid all of this we can use the approach called <strong>Array backed properties</strong>, where, instead of having different props in the constructor, we store all thos properties
+        inside an this.stats Array, this way we can iterate through all the props (bc) they are stored inside one array.
+    </p>
+    <p><strong>-The benefit we get is: the sumOfStats, maxOfStats, avgStats methods can be implemented easier, and if we add or remove props from the array they will still be working</strong></p>
+
+    <p><strong>-This is a more ROBUST DESIGN</strong></p>
+    <p><strong>-We are not implemented an iterator, we are just changing the property store to an → Array backed properties design pattern</strong></p>
+
+    <div class="poblem-solution__container">
+        <pre>
+            class Creature {
+                constructor() {
+                  // this.strength = this.agility
+                  //   = this.intelligence = 10;
+                  this.stats = new Array(3).fill(10);
+                }
+              
+                get strength() {
+                  return this.stats[0];
+                }
+              
+                set strength(value) {
+                  this.stats[0] = value;
+                }
+              
+                get agility() {
+                  return this.stats[1];
+                }
+              
+                set agility(value) {
+                  this.stats[1] = value;
+                }
+              
+                get intelligence() {
+                  return this.stats[2];
+                }
+              
+                set intelligence(value) {
+                  this.stats[2] = value;
+                }
+              
+                get sumOfStats() {
+                  return this.stats.reduce((x, y) => x + y, 0);
+                }
+              
+                get averageStat() {
+                  return this.sumOfStats / this.stats.length;
+                }
+              
+                get maxStat() {
+                  return Math.max(...this.stats);
+                }
+              
+                // get sumOfStats()
+                // {
+                //   return this.strength + this.agility
+                //     + this.intelligence;
+                // }
+                //
+                // get averageStat()
+                // {
+                //   return sumOfStats() / 3.0; // magic number
+                // }
+                //
+                // get maxStat()
+                // {
+                //   return Math.max(this.strength, this.agility,
+                //     this.intelligence);
+                // }
+              }
+              
+              let creature = new Creature();
+              creature.strength = 10;
+              creature.agility = 11;
+              creature.intelligence = 15;
+              console.log(`Creature has average stat ${creature.averageStat}, `
+                + `max stat = ${creature.maxStat}, `
+                + `sum of stats = ${creature.sumOfStats}.`);
+        </pre>
+    </div>
+
+
+
+    
+
+    <!-- Iterator -->
+    <def3>- Iterator designP</def3>
+    <p>- There are two types of iterators in JS</p>
+    <div class="poblem-solution__container">
+        <pre>
+
+    let values=[100,200,300]                                    //// values is an array, wich is an iterable object, we can itareate through it 
+    
+    1→ for(let i in values){                                    //// for in → Works with each index
+        console.log(`Element at pos ${i} is: ${values[i]}`)
+    } 
+
+    2→ for(let v of values){                                    //// for of → Works directly with each value
+        console.log(`Value is: ${v}`)
+    } 
+
+
+        </pre>
+    </div>
+
+
+    <p>- We can expose an iterator an iterator from a class to make it iterable</p>
+    <p>- Implement this is implementing an <strong>Iterator</strong></p>
+
+    <br>
+    
+    <p><strong>[Symbol.iterator]()</strong> Has to return an object with the next: function() that returns another object with two props:</p>
+    <p><strong>done:</strong> condition where we stop the iteration</p>
+    <p><strong>value:</strong> current value returning</p>
+
+    <div class="poblem-solution__container">
+        <pre>        
+            We have to add to the class: →
+
+            // default iterator
+            [Symbol.iterator]()                 //This code is a special peice that allows us to iterate through a class
+            {
+                let i = 0;
+                let self = this;
+                return {                        ///returns an object
+                next: function()                ///With a next prop that is a function thar returns another object
+                    {
+                    return {
+                    done: i > 1,                                //done prop with the stop iterating condition
+                    value: self[i++ === 0 ? 'a' : 'b']          //value prop wich also increments the i++ counter each iteration after the comparation
+                    };
+                }
+                }
+            }
+        </pre>
+    </div>
+
+
+    <div class="poblem-solution__container">
+        <pre>
+    class Stuff
+    {
+    constructor()
+    {
+        this.a = 11;
+        this.b = 22;
+    }
+
+    // default iterator
+    [Symbol.iterator]()
+    {
+        let i = 0;
+        let self = this;
+        return {
+        next: function()
+        {
+            return {
+            done: i > 1,
+            value: self[i++ === 0 ? 'a' : 'b']
+            };
+        }
+        }
+    }
+
+    get backwards()
+    {
+        let i = 0;
+        let self = this;
+        return {
+        next: function()
+        {
+            return {
+            done: i > 1,
+            value: self[i++ === 0 ? 'b' : 'a']
+            };
+        },
+        // make iterator iterable                                   ///without this line for (let item of stuff.backwards) wont work
+        [Symbol.iterator]: function() { return this; }              /////THIS ALLOWS US TO MAKE A METHOD INSIDE A CLASS 
+        }                                                           /// SO WE CAN: for (let item of stuff.backwards)
+    }
+    }
+
+    let values = [100, 200, 300];
+    for (let i in values)
+    {
+    console.log(`Element at pos ${i} is ${values[i]}`);
+    }
+
+    for (let v of values)
+    {
+    console.log(`Value is ${v}`);
+    }
+
+    let stuff = new Stuff();
+    for (let item of stuff)
+    console.log(`${item}`);
+
+    for (let item of stuff.backwards)
+    console.log(`${item}`);
+        </pre>
+    </div>
+
+
+
+<!-- Tree Iterator -->
+<def3>- Tree Iterator</def3>
+<p>- We are going to implement 3 types of iterators for a tree:</p>
+<div class="poblem-solution__container">
+    <pre>
+    //   1
+    //  / \
+    // 2   3
+    
+    // in-order:  213
+    // preorder:  123
+    // postorder: 231
+    </pre>
+</div>
+
+
+<p>- We can expose an iterator an iterator from a class to make it iterable</p>
+<p>- Implement this is implementing an <strong>Iterator</strong></p>
+
+<br>
+
+<p><strong>[Symbol.iterator]()</strong> Has to return an object with the next: function() that returns another object with two props:</p>
+<p><strong>done:</strong> condition where we stop the iteration</p>
+<p><strong>value:</strong> current value returning</p>
+
+<div class="poblem-solution__container">
+    <pre>        
+        We have to add to the class: →
+
+        // default iterator
+        [Symbol.iterator]()                 //This code is a special peice that allows us to iterate through a class
+        {
+            let i = 0;
+            let self = this;
+            return {                        ///returns an object
+            next: function()                ///With a next prop that is a function thar returns another object
+                {
+                return {
+                done: i > 1,                                //done prop with the stop iterating condition
+                value: self[i++ === 0 ? 'a' : 'b']          //value prop wich also increments the i++ counter each iteration after the comparation
+                };
+            }
+            }
+        }
+    </pre>
+</div>
+
+<p><strong>For this example we will require multiple classes:</strong></p>
+<p><strong>- Node:  constructor(value, left, right, parent)</strong></p>
+<p><strong>- Binary tree:  constructor(rootNode) </strong></p>
+
+
+<br>
+<p>After we create the tree structure...</p>
+<p>The function makeInOrderIterator(root) returns the nodes in order, BUT:</p>
+
+<div class="poblem-solution__container">
+    <pre>
+
+
+        function makeInOrderIterator(root)
+        {
+            ...
+            return {
+            next: function() {
+                ...
+            }, // next
+        
+            // this makes the iterator iterable
+            [Symbol.iterator]: function() { return this; }
+            };
+        }
+
+        let root = new Node(1, new Node(2), Node(3))
+
+        IF THE FUNCTION DOES NOT END WITH : , [Symbol.iterator]: function() { return this; }
+        we have to go through it manually:
+
+        let it = makeInOrderIterator(root)
+        let result = it.next()
+        while(!result.done){
+            console.log(result.value.value)
+            result = it.next()
+        }
+
+
+
+        * IF WE DO END THE FUNCTION WITH:  , [Symbol.iterator]: function() { return this; }
+        we can:
+
+        let it = makeInOrderIterator(root)
+        for let(x of it )
+            console.log(`${x.value}`)
+
+
+        *Thats the difference of implementing the [Symbol.iterator] or not.
+
+    </pre>
+</div>
+
+<def3>Yield</def3>
+<p><stron>Yield preserves the context between iterations, a method* *function does not require the [System.iterable] line in order to be iterable</stron></p>
+
+
+<p><strong>Complete code</strong></p>
+<div class="poblem-solution__container">
+    <pre>
+    class Node
+    {
+        constructor(value, left=null, right=null)
+        {
+        this.value = value;
+        this.left = left;
+        this.right = right;
+        this.parent = null;
+    
+        if (this.left)
+            left.parent = this;
+        if (this.right)
+            right.parent = this;
+        }
+    }
+    
+    function makeInOrderIterator(root)
+    {
+        // go to leftmost
+        let current = root;
+        while (current.left) {
+        current = current.left;
+        }
+        let yieldedStart = false;
+    
+        return {
+        next: function() {
+            if (!yieldedStart)
+            {
+            yieldedStart = true;
+            return {
+                value: current,
+                done: false
+            };
+            }
+            if (current.right)
+            {
+            current = current.right;
+            while (current.left)
+            {
+                current = current.left;
+            }
+            return {
+                value: current,
+                done: false
+            };
+            }
+            else
+            {
+            let p = current.parent;
+            while (p && current === p.right)
+            {
+                current = p;
+                p = p.parent;
+            }
+            current = p;
+            return {
+                value: current,
+                done: current == null
+            };
+            }
+        }, // next
+    
+        // this makes the iterator iterable
+        [Symbol.iterator]: function() { return this; }
+        };
+    }
+    
+    class BinaryTree
+    {
+        constructor(rootNode)
+        {
+        this.rootNode = rootNode;
+        }
+    
+        // assuming only one form of iteration
+        [Symbol.iterator]()
+        {
+        return makeInOrderIterator(this.rootNode);
+        }
+    
+        * betterInOrder()                                   //THE CURRENT APPROACH IS USING YIELD, WICH REQUIRES *
+        {
+        function* traverse(current)                         //FUNCTION* allows it to be recursive and llows it to YIELD
+        {
+            if (current.left)
+            {
+            for (let left of traverse(current.left))
+                yield left;
+            }
+            yield current;
+            if (current.right)
+            {
+            for (let right of traverse(current.right))
+                yield right;
+            }
+        }
+        for (let node of traverse(this.rootNode))
+            yield node;
+        }
+    
+        get inOrder()
+        {
+        return makeInOrderIterator(this.rootNode);
+        }
+    }
+    
+    //   1
+    //  / \
+    // 2   3
+    
+    // in-order:  213
+    // preorder:  123
+    // postorder: 231
+    
+    let root = new Node(1, new Node(2), new Node(3));
+    
+    // c++ style
+    let it = makeInOrderIterator(root);
+    let result = it.next();
+    while (!result.done)
+    {
+        console.log(result.value.value);
+        result = it.next();
+    }
+    
+    let tree = new BinaryTree(root);
+    
+    for (let x of tree)
+        console.log(x.value);
+    
+    console.log([...tree].map(x => x.value));
+    
+    console.log([...tree.inOrder].map(x => x.value));
+    
+    // a generator is both an iterator and iterable
+    console.log('using a generator...');
+    console.log([...tree.betterInOrder()].map(x => x.value));
+    
+    for (let x of tree.betterInOrder())
+        console.log(x.value);
+    </pre>
+
+</div>
+
 </div>

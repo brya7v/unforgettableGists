@@ -2,10 +2,178 @@
     <!-- Memento design pattern -->
 
     <def2>Memento</def2>
-    <p><strong>*</strong></p>
+    <p><strong>*Mementos are used to roll back states arbitrariliy</strong></p>
+    <p><strong>*A memento is simply a token/handle class with(typically no functions of its own)</strong></p>
+    <p><strong>*Amemento is not required to expose directly the states to wich it reverts the system</strong></p>
+    <p><strong>*Can be used to implement undo/redo</strong></p>
+    <p><strong>*Mementos are used to roll back states arbitrariliy</strong></p>
+
+
+    <p><strong>*Is a token or a handle class, representing the system state. Lets us roll back to the state when the token was generated. May or may not
+        directly expose state information
+    </strong></p>
+
+    <br>
+    <p><strong>An object or system goes through changes</strong></p>
+    <p>Ex: a bank account gets deposits and withdrawwals</p>
+
+
+    <p><strong>There are different ways of navegating those changes</strong></p>
+    <p>One way is to record every change <strong>(Command design pattern)</strong> and teach a command to undo itself</p>
+    <br>
+
+    <p><strong>Another is to simply save snapshofts of the system at every point in time(MEMENTO)</strong></p>
+    <br>
+    <p><strong>We want snapshosts of every state of the system, and we can roll back to any one of them</strong></p>
+    <p><strong>It preserves a sertain state of the bank account</strong></p>
+    <p><strong>Each deposit in the bankAccount returns a memento Instance with the current balance</strong></p>
+    <p><strong>So we can bankAccount.restore(mementoInstance) and restore the balance to a specific memento</strong></p>
 
     <div class="poblem-solution__container">
         <pre>
+    class Memento
+    {
+    constructor(balance)
+    {
+        this.balance = balance;
+    }
+    }
+
+    class BankAccount
+    {
+    constructor(balance=0)
+    {
+        this.balance = balance;
+    }
+
+    deposit(amount)
+    {
+        this.balance += amount;
+        return new Memento(this.balance);
+    }
+
+    restore(m)
+    {
+        this.balance = m.balance;
+    }
+
+    toString()
+    {
+        return `Balance: ${this.balance}`;
+    }
+    }
+
+    let ba = new BankAccount(100);
+    let m1 = ba.deposit(50);
+    let m2 = ba.deposit(25);
+    console.log(ba.toString());
+
+    // restore to m1
+    ba.restore(m1);
+    console.log(ba.toString());
+
+    // restore to m2
+    ba.restore(m2);
+    console.log(ba.toString());
         </pre>
     </div>
+
+
+
+    <!-- Memento UNDO / REDO -->
+
+    <def3>Memento UNDO/REDO</def3>
+    <p><strong>*To add the undo/redo feature we will be working with a different approach:</strong></p>
+
+    <p>The bank account will have changes Array <strong>that will be storing all the generated mementos<strong>, so we will basically have the entire
+        changes history inside the same bankAccount instance
+    </p>
+
+    <p>It also has a current that behaves as an index to the memento history so we know what the current state is</p>
+
+    <p>This way, if we redo, we restore to a index-1 in the mementos array, this way we can do multiple undo()</p> 
+    <p>We also have to store each redo and undo actions as new mementos</p> 
+
+    <p>Its really expensive to store every single state, but it dependes in the specific requirements. This is just an alternative approach that
+        stores every single state where we have the complete undo/redo stack to move through.</p> 
+
+    <div class="poblem-solution__container">
+        <pre>
+    class Memento
+    {
+    constructor(balance)
+    {
+        this.balance = balance;
+    }
+    }
+
+    class BankAccount
+    {
+    constructor(balance = 0) {
+        this.balance = balance;
+        this.changes = [new Memento(balance)];
+        this.current = 0;
+    }
+
+    deposit(amount)
+    {
+        this.balance += amount;
+        let m = new Memento(this.balance);
+        this.changes.push(m);
+        this.current++;
+        return m;                               ////STORES A NEW MEMENTO
+    }
+
+    restore(m)
+    {
+        if (m)
+        {
+        this.balance = m.balance;
+        this.changes.push(m);
+        this.current = this.changes.count - 1;
+        }
+    }
+
+    undo()
+    {
+        if (this.current > 0)
+        {
+        let m = this.changes[--this.current];
+        this.balance = m.balance;
+        return m;                               ////STORES A NEW MEMENTO
+        }
+        return null;
+    }
+
+    redo()
+    {
+        if (this.current+1 &lt this.changes.length)
+        {
+        let m = this.changes[++this.current];
+        this.balance = m.balance;
+        return m;                               ////STORES A NEW MEMENTO
+        }
+        return null;
+    }
+
+    toString()
+    {
+        return `Balance: $${this.balance}`;
+    }
+    }
+
+    let ba = new BankAccount(100);
+    ba.deposit(50);
+    ba.deposit(25);
+    console.log(ba.toString());
+
+    ba.undo();
+    console.log(`Undo 1: ${ba.toString()}`);
+    ba.undo();
+    console.log(`Undo 2: ${ba.toString()}`);
+    ba.redo();
+    console.log(`Redo 2: ${ba.toString()}`);
+        </pre>
+    </div>
+
 </div>

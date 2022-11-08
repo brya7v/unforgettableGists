@@ -1,0 +1,91 @@
+<div class="block">
+    <!-- Template method design pattern -->
+
+    <def2>Template method</def2>
+
+    <p><strong>*Allows us to define the 'skeleton' of the algorithm, with concrete implementations defined in sublcasses</strong></p>
+    <p><strong>*Its a hight level blueprint for an algorithm to be completed by inheritors</strong></p>
+
+    <br>
+    <p>Steps:</p>
+    <p><strong>- Define an algorithgm at high level</strong></p>
+    <p><strong>- Define constituent parts as empty methods / properties </strong></p>
+    <p><strong>- Inherit the algorithm class, providing necessary overrides </strong></p>
+<br>
+    <p>Its similar to the strategy, but it uses a different approach</p>
+    <p>Algorightms can be decomoposed into common parts + specifics</p>
+    <p>Strategy pattern does this through composition</p>
+    <p> - High level algorithm uses an interface</p>
+    <p> - Concrete implementations implement the interface</p>
+    <p><strong>Themplate method</strong> does the same thing through inheritance</p>
+    <p> - Overall algorithm makes use of empty ('abstract') members </p>
+    <p> - Inheritors override those members</p>
+    <p> - Parent template method invoked</p>
+
+    <br>
+
+    <p>Example: general purpose algotightm for a boardGame</p>
+    <p><strong>Complete code ↓↓↓</strong></p>
+    <div class="poblem-solution__container">
+        <pre>
+
+    class Game {                        //template class
+        constructor(numberOfPlayers)
+        {
+            this.numberOfPlayers = numberOfPlayers;
+            this.currentPlayer = 0;
+        }
+
+        run() {                             //template method for this scenario → every game will follow this flow
+            this.start();
+            while (!this.haveWinner) {
+            this.takeTurn();
+            }
+            console.log(`Player ${this.winningPlayer} wins.`);
+        }
+                                            //We define this methods empty ↓↓↓, will be implemented by each game inheritor
+        start(){}
+        get haveWinner(){}
+        takeTurn(){}
+        get winningPlayer(){}
+    }
+    
+    class Chess extends Game            //Extends Game, which is the template abstract Class
+    {
+    constructor()
+    {
+        super(2);                       //super takes the numberOfPlayers
+        this.maxTurns = 10;
+        this.turn = 1;
+    }
+    
+    start()
+    {
+        console.log(
+        `Starting a game of chess with ${this.numberOfPlayers} players.`
+        );
+    }
+    
+    get haveWinner()
+    {
+        return this.turn === this.maxTurns;
+    }
+    
+    takeTurn() {
+        console.log(
+        `Turn ${this.turn++} taken by player ${this.currentPlayer}.`
+        );
+        this.currentPlayer = (this.currentPlayer + 1) % this.numberOfPlayers;
+    }
+    
+    get winningPlayer()
+    {
+        return this.currentPlayer;
+    }
+    }
+    
+    let chess = new Chess();
+    chess.run();
+        </pre>
+    </div>
+</div>

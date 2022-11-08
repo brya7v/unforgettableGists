@@ -2,10 +2,403 @@
     <!-- Observer design pattern -->
 
     <def2>Observer</def2>
-    <p><strong>*</strong></p>
+    <p><strong>*Is an intrusive approach: an observable must provide an event to subscribe to.</strong></p>
+    <p><strong>*Subscription and unsubscrption handled with addition / removal of items in a list.</strong></p>
+    <p><strong>*Property notifications are easy; dependent property notifications are tricky and can get messy</strong></p>
+
+    <p><strong>*An observer is an object that wishes to be informed about events happening in the system.</strong></p>
+    <p><strong>*The observable is the entity generating the events.</strong></p>
+    <br>
+    <p><strong>*Its the more popular dessign pattern</strong></p>
+    <p><strong>*We need to be informed when certain things happen</strong></p>
+    <p> - Objects property changes</p>
+    <p> - Object does something</p>
+    <p> - Some external event occurs</p>
+    <br>
+    <p><strong>*We want to listne to events and ve notified when they occur</strong></p>
+    <p> - Some external event occurs</p>
+    <br>
+    <p><strong>*We want to unsubscribe from events if we're no longer interested</strong></p>
+
+
+    <def3>Events</def3>
+    <p><strong>*An Event</strong> is somthing that we want to observe and react to, so here we will be creating the reusable
+        Event class to use in the Observer design pattern.</p>
+
+
+    <p>Example for the Event implementation</p>
+    <p>We have a Person Class that has a fallsIll prop wich its a new Event, the person that can catchCold() wich: </p>
+    <p>Triggers the event, then the event sends the info to the People are subscribed to the event.</p>
+
 
     <div class="poblem-solution__container">
         <pre>
+    class Event
+    {
+    constructor()
+    {
+        this.handlers = new Map();
+        this.count = 0;
+    }
+
+    subscribe(handler)
+    {
+        this.handlers.set(++this.count, handler);
+        return this.count;
+    }
+
+    unsubscribe(idx)
+    {
+        this.handlers.delete(idx);
+    }
+
+    // 1) who fired the event?
+    // 2) additional data (event args)
+    fire(sender, args)                  //person.fallsIll.subscribe((s, a) => { console.log(`A doctor has been called `+ `to ${a.address}`);
+    {
+        this.handlers.forEach(
+        (v, k) => v(sender, args)
+        );
+    }
+    }
+
+    class FallsIllArgs
+    {
+    constructor(address)
+    {
+        this.address = address;
+    }
+    }
+
+    class Person
+    {
+    constructor(address)
+    {
+        this.address = address;
+        this.fallsIll = new Event();
+    }
+
+    catchCold()                         //THIS FIRES THE EVENT
+    {
+        this.fallsIll.fire(                 
+        this,                           //First arg: the sender = this
+        new FallsIllArgs(this.address)  //Second arg: arguments related to the event = this.address
+        );
+    }
+    }
+
+    let person = new Person('123 London Road');
+    let sub = person.fallsIll.subscribe((s, a) => {
+    console.log(`A doctor has been called `+
+        `to ${a.address}`);
+    });
+    person.catchCold();             //this logs bc we are subscribed to the event
+    person.catchCold();             //this logs bc we are subscribed to the event
+
+    person.fallsIll.unsubscribe(sub);
+
+    person.catchCold();             //this no longer logs bc we unsubscribed
         </pre>
     </div>
+
+
+
+    <!-- Property observers design pattern -->
+
+    <def3>Property observers</def3>
+    <p><strong>*We want to be notified when an instance prop changes.</strong></p>
+    <p>Ex. we want to get a notification when a person age changes, we will be reusing the event class (where we can subscribe)</p>
+    <p>In this approach, the property setters will trigger a the propertyChanged event, in addition, this uses an instance of PropertyChangedArgs
+        wich has the property name and the new value.</p>
+    
+    <p>Here we will be notified everytime the person changes age, but if the age is greater than 18 we will unsibscribe so we stop getting
+        the event notifications.</p>
+    
+
+    <div class="poblem-solution__container">
+        <pre>
+
+    class Event
+    {
+    constructor()
+    {
+        this.handlers = new Map();
+        this.count = 0;
+    }
+
+    subscribe(handler)
+    {
+        this.handlers.set(++this.count, handler);
+        return this.count;
+    }
+
+    unsubscribe(idx)
+    {
+        this.handlers.delete(idx);
+    }
+
+    // 1) who fired the event?
+    // 2) additional data (event args)
+    fire(sender, args)
+    {
+        this.handlers.forEach(
+        (v, k) => v(sender, args)
+        );
+    }
+    }
+
+    class PropertyChangedArgs
+    {
+    constructor(name, newValue)
+    {
+        this.name = name;
+        this.newValue = newValue;
+    }
+    }
+
+    class Person
+    {
+    constructor(age)
+    {
+        this._age = age;
+        this.propertyChanged = new Event();
+    }
+
+    get age() { return this._age; }
+
+    set age(value)
+    {
+        if (!value || this._age === value)
+        return;
+        this._age = value;
+        this.propertyChanged.fire(
+        this,
+        new PropertyChangedArgs('age', value)
+        );
+    }
+    }
+
+    class RegistrationChecker
+    {
+    constructor(person)
+    {
+        this.person = person;
+        this.token = person.propertyChanged.subscribe(
+        this.age_changed.bind(this)                             ///IMPORTANT:  bind.(this) instad of this.age_changed()
+        );
+    }
+
+    age_changed(sender, args)
+    {
+        if (sender === this.person && args.name === 'age')
+        {
+        if (args.newValue &lt 13)
+        {
+            console.log(`Sorry, you are still to young`);
+        } else {
+            console.log(`Okay, you can register`);
+            sender.propertyChanged.unsubscribe(this.token);         //HERE WE UNSUBSCRIBE
+        }
+        }
+    }
+    }
+
+    let person = new Person('John');
+    let checker = new RegistrationChecker(person);
+    for (let i = 10; i &lt 20; ++i)
+    {
+    console.log(`Changing age to ${i}`);
+    person.age = i; //
+    }
+
+        </pre>
+    </div>
+
+
+
+    
+
+    <!-- Property Dependencies design pattern -->
+
+    <def3>Property Dependencies</def3>
+    <p><strong>*Its used when props depend on another properties</strong></p>
+
+    <p>Ex. we want know when a person can vote, it requires it to be _age >= 1</p>
+
+    <p>The monitor checker will be monitoring the age of the persons it is subscribed to 
+        to check if they a re old enough to vote, if they are it's going to log something...
+    </p>
+
+
+    <div class="poblem-solution__container">
+        <pre>
+        class VotingChecker
+        {
+            constructor(person) {
+                this.person = person;
+                this.person.property_changed.subscribe(
+                this.voting_changed.bind(this));
+            }
+        
+            voting_changed(sender, args)
+            {
+                if (sender === this.person && args.name === 'canVote')
+                {
+                console.log('Voting status changed to ' + args.newValue);
+                }
+            }
+        }
+        </pre>
+    </div>
+
+
+    <p>Before, we did the event comparation in the ageSetter, but here the canVote() is the one that returns the value we want
+        (it also depends on _age), but the point is that we don't have access to the setter, what we need to do is cache the old value
+    </p>
+
+    <p><strong>This way, we can check the canVote status inside the age setter</strong></p>
+
+
+    <div class="poblem-solution__container">
+        <pre>
+
+            set age(value)
+            {
+                if (!value || this._age === value)
+                return; // nothing to do here
+        
+                let oldCanVote = this.canVote;
+        
+                this._age = value;
+                this.property_changed.fire(
+                this,
+                new PropertyChangedArgs('age', value)
+                );
+        
+                if (oldCanVote !== this.canVote)            //HERE WE FIRE THE EVENT
+                {
+                this.property_changed.fire(
+                    this,
+                    new PropertyChangedArgs('canVote', this.canVote)
+                );
+                }
+            }
+
+        </pre>
+    </div>
+
+
+    <p><strong>The problem is when the prop we want to check depends in a lot of different props (age, citizenship, etc...)</strong></p>
+
+
+    <div class="poblem-solution__container">
+        <pre>
+
+    class Event
+    {
+    constructor()
+    {
+        this.handlers = new Map();
+        this.count = 0;
+    }
+
+    subscribe(handler)
+    {
+        this.handlers.set(++this.count, handler);
+        return this.count;
+    }
+
+    unsubscribe(idx)
+    {
+        this.handlers.delete(idx);
+    }
+
+    // 1) who fired the event?
+    // 2) additional data (event args)
+    fire(sender, args)
+    {
+        this.handlers.forEach(
+        (v, k) => v(sender, args)
+        );
+    }
+    }
+
+    class Person
+    {
+    constructor(age)
+    {
+        this._age = age;
+        this.property_changed = new Event();
+    }
+
+    get age() {
+        return _age;
+    }
+
+    set age(value)
+    {
+        if (!value || this._age === value)
+        return; // nothing to do here
+
+        let oldCanVote = this.canVote;
+
+        this._age = value;
+        this.property_changed.fire(
+        this,
+        new PropertyChangedArgs('age', value)
+        );
+
+        if (oldCanVote !== this.canVote)
+        {
+        this.property_changed.fire(
+            this,
+            new PropertyChangedArgs('canVote', this.canVote)
+        );
+        }
+    }
+
+    get canVote()
+    {
+        return this._age >= 16;
+    }
+    }
+
+    class PropertyChangedArgs
+    {
+    constructor(name, newValue)
+    {
+        this.name = name;
+        this.newValue = newValue;
+    }
+    }
+
+    class VotingChecker
+    {
+    constructor(person) {
+        this.person = person;
+        this.person.property_changed.subscribe(
+        this.voting_changed.bind(this));
+    }
+
+    voting_changed(sender, args)
+    {
+        if (sender === this.person && args.name === 'canVote')
+        {
+        console.log('Voting status changed to ' + args.newValue);
+        }
+    }
+    }
+
+    let person = new Person('John');
+    let checker = new VotingChecker(person);
+    for (let i = 10; i &lt 20; ++i)
+    {
+    console.log(`Changing age to ${i}`);
+    person.age = i;
+    }
+
+        </pre>
+    </div>
+
+
 </div>

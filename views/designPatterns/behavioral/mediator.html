@@ -2,10 +2,247 @@
     <!-- mediator design pattern -->
 
     <def2>Mediator</def2>
-    <p><strong>*</strong></p>
+
+    <p><strong>* Create a mediator nd have ach object in the system refer to it</strong></p>
+    <p><strong>* Mediator engages in bidirectional communication with its connected components</strong></p>
+    <p><strong>- Mediator has functions the components can call</strong></p>
+    <p><strong>- Components have functions the mediator can call</strong></p>
+
+
+
+    <p><strong>Facilitates comunication between components Without them necessarily beign aware of each other or having direct reference acces to each other</strong></p>
+    <br>
+
+    <p><strong>Components may go in and out of a system at any time</strong></p>
+    <p> - Chat room participants</p>
+    <p> - Players ina mmorpg</p>
+    <br>
+    <p><strong>It makes no sense for them to have direct references to one another</strong></p>
+    <p> - Those references may go dead</p>
+    <br>
+    <p><strong>Solution: have them all refer to some central component that facilitates communication</strong></p>
+
+
+    <def3>Chat room example</def3>
+
+    <p>Classic example for the mediator design pattern</p>
+    <p>We need a chatRoom class wich mediates the communication between the people that are in the chatRoom</p>
+    <p>It decides if a msg send by a person can be broadcast to everybody or just to a person</p>
+    <p>It can also broadcast msgs to all, when one person joins or leaves the chatRoom</p>
+
+    <br>
+    <p>People can join() or leave() the chatRoom, then this msg will be broadcasted</p>
+    <p>Each people have a receive(sender, message) to receive a msg, also have a say(mes) to broadcast in the room, and a pm(who, msg) to send a 
+        private msg (although it also goes through the mediator (chatRoom) there is no direct connection between these two people) </p>
+
+    <br>
+    <p>The People instances does not have any reference to one another</p>
+    <p>All people have refference only to the chatRoom, and the chatRoom handles the msg sending: to one people or broadcast to all</p>
+
+    <p>in This example the chatRoom works as the <strong>MEDIATOR</strong> to handle the msgs between all the people that joins it.</p>
+    <p><strong>Complete code</strong></p>
 
     <div class="poblem-solution__container">
         <pre>
+    class Person
+    {
+    constructor(name) {
+        this.name = name;
+        this.chatLog = [];
+    }
+
+    receive(sender, message)
+    {
+        let s = `${sender}: '${message}'`;
+        console.log(`[${this.name}'s chat session] ${s}`);
+        this.chatLog.push(s);
+    }
+
+    say(message) {
+        this.room.broadcast(this.name, message);
+    }
+
+    pm(who, message)
+    {
+        this.room.message(this.name, who, message);
+    }
+    }
+
+    class ChatRoom
+    {
+    constructor()
+    {
+        this.people = [];
+    }
+
+    broadcast(source, message)
+    {
+        for (let p of this.people)
+        if (p.name !== source)
+            p.receive(source, message);
+    }
+
+    join(p)
+    {
+        let joinMsg = `${p.name} joins the chat`;
+        this.broadcast('room', joinMsg);
+        p.room = this;
+        this.people.push(p);
+    }
+
+    message(source, destination, message)
+    {
+        for (let p of this.people)
+        if (p.name === destination)
+            p.receive(source, message);
+    }
+    }
+
+    let room = new ChatRoom();
+
+    let john = new Person('John');
+    let jane = new Person('Jane');
+
+    room.join(john);
+    room.join(jane);
+
+    john.say('hi room');
+    jane.say('oh, hey john');
+
+    let simon = new Person('Simon');
+    room.join(simon);
+    simon.say('hi everyone!');
         </pre>
     </div>
+
+
+
+    <!-- MEDIATOR WITH EVENTS -->
+    <def3>Mediator with events</def3>
+
+    <p>Example with soccer players in a soccer game</p>
+
+    <p>Events are exanged between objects(players in a soccer game)</p>
+    <p>The <strong>game</strong> is the mediator</p>
+    <p>The game has an events array where events are stored and can be fired to anyone that subscribes to them</p>
+    <p>We need to create specific events PlayerScoredEventArgs, and then  fire them in the event instance</p>
+
+    <div class="poblem-solution__container">
+        <pre>
+    score()
+    {
+        this.goalsScored++;
+        let args = new PlayerScoredEventArgs(this.name, this.goalsScored);
+        this.game.events.fire(this, args);
+    }
+
+    let game = new Game();
+    let player = new Player('Sam', game);       //Player has reference to the game (mediator)
+    let coach = new Coach(game);                //Coach has reference to the game (mediator)
+
+    player.score();                             //Score creates an event, wich is handled by  this.game.events.fire(this, args) // the = player, args = PlayerScoredEventArgs instance
+    player.score();
+    player.score();
+
+        </pre>
+    </div>
+
+
+    <p><strong>Complete code</strong></p>
+
+    <div class="poblem-solution__container">
+        <pre>
+    class Event
+    {
+    constructor()
+    {
+        this.handlers = new Map();
+        this.count = 0;
+    }
+
+    subscribe(handler)
+    {
+        this.handlers.set(++this.count, handler);
+        return this.count;
+    }
+
+    unsubscribe(idx)
+    {
+        this.handlers.delete(idx);
+    }
+
+    fire(sender, args)
+    {
+        this.handlers.forEach(function (v, k)
+        {
+        v(sender, args);
+        });
+    }
+    }
+
+    class PlayerScoredEventArgs
+    {
+    constructor(playerName, goalsScoredSoFar) {
+        this.playerName = playerName;
+        this.goalsScoredSoFar = goalsScoredSoFar;
+    }
+
+    print()
+    {
+        console.log(`${this.playerName} has scored `
+        + `their ${this.goalsScoredSoFar} goal`);
+    }
+    }
+
+    class Game {
+    constructor() {
+        this.events = new Event();
+    }
+    }
+
+    class Player
+    {
+    constructor(name, game)
+    {
+        this.name = name;
+        this.game = game;
+        this.goalsScored = 0;
+    }
+
+    score()
+    {
+        this.goalsScored++;
+        let args = new PlayerScoredEventArgs(this.name, this.goalsScored);
+        this.game.events.fire(this, args);
+    }
+    }
+
+    class Coach
+    {
+    constructor(game)
+    {
+        this.game = game;
+
+    game.events.subscribe(function (sender, args)
+    {
+      if (args instanceof PlayerScoredEventArgs
+        && args.goalsScoredSoFar &lt 3)
+      {
+        console.log(`coach says: well done, ${args.playerName}`);
+      }
+    });
+  }
+}
+
+let game = new Game();
+let player = new Player('Sam', game);
+let coach = new Coach(game);
+
+player.score();
+player.score();
+player.score();
+
+    </pre>
+</div>
+
 </div>

@@ -1,0 +1,141 @@
+<div class="block">
+    <def1>Summary</def1>
+    <ul>
+        
+        <li><strong> - Creational</strong>
+            <ul>
+                <li><strong>    Builder</strong>
+                    <ul>
+                        <li>Separate components for when object construction gets too complicated</li>
+                        <li>Can create mutually cooperating subbuilders</li>
+                        <li>Often have a <strong>fluent interface</strong> (return this)</li>
+                    </ul>
+                </li>
+                <li><strong>    Factories</strong>
+                    <ul>
+                        <li>Factory method more expressive than constructor</li>
+                        <li>A separate class with factory methods is a Factory</li>
+                        <li>Class hierarchies can have corresponding hierarchies of factories (Abstract factories)</li>
+                    </ul>
+                </li>
+                <li><strong>    Prototype</strong>
+                    <ul>
+                        <li>Creation of object from an existing object</li>
+                        <li>Requires either explicit deep copy or copy through serialization</li>
+                        <li>Additional work required ro preserve type</li>
+                    </ul>
+                </li>
+                <li><strong>    Singleton</strong>
+                    <ul>
+                        <li>When you need to ensure just a single instance exists</li>
+                        <li>Can return same object from constructor on every call</li>
+                        <li>Direc dependence on a Singleton is dangerous</li>
+                    </ul>
+                </li>
+            </ul>
+
+        </li>
+        <br>
+        <li><strong> - Structural</strong>
+            <li><strong>    Adapter</strong>
+                <ul>
+                    <li>Converts the interface you get to the interface you need</li>
+                </ul>
+            </li>
+            <li><strong>    Bridge</strong>
+                <ul>
+                    <li>Decouple abstraction from implementation</li>
+                </ul>
+            </li>
+            <li><strong>    Decorator</strong>
+                <ul>
+                    <li>Attach additional responsabilities to objects without modifying those objecs or inheriting from them</li>
+                    <li>Decorators are composable with each other</li>
+                </ul>
+            </li>
+            <li><strong>    Fasade</strong>
+                <ul>
+                    <li>Provide a single unified interface over a set of systems/interfaces</li>
+                </ul>
+            </li>
+            <li><strong>    Flyweight</strong>
+                <ul>
+                    <li>Memory saving technique</li>
+                    <li>Efficiently support very large numbers of similar objects</li>
+                </ul>
+            </li>
+            <li><strong>    Proxy</strong>
+                <ul>
+                    <li>Provide a surrogate object that forwards calls to the real object while performing additional functions</li>
+                    <li>Ex. access control, communication, loggint, etc</li>
+                </ul>
+            </li>
+        </li>
+        <br>
+        <li><strong> - Behavioral</strong>
+            <li><strong>    Chain of responsibility</strong>
+                <ul>
+                    <li>Allow components to process information/events in chan</li>
+                    <li>Each element in the chain refers to the next element; or</li>
+                    <li>Make a list and go thtough it</li>
+                </ul>
+            </li>
+            <li><strong>    Command</strong>
+                <ul>
+                    <li>Encapsulate a request into a separate object</li>
+                    <li>Good for audit, replay, undo/ redo</li>
+                    <li>Part of CQS/CQRS</li>
+                </ul>
+            </li>
+            <li><strong>    Interpreter</strong>
+                <ul>
+                    <li>Transform textual input into object oriented structures</li>
+                    <li>Used by interpreters, compilers, static analysis tools, etc</li>
+                    <li>Compiler theory is a separate branch of computer science</li>
+                </ul>
+            </li>
+            <li><strong>    Iterator</strong>
+                <ul>
+                    <li>Provides an interface for accessing elements of an aggregate object</li>
+                    <li>Objects can be made iterable (for loop)</li>
+                </ul>
+            </li>
+            <li><strong>    Mediator</strong>
+                <ul>
+                    <li>Provides mediation service between two objects</li>
+                    <li>Ex. message passing, chat room</li>
+                </ul>
+            </li>
+            <li><strong>    Memento</strong>
+                <ul>
+                    <li>Yields tokens representing system states</li>
+                    <li>Tokens do not allow direct manipulation, but can be used in appropriate apis</li>
+                </ul>
+            </li>
+            <li><strong>    Observer</strong>
+                <ul>
+                    <li>Allosw notifications of changes/happenings in a component</li>
+                </ul>
+            </li>
+            <li><strong>    State</strong>
+                <ul>
+                    <li>We model systems by having one of a possible states and transitions between these states</li>
+                    <li>Such system is called a state machine</li>
+                    <li>Special frameworks exists to orchestrate state machines</li>
+                </ul>
+            </li>
+            <li><strong>    Strategy & template method</strong>
+                <ul>
+                    <li>Both define a skeleton algorithm with details filled in by implementor</li>
+                    <li>Strategy uses ordinary composition, template method uses inheritance</li>
+                </ul>
+            </li>
+            <li><strong>    Visitor</strong>
+                <ul>
+                    <li>Allows non intrusive addition of functionality to hierarchies</li>
+                </ul>
+            </li>
+        </li>
+    </ul>
+</div>
+

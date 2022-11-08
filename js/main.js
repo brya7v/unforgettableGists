@@ -572,4 +572,21 @@ var maxArea = function(height) {
 };
 
 
-// console.log(maxArea([1,3,2,5,25,24,5]))
+// console.log(maxArea([1,3,2,5,25,24,5]))7
+
+
+
+fetch('https://pokeapi.co/api/v2/pokemon/2').then( async r=> {
+    r.json().then( e => {
+        console.log(e)
+    })
+})
+
+
+
+
+fetch('https://pokeapi.co/api/v2/pokemon/2').then( async r=> {
+    r.json().then( e => {        
+        console.log(e)
+    })
+})

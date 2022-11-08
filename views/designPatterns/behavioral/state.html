@@ -2,10 +2,284 @@
     <!-- State design pattern -->
 
     <def2>State</def2>
-    <p><strong>*</strong></p>
+    <p>* Given sufficient complexity, it pays to formally define possible states and events/triggers</p>
+    <p>* Its usefull bc we can define for each stete</p>
+    <p> -State entry/exit behaviors</p>
+    <p> -Action when a particular event causes a transition</p>
+    <p> -Guard conditions enabling/ disabling a transition</p>
+    <p> -Default action when no transitions are found for an event</p>
+
+    <p><strong>*A patter in which the object's behavior is determinated by its state. An object transitions from one state to another (something needs to trigger a transition)</strong></p>
+    <p>*A formalized construct which manages state and transitions is called a <strong><em>State machine</em></strong></p>
+    <br>
+    <p><strong>*Consider an ordinary telephone:</strong></p>
+    <p><strong>What you do with it depends on the state of the phone / line</strong></p>
+    <p> - If its ringing or you want to make a call, you pick up the phone</p>
+    <p> - Phone must be off the hook to talk/make a call</p>
+    <p> - If you try calling someone, and its busy, you put the handset down</p>
+    <p><strong>*Changes in state can be explicit or in response to event (Observer pattern)</strong></p>
+
+
+    <!-- Classic state design pattern -->
+    <def3>Classic State</def3>
+    <p>The classic state design patter is different than the current state design pattern based in a state machine</p>
+
+    <p>In this example we have two states, on and of, wich extend the base abstract class State</p>
+    <p>For each State, we define a class that extends the State class: onState and OffState</p>
+    <p>The whole classes are used by the Switch instance, wich initializes the OffState and OnState each time we call on() or off()</p>
+    <br>
+    <p><strong>This example is not applicable in the real world, its more for academyc purposes, to see where the state design pattern thinking started.</strong></p>
+    <p><strong>Complete code ↓↓↓</strong></p>
+    <div class="poblem-solution__container">
+        <pre>
+    class Switch
+    {
+    constructor()
+    {
+        this.state = new OffState();
+    }
+
+    on()
+    {
+        this.state.on(this);
+    }
+
+    off()
+    {
+        this.state.off(this);
+    }
+    }
+
+    class State
+    {
+    constructor()
+    {
+        if (this.constructor === State)
+        throw new Error('abstract!');
+    }
+
+    on(sw)
+    {
+        console.log('Light is already on.');
+    }
+
+    off(sw)
+    {
+        console.log('Light is already off.')
+    }
+    }
+
+    class OnState extends State
+    {
+    constructor()
+    {
+        super();
+        console.log('Light turned on.')
+    }
+
+    off(sw) {
+        console.log('Turning light off...');        //While on OnState, we can call off()
+        sw.state = new OffState();
+    }
+    }
+
+    class OffState extends State
+    {
+    constructor()
+    {
+        super();
+        console.log('Light turned off.');
+    }
+
+    on(sw) {
+        console.log('Turning light on...');          //While on OffState, we can call on()
+        sw.state = new OnState();
+    }
+    }
+
+    let sw = new Switch();
+    sw.on();
+    sw.off();
+    sw.off();
+        </pre>
+    </div>
+
+
+    
+    <!-- State machine design pattern -->
+    <def3>State machine</def3>
+    <p>State machine by hand... there are libraries that can make the whole required objects for the state machine to work </p>
+    <p>The State machine requires: </p>
+    <p>States of the state machine</p>
+    <p>Triggers to transition from one state from another</p>
+    <p>Rules: is a dictionary that defines relationships between triggers and states </p>
+    <div class="poblem-solution__container">
+        <pre>
+    let State = Object.freeze({
+        offHook: 'off hook',
+        connecting: 'connecting',
+        connected: 'connected',
+        onHold: 'on hold',
+        onHook: 'on hook'
+    });
+
+    let Trigger = Object.freeze({
+        callDialed: 'dial a number',
+        hungUp: 'hang up',
+        callConnected: 'call is connected',
+        placedOnHold: 'placed on hold',
+        takenOffHold: 'taken off hold',
+        leftMessage: 'leave a message'
+    });
+        </pre>
+    </div>
+
+    <br>
+    <p>The we just have to define an initial state</p>
+    <p>And an exist state</p>
+    <div class="poblem-solution__container">
+        <pre>
+    let state = State.offHook;
+    let exitState = State.onHook;
+        </pre>
+    </div>
+    Some stete machines don't have an exitState, they just run in a loop
+    <br>
+    <p><strong>This design pattern has a freezed object with all the different states.</strong></p>
+    <p>This example will be a representation of a phone state machine</p>
+    <p><strong>A Trigger</strong> in a state machine is the responsible from moving from one state to another</p>
+    <p><strong>Set of rules:</strong> The state machine also requires a set of rules which define every set of transitions the system is allowed to do:
+     its an object, with objects with arrays:...
+    </p>
 
     <div class="poblem-solution__container">
         <pre>
+    let rules = {};                     // rules object
+    rules[State.offHook] = [            // initial state: offHook →  can have only 1 transition
+    {                                   // 1st transition
+        trigger: Trigger.callDialed,    // trigger
+        state: State.connecting         // state after the trigger
+    }
+    ];
+    rules[State.connecting] = [         // initial state: connecting →  can have 2 transition
+    {                                   // 1st transition
+        trigger: Trigger.hungUp,        // trigger
+        state: State.onHook             // state after the trigger
+    },
+    {                                   // 2nd transition
+        trigger: Trigger.callConnected, // transition
+        state: State.connected          // state after the trigger
+    }
+    ]
+    ...
+    ...
+    ...
         </pre>
     </div>
+
+    <p><strong>Complete code ↓↓↓</strong></p>
+    <div class="poblem-solution__container">
+        <pre>
+    const readline = require('readline');
+
+    let rl = readline.createInterface({
+    input: process.stdin,
+    output: process.stdout
+    });
+
+    let State = Object.freeze({
+        offHook: 'off hook',
+        connecting: 'connecting',
+        connected: 'connected',
+        onHold: 'on hold',
+        onHook: 'on hook'
+    });
+
+    let Trigger = Object.freeze({
+        callDialed: 'dial a number',
+        hungUp: 'hang up',
+        callConnected: 'call is connected',
+        placedOnHold: 'placed on hold',
+        takenOffHold: 'taken off hold',
+        leftMessage: 'leave a message'
+    });
+
+    let rules = {};
+    rules[State.offHook] = [
+    {
+        trigger: Trigger.callDialed,
+        state: State.connecting
+    }
+    ];
+    rules[State.connecting] = [
+    {
+        trigger: Trigger.hungUp,
+        state: State.onHook
+    },
+    {
+        trigger: Trigger.callConnected,
+        state: State.connected
+    }
+    ];
+    rules[State.connected] = [
+    {
+        trigger: Trigger.leftMessage,
+        state: State.onHook
+    },
+    {
+        trigger: Trigger.hungUp,
+        state: State.onHook
+    },
+    {
+        trigger: Trigger.placedOnHold,
+        state: State.onHold
+    }
+    ];
+    rules[State.onHold] = [
+    {
+        trigger: Trigger.takenOffHold,
+        state: State.connected
+    },
+    {
+        trigger: Trigger.hungUp,
+        state: State.onHook
+    }
+    ];
+
+    let state = State.offHook;
+    let exitState = State.onHook;
+
+    let getInput = function() {
+    let prompt = [
+        `The phone is currently ${state}`,
+        'What\'s next:'
+    ];
+
+    for (let i = 0; i &lt rules[state].length; ++i)
+    {
+        let t = rules[state][i].trigger;
+        prompt.push(`${i}. ${t}`);
+    }
+
+    // force an extra line break
+    prompt.push('');
+
+    rl.question(prompt.join('\n'), function(answer)
+    {
+        let input = parseInt(answer);
+        state = rules[state][input].state;
+
+        if (state !== exitState)
+        getInput();
+        else {
+        console.log('We are done using the phone.');
+        rl.close();
+        }
+    });
+    };
+
+    getInput();
+        </pre>
+    </div>
+
 </div>

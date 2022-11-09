@@ -2,6 +2,7 @@ includeHTML()
 
 showLoader()
 //setup navbar
+var secitonsPosition 
 Promise.all([...promises]).then(r=> {
     console.log('all docs loaded')
 
@@ -10,8 +11,15 @@ Promise.all([...promises]).then(r=> {
     let sections = Array.from(document.getElementsByClassName("section"))
 
     //getcookkies
-    let secitonsPosition = getCookie('secitonsPosition') ? getCookie('secitonsPosition') : {git: 0}
+    secitonsPosition = getCookie('secitonsPosition') ? getCookie('secitonsPosition') : {git: 0}
     let currentSection = getCookie('currentSection') ? getCookie('currentSection') : 'git'
+
+    let searchSec = window.location.search.split('?')[1]
+    let searchPos = window.location.search.split('?')[2]
+    if(  searchSec != null && searchPos != null){
+        currentSection = searchSec
+        secitonsPosition[currentSection] = searchPos
+    }
 
     document.title = "Unforgettable Gists - " + currentSection
 
@@ -112,10 +120,18 @@ Promise.all([...promises]).then(r=> {
 
             setCookie('secitonsPosition', JSON.stringify(secitonsPosition), 1)
             setCookie('currentSection', JSON.stringify(currentSection), 1)
+            setTimeout(()=>{
+                history.pushState({}, "", `/?${currentSection}?${secitonsPosition[currentSection]}`) 
+            },100)
+            
         })
     })
 
 })
+
+window.onpopstate = function(event) {
+    history.go()
+}
 
 function scrollToElement(id){ setTimeout(() => {
     $("html, body").animate({ scrollTop: $(`#${id}`).offset().top -80 }, 500)

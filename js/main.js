@@ -121,7 +121,7 @@ Promise.all([...promises]).then(r=> {
             setCookie('secitonsPosition', JSON.stringify(secitonsPosition), 1)
             setCookie('currentSection', JSON.stringify(currentSection), 1)
             setTimeout(()=>{
-                history.pushState({}, "", `/?${currentSection}?${secitonsPosition[currentSection]}`) 
+                history.pushState({}, "", `./?${currentSection}?${secitonsPosition[currentSection]}`) 
             },100)
             
         })

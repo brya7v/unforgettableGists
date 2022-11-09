@@ -3,6 +3,8 @@ includeHTML()
 showLoader()
 //setup navbar
 var secitonsPosition 
+
+var pathName = window.location.pathname
 Promise.all([...promises]).then(r=> {
     console.log('all docs loaded')
 
@@ -121,7 +123,7 @@ Promise.all([...promises]).then(r=> {
             setCookie('secitonsPosition', JSON.stringify(secitonsPosition), 1)
             setCookie('currentSection', JSON.stringify(currentSection), 1)
             setTimeout(()=>{
-                history.pushState({}, "", `./?${currentSection}?${secitonsPosition[currentSection]}`) 
+                history.pushState({}, "", `${pathName}?${currentSection}?${secitonsPosition[currentSection]}`) 
             },100)
             
         })

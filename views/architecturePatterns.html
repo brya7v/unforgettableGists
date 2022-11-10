@@ -1,0 +1,187 @@
+<h2 class="main-title">Architecture Patterns</h2>
+
+<div class="block">
+    <def1>Architecture</def1>
+    <ul>
+        <li>The architecture of a software system is a metaphor, analogous to the architecture of a building.
+        It functions as a blueprint for the system and the developing project, which project management can later use to extrapolate the tasks necessary to be executed by the teams and people involved. </li>
+        <li>An <strong>Architecture Patterns</strong> is a general, reusable solution to a commonly occurring problem in software architecrure, within a given context. </li>
+        <li>The architectural patterns address various issues in software engineering, such as:
+            <ul>
+                <li>Computer hardware performance limitations</li>
+                <li>High availability</li>
+                <li>Minimization of a business risk</li>
+            </ul>
+        </li>
+        <li>Some architectural patterns have been implemented wihin software frameworks. </li>
+    </ul>
+</div>
+
+<div class="block">
+    <def1>Layered</def1>
+    <ul>
+        <li>This is the most common architecture pattern, also knonw as the <strong>n tier architecture</strong>.</li>
+        <li>The software is divided in 4 layers:
+            <ul>
+                <li>Presentation layer <strong>(UI)</strong></li>
+                <li>Application layer</li>
+                <li>Business logic layer</li>
+                <li>Data access layer (db)</li>
+            </ul>
+        </li>
+        <li>Its generally used in building simple desktop applications as well ass simple webapps.</li>
+    </ul>
+</div>
+
+<div class="block">
+    <def1>Pipe filter</def1>
+    <ul>
+        <li>A single event triggers a sequence of processing steps, each performing a specific function, for example:</li>
+        <li>Lets asume a new order from a customer arrives
+            <ul>
+                <li>1 req: encrypt msgs <strong>(UI)</strong></li>
+                <li>2 req: the msg contains digital certificate auth </li>
+            </ul>
+        </li>
+        <li>To accomplish those requirements need a long procces, the pipe filter divides that larger processing task into  
+            a sequence of smaller independent processing steps (or filters) thar are connected by channels (or pipes).</li>
+        <li>This pattern os often used in compilers here the consecutive filters perfom lexical analysis, parsing semantic analysis and code generation.</li>
+            
+    </ul>
+</div>
+
+<div class="block">
+    <def1>Client server</def1>
+    <ul>
+        <li>There are two main components:
+            <ul>
+                <li> * Client: service requester</li>
+                <li> * Server: service provider </li>
+            </ul>
+        </li>
+        <li>Although both client and server may be located in the same system, they often communicate over a networ on separate hardware.</li>
+        <li><strong>The advantage: </strong> is an ease of modeling a set of services where clients can request them.</li>
+        <li><strong>The disadvantage: </strong> the server can be a performance bottleneck and a single point of failure, and the desitions about
+            where to put some functionality (in the client or server) are often complex and hard to change after a system has been built.</li>
+        <li>Common applications of this pattern include: email, document sharing and banking.</li>
+            
+    </ul>
+</div>
+
+<div class="block">
+    <def1>Model View Controller</def1>
+    <ul>
+        <li>The UI is the most modified portion of an interactive application, this pattern separates the user inerface functionality
+            from the application functionality while still beign responsive to the changes in the underlying applications data.
+        </li>
+        <li>Multiple views of the user unterface can be created, maintained and coordinated even if the underlying application data changes</li>
+        <li>It separates the application functionality in 3 components 
+            <ul>
+                <li><strong>Model:</strong> Contains the core functionality and data</li>
+                <li><strong>View:</strong> Displays the info to the user where more than one view can be defined</li>
+                <li><strong>Controller:</strong> Handles the input from the user</li>
+            </ul>
+        </li>
+    </ul>
+</div>
+
+<div class="block">
+    <def1>Event bus</def1>
+    <ul>
+        <li>Is often built as a distributed system that can service asynchronously arriving messages associated associated with high volume of events. </li>
+        <li>The event bus pattern has four major components
+            <ul>
+                <li><strong>Event Source:</strong></li>
+                <li><strong>Event listener:</strong> where more than one view can be defined</li>
+                <li><strong>Chanel:</strong></li>
+                <li><strong>Event bus:</strong></li>
+            </ul>
+        </li>
+        <li>Source publis messages to particular channels on an event bus, listeners subscribe to particular channels, listeners are notified of messages that are published on a channel
+            to which they have subscribed before.
+        </li>
+        <li><strong>Advantages:</strong> Publishers, subscribers and connections can be added easily</li>
+        <li><strong>Problems:</strong> All messages travel through the same bus, so scalability might be a problem.</li>
+        <li>This pattern is used in android development, e-commerce aplications and notification services.</li>
+    </ul>
+</div>
+
+<div class="block">
+    <def1>Microservices</def1>
+    <ul>
+        <li>Modern enterprise apps are required to support a variety of browsers and native mobile clients.</li>
+        <li>The applications usually handle client request by executing business logic accesing a db exchanging messages with other systems and returning the responses.</li>
+        <li>In this regard, monolitic applications can become too large and complex for efficient support and development, the solution is to build applications as microservices</li>
+        <li>Each service is independenlty deployable and scalable an has its own api boundry, different serices can be writen in its own language, manage its own database and developed
+            by different teams
+        </li>
+        <li>Many use cases are applicable for a microservices architecture, especially those that involve an extensive data pipeline pattern </li>
+</div>
+
+
+
+<div class="block">
+    <def1>Broker</def1>
+    <ul>
+        <li>This pattern is used to structure distributed systems with decoupled components.</li>
+        <li>This components can interact with each other by remote service invocations.</li>
+        <li>A broker component is responsible for the coordination of communication among components.</li>
+        <li>Servers publish their capabilities to a broker</li>
+        <li>Clients request a services from the broker and the broker then redirects the client to a suitable service from its registry</li>
+        <li>The broker pattern allows for dynamic: change addition, deletion and relocation of objects and it makes distribution transparent to the developer.</li>
+        <li><strong>Problems:</strong> Requires standarization of service descriptions.</li>
+        <li><strong>Used in:</strong> Message broker software such as apache activemq, apache kafka, rabbitmq and jboss messaging.</li>
+</div>
+
+
+
+<div class="block">
+    <def1>Peer to peer</def1>
+    <ul>
+        <li>In this pattern individual components are known as peers</li>
+        <li>Peers may function both as a client requesting services from other peers and as a servers providing services to other peers</li>
+        <li>A peer may act as a client or as a server or as both and it can change its role dynamically</li>
+        <li>This pattern supports decentralized computing and is highly robust in the failure in any given node</li>
+        <li><strong>Advantages:</strong>It is highly scalable in terms of resources and computing power</li>
+        <li><strong>Problems:</strong> Security is hard to ensure and the system performance often depends on the number of nodes.</li>
+        <li><strong>Used in:</strong> file sharing networks sush as ganutellla and g2 multimedia, protocols such as p2ptv and pdtp as well as in cryptocurrency based products
+            such as bitcoin.</li>
+</div>
+
+<div class="block">
+    <def1>Blackboard</def1>
+    <ul>
+        <li>Is usefull form problens wich no deterministic solution strategies are known</li>
+        <li>The blackboard pattern consists of three main components</li>
+        <li><strong>Blackboard:</strong> Is a structured global memory containing objects from the solution space.</li>
+        <li><strong>Knowledge source:</strong> Is specialized modules with their own representation.</li>
+        <li><strong>Control:</strong> Selects, configures and executes modules.</li>
+        <li>All the components have access to the blackboard</li>
+        <li>Components may produce new data objects that are added to the blackboardm</li>
+        <li>Components look for data on the blackboard and find these with the existing knowledge source</li>
+
+        <li><strong>Advantages:</strong>Extending the structure of the data space is easy</li>
+        <li><strong>Problems:</strong> Modifying the structure of the space is hard as all applications are affected.</li>
+        <li><strong>Used in:</strong> Speech recognition , protein structure identification and summer signals interpretation</li>
+</div>
+
+
+<div class="block">
+    <def1>Master slave</def1>
+    <ul>
+        <li>Consists in two parties, master and slaves.</li>
+        <li>The blackboard pattern consists of three main components</li>
+
+        <li><strong>Master:</strong>The master component distributes the work among identical slave components and computes a final result from the results which
+            the slaves return.</li>
+
+        <li><strong>Advantages:</strong>The accuracy in which the execution of a service is delegated to different slaves with different implementations</li>
+        <li><strong>Problems:</strong> Can only be applied to a problem that can be decomposed.</li>
+        <li><strong>Used in:</strong> Dtabase replications where the master database is regarded as the authoritative source and the slave databases are synchronized
+        to it</li>
+</div>
+
+
+
+
+

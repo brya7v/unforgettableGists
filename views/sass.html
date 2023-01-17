@@ -4,7 +4,7 @@
     <def1>Css</def1>
     <ul>
         <li>Cascading style sheets.</li>
-        <li>It can be coded inside an HTML tag (style attribute).</li>
+        <li>It can be coded inside an HTML tag (style attribute) in line style.</li>
         <li>Css code can be inside an html document style element, inside the head element.</li>
         <li>A Css external file can be imported in a <def-code>&ltlink href rel="stylesheet" type="text/css"&gt</def-code> .</li>
     </ul>
@@ -58,7 +58,7 @@
     <def1>Sass</def1> Syntactically Awesome Style Sheets.
     <ul>
         <li>Is a css preprocessor, an extension of css that adds power and elegance to the basic language.</li>
-        <li>It requires a comiler. <strong>Sass code -> Sass compiler -> compiled css code</strong>.</li>
+        <li>It requires a compiler. <strong>Sass code -> Sass compiler -> compiled css code</strong>.</li>
         <li>Sintax.
             <pre>
                 Sass 						Scss
@@ -81,11 +81,11 @@
                 
     </pre>
                 </li>
-                <li><def2>Partials and imports</def2> To write Css in different fies and importing them all into one single file.</li>
-                <li><def2>Mixins</def2> To write reusable pieces of css.</li>
-                <li><def2>Functions</def2> Mimilar to mixins, with the difference tha they produce a value that can be used.</li>
-                <li><def2>Extends</def2> To make different selectors inherit declarations that are common to all of them.</li>
-                <li><def2>Control directives</def2> For writing complex code using condifionals and loops.</li>
+                <li><def2>Partials and imports</def2> Allow to write Css in different fies and importing them all into one single file.</li>
+                <li><def2>Mixins</def2> Are used to write reusable pieces of css.</li>
+                <li><def2>Functions</def2> Are similar to mixins, with the difference that they produce a value that can be used.</li>
+                <li><def2>Extends</def2> Are used to make different selectors inherit declarations that are common to all of them.</li>
+                <li><def2>Control directives</def2> Are used for writing complex code using conditionals and loops. (@if, @for, @while)</li>
             </ul>    
         </li>
     </ul>
@@ -98,7 +98,7 @@
   <ul>
     <li>Download and install npm.</li>
     <li><def-code>npm init</def-code> to initialize the package.json dependencies.</li>
-    <li><def-code>npm install node-sass --save-dev</def-code> to install node-sass compiler and add it onyly to the dev dependencies inside the package.json.</li>
+    <li><def-code>npm install node-sass --save-dev</def-code> to install node-sass compiler and add it only to the dev dependencies inside the package.json.</li>
     <li>Inside the package.json we can add a script to run the compiler.</li>
     <pre>
 
@@ -114,10 +114,6 @@
 
 <div class="block">
     <def1>Css selectors</def1>
-    <ul>
-        <li>Default: content-box -> the element size does not include padding neither border, its only defined by the content.</li>
-        <li>Better: border-box -> the element size includes padding and the outside of the border, this way it's easier working with sizes.</li>
-    </ul>
 
     <table>
         <tbody><tr>
@@ -446,7 +442,7 @@
         <li>Containers with floating elements will have height of 0: we have to clearfix it, otherwise there may be overflowing elements.</li>
     <pre>
         .clearfix::after {
-            Content: “”
+            content: ""
             clear: both 
             display: table
         }        
@@ -500,7 +496,7 @@
         <li>Adaptive content to different devices and resolutions.</li>
         <li>Musts for a good responsive design.
             <ul>
-                <li><def2>Fluid layouts</def2>:
+                <li><def2>Fluid layouts</def2>
                     A fluid layout expands items to fill available free space or shrinks them to prevent overflow.
                     the content adapts to the viewport and maintans its main usability/pourpose, we can
                     achive this mainly in 4 different aproaches: 
@@ -825,7 +821,7 @@
                 </li>
               </li>
                 <br>
-                <li><def2>Responsiveness across browsers</def2> there are browser prefixes for specific styles, for the styles, in order to work on different browsers with different versions (caniuse.com)</li>            
+                <li><def2>Responsiveness across browsers</def2> There are browser prefixes for specific styles, for the styles, in order to work on different browsers with different versions (caniuse.com)</li>            
                 <li><def2>Use of rem units and % instead of px</def2>. We can achive this with:                  
     <pre>
 
